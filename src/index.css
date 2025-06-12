@@ -1,0 +1,132 @@
+/* Import Bootstrap CSS directly */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Custom Styles */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Button Styles */
+.btn-primary-custom {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-primary-custom:hover {
+  background-color: #1e40af;
+  border-color: #1e40af;
+  transform: translateY(-1px);
+  color: white;
+}
+
+.btn-primary-custom:focus {
+  background-color: #1e40af;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.btn-secondary-custom {
+  background-color: #e5e7eb;
+  border-color: #e5e7eb;
+  color: #111827;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-secondary-custom:hover {
+  background-color: #d1d5db;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.btn-secondary-custom:focus {
+  background-color: #d1d5db;
+  border-color: #d1d5db;
+  box-shadow: 0 0 0 0.2rem rgba(209, 213, 219, 0.5);
+}
+
+/* Custom Card */
+.custom-card {
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.custom-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Form Controls */
+.form-control-custom {
+  border-radius: 0.5rem;
+  border-color: #d1d5db;
+  padding: 0.75rem 1rem;
+}
+
+.form-control-custom:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Utilities */
+.text-primary-custom { 
+  color: #2563eb !important; 
+}
+
+.bg-primary-custom { 
+  background-color: #2563eb !important; 
+}
+
+.bg-primary-light { 
+  background-color: #eff6ff !important; 
+}
+
+/* Remove default Bootstrap form control focus glow */
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+/* Additional helper classes */
+.min-vh-100 {
+  min-height: 100vh;
+}
