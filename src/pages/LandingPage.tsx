@@ -9,7 +9,6 @@ interface VisibleSections {
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [isVisible, setIsVisible] = useState<VisibleSections>({});
   const [, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeJourney, setActiveJourney] = useState('patient');
@@ -534,37 +533,6 @@ const LandingPage = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Chronic Care Patient",
-      content: "This platform transformed my healthcare journey. The ease of connecting with specialists and managing my treatments digitally has been life-changing.",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=1"
-    },
-    {
-      name: "Dr. Michael Chen",
-      role: "Senior Cardiologist",
-      content: "The efficiency gains are remarkable. I can now see 30% more patients while providing better care through the platform's intelligent tools.",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=3"
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Mother of Three",
-      content: "Managing my entire family's health has never been this simple. From pediatric appointments to elderly care, everything is seamlessly integrated.",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=5"
-    }
-  ];
-
-  const stats = [
-    { value: animatedStats.users.toLocaleString() + "+", label: "Active Users", icon: <Users className="w-6 h-6" /> },
-    { value: animatedStats.doctors.toLocaleString() + "+", label: "Verified Doctors", icon: <Stethoscope className="w-6 h-6" /> },
-    { value: (animatedStats.appointments / 1000000).toFixed(1) + "M+", label: "Appointments", icon: <Calendar className="w-6 h-6" /> },
-    { value: animatedStats.rating + "/5", label: "User Rating", icon: <Star className="w-6 h-6" /> }
-  ];
-
   const services = [
     { icon: <Monitor />, title: "Telemedicine", desc: "Video consultations" },
     { icon: <Pill />, title: "Pharmacy", desc: "Medicine delivery" },
@@ -572,14 +540,7 @@ const LandingPage = () => {
     { icon: <Brain />, title: "Mental Health", desc: "Therapy sessions" }
   ];
 
-  useEffect(() => {
-    // Auto-rotate testimonials
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
-
+  
   return (
     <div className="min-vh-100 position-relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -596,7 +557,7 @@ const LandingPage = () => {
             <div className="brand-icon-wrapper">
               <Heart className="brand-icon" size={32} />
             </div>
-            <span className="brand-text ms-2">MediFlow</span>
+            <span className="brand-text ms-2">HealthNexus</span>
           </a>
           
           <button 
@@ -616,6 +577,9 @@ const LandingPage = () => {
                 <a className="nav-link nav-link-animated px-3" href="#features">Features</a>
               </li>
               <li className="nav-item">
+                <a className="nav-link nav-link-animated px-3" href="#detailed-features">Capabilities</a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#benefits">Benefits</a>
               </li>
               <li className="nav-item">
@@ -625,13 +589,10 @@ const LandingPage = () => {
                 <a className="nav-link nav-link-animated px-3" href="#security">Security</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link nav-link-animated px-3" href="#testimonials">Testimonials</a>
-              </li>
-              <li className="nav-item ms-lg-3">
-                <button className="btn btn-glass me-2">Sign In</button>
+                <a className="nav-link nav-link-animated px-3" href="#comparison">Comparison</a>
               </li>
               <li className="nav-item">
-                <button className="btn btn-gradient-primary">Get Started</button>
+                <a className="nav-link nav-link-animated px-3" href="#health-tools">Tools</a>
               </li>
             </ul>
           </div>
@@ -745,22 +706,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section ref={statsRef} className="stats-section py-5">
-        <div className="container">
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <div className="stat-icon">
-                  {stat.icon}
-                </div>
-                <h2 className="stat-value">{stat.value}</h2>
-                <p className="stat-label">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Services Quick Access */}
       <section className="services-quick py-5">
@@ -1021,127 +966,6 @@ const LandingPage = () => {
               </div>
             ))}
           </div>
-
-          <div className="text-center mt-5">
-            <div className="compliance-badges">
-              <span className="compliance-badge">HIPAA Compliant</span>
-              <span className="compliance-badge">ISO 27001</span>
-              <span className="compliance-badge">SOC 2 Type II</span>
-              <span className="compliance-badge">GDPR Ready</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="how-it-works" className="how-it-works-section py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">PROCESS</span>
-            <h2 className="section-title mt-3">
-              Get Started in
-              <span className="gradient-text"> 3 Simple Steps</span>
-            </h2>
-          </div>
-          
-          <div className="process-timeline">
-            <div className="timeline-line"></div>
-            <div className="row g-5">
-              {[
-                { number: "01", title: "Create Account", desc: "Quick registration with email or social login", icon: <UserCheck /> },
-                { number: "02", title: "Find Your Doctor", desc: "Browse specialists and read patient reviews", icon: <Users /> },
-                { number: "03", title: "Start Consultation", desc: "Connect instantly via video or in-person", icon: <Video /> }
-              ].map((step, idx) => (
-                <div key={idx} className="col-md-4">
-                  <div className={`process-step ${isVisible['how-it-works'] ? 'fade-in-up' : ''}`} style={{ animationDelay: `${idx * 0.2}s` }}>
-                    <div className="step-number">{step.number}</div>
-                    <div className="step-icon">{step.icon}</div>
-                    <h4 className="step-title">{step.title}</h4>
-                    <p className="step-description">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section id="testimonials" className="testimonials-section py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">TESTIMONIALS</span>
-            <h2 className="section-title mt-3">
-              Trusted by
-              <span className="gradient-text"> Millions</span>
-            </h2>
-          </div>
-          
-          <div className="testimonial-wrapper">
-            <div className="testimonial-card-main">
-              <div className="quote-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 21C3 21 7.5 16.5 7.5 12C7.5 7.5 3 3 3 3M12 21C12 21 16.5 16.5 16.5 12C16.5 7.5 12 3 12 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              
-              <div className="testimonial-content">
-                <p className="testimonial-text">
-                  {testimonials[activeTestimonial].content}
-                </p>
-                
-                <div className="testimonial-author">
-                  <img 
-                    src={testimonials[activeTestimonial].image} 
-                    alt={testimonials[activeTestimonial].name}
-                    className="author-image"
-                  />
-                  <div className="author-info">
-                    <h5>{testimonials[activeTestimonial].name}</h5>
-                    <p>{testimonials[activeTestimonial].role}</p>
-                  </div>
-                  <div className="rating">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={18} fill="currentColor" className="text-warning" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="testimonial-nav">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`nav-dot ${activeTestimonial === index ? 'active' : ''}`}
-                    onClick={() => setActiveTestimonial(index)}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Multi-language Support Banner */}
-      <section className="language-banner py-3">
-        <div className="container">
-          <div className="language-wrapper">
-            <div className="language-content">
-              <Globe className="me-2" size={20} />
-              <span className="fw-bold me-3">Available in 15+ Languages:</span>
-              <div className="language-flags">
-                <span className="flag-item" title="English">🇺🇸</span>
-                <span className="flag-item" title="Spanish">🇪🇸</span>
-                <span className="flag-item" title="French">🇫🇷</span>
-                <span className="flag-item" title="German">🇩🇪</span>
-                <span className="flag-item" title="Chinese">🇨🇳</span>
-                <span className="flag-item" title="Japanese">🇯🇵</span>
-                <span className="flag-item" title="Arabic">🇸🇦</span>
-                <span className="flag-item" title="Hindi">🇮🇳</span>
-                <span className="more-languages">+7 more</span>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1237,12 +1061,7 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div className="text-center mt-5">
-            <button className="btn btn-gradient-primary btn-lg">
-              Start Free Trial
-              <ArrowRight className="ms-2" size={20} />
-            </button>
-          </div>
+          
         </div>
       </section>
 
@@ -1367,7 +1186,7 @@ const LandingPage = () => {
 
           <div className="savings-calculator mt-5">
             <div className="calculator-card">
-              <h4 className="text-center mb-4">Your Annual Savings with MediFlow</h4>
+              <h4 className="text-center mb-4">User Annual Savings with MediFlow</h4>
               <div className="row g-4">
                 <div className="col-md-4">
                   <div className="saving-item">
@@ -1435,11 +1254,6 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-
-              <button className="btn btn-danger btn-lg mt-4">
-                <AlertCircle className="me-2" size={20} />
-                Learn About Emergency Care
-              </button>
             </div>
             
             <div className="col-lg-6">
@@ -1583,11 +1397,6 @@ const LandingPage = () => {
                   <li><Check size={16} /> Free health monitoring tools</li>
                 </ul>
               </div>
-
-              <button className="btn btn-gradient-primary btn-lg w-100 mt-4">
-                Start Saving Today
-                <ArrowRight className="ms-2" size={20} />
-              </button>
             </div>
           </div>
         </div>
@@ -1721,134 +1530,6 @@ const LandingPage = () => {
                       <small className="d-block">Keep up the healthy lifestyle!</small>
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-5">
-            <p className="text-muted">These tools provide general guidance only. Always consult healthcare professionals for medical advice.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Blog/Resources Preview */}
-      <section id="blog" className="blog-section py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">RESOURCES</span>
-            <h2 className="section-title mt-3">
-              Latest Health Insights &
-              <span className="gradient-text d-block">Platform Updates</span>
-            </h2>
-          </div>
-
-          <div className="row g-4">
-            <div className="col-lg-4">
-              <article className="blog-card">
-                <div className="blog-image">
-                  <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" alt="Article" />
-                  <span className="blog-category">Health Tips</span>
-                </div>
-                <div className="blog-content">
-                  <h4>10 Ways to Boost Your Immunity Naturally</h4>
-                  <p className="text-muted">Discover evidence-based methods to strengthen your immune system through diet, exercise, and lifestyle changes.</p>
-                  <div className="blog-meta">
-                    <span><Clock size={16} /> 5 min read</span>
-                    <span>• 2 days ago</span>
-                  </div>
-                  <a href="#" className="read-more">
-                    Read More <ChevronRight size={16} />
-                  </a>
-                </div>
-              </article>
-            </div>
-
-            <div className="col-lg-4">
-              <article className="blog-card">
-                <div className="blog-image">
-                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400" alt="Article" />
-                  <span className="blog-category platform-update">Platform Update</span>
-                </div>
-                <div className="blog-content">
-                  <h4>New Feature: AI-Powered Health Assistant</h4>
-                  <p className="text-muted">Our latest AI integration provides personalized health recommendations based on your medical history and lifestyle.</p>
-                  <div className="blog-meta">
-                    <span><Clock size={16} /> 3 min read</span>
-                    <span>• 1 week ago</span>
-                  </div>
-                  <a href="#" className="read-more">
-                    Read More <ChevronRight size={16} />
-                  </a>
-                </div>
-              </article>
-            </div>
-
-            <div className="col-lg-4">
-              <article className="blog-card">
-                <div className="blog-image">
-                  <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400" alt="Article" />
-                  <span className="blog-category">Medical Education</span>
-                </div>
-                <div className="blog-content">
-                  <h4>Understanding Diabetes: A Complete Guide</h4>
-                  <p className="text-muted">Everything you need to know about diabetes types, symptoms, management, and the latest treatment options.</p>
-                  <div className="blog-meta">
-                    <span><Clock size={16} /> 8 min read</span>
-                    <span>• 3 weeks ago</span>
-                  </div>
-                  <a href="#" className="read-more">
-                    Read More <ChevronRight size={16} />
-                  </a>
-                </div>
-              </article>
-            </div>
-          </div>
-
-          <div className="text-center mt-5">
-            <button className="btn btn-outline-primary btn-lg">
-              View All Resources
-              <ArrowRight className="ms-2" size={20} />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section py-5">
-        <div className="container">
-          <div className="cta-wrapper">
-            <div className="cta-content text-center">
-              <h2 className="cta-title mb-4">
-                Ready to Transform Your
-                <span className="gradient-text d-block">Healthcare Experience?</span>
-              </h2>
-              <p className="cta-subtitle mb-5">
-                Join millions who are already experiencing the future of healthcare
-              </p>
-              <div className="cta-buttons">
-                <button className="btn btn-white btn-lg me-3">
-                  Get Started Free
-                  <ArrowRight className="ms-2" size={20} />
-                </button>
-                <button className="btn btn-glass-light btn-lg">
-                  <Phone className="me-2" size={20} />
-                  Contact Sales
-                </button>
-              </div>
-              
-              <div className="trust-indicators mt-5">
-                <div className="trust-item">
-                  <Shield size={24} />
-                  <span>HIPAA Compliant</span>
-                </div>
-                <div className="trust-item">
-                  <Award size={24} />
-                  <span>ISO Certified</span>
-                </div>
-                <div className="trust-item">
-                  <Clock size={24} />
-                  <span>24/7 Support</span>
                 </div>
               </div>
             </div>
