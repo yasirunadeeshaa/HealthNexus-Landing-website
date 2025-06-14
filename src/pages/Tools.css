@@ -1,0 +1,104 @@
+/* Health Tools Section */
+        .health-tools-section {
+          background: white;
+        }
+
+        .health-tool-card {
+          background: #f8f9fa;
+          border-radius: 20px;
+          padding: 30px;
+          height: 100%;
+          transition: all 0.3s ease;
+          text-align: center;
+        }
+
+        .health-tool-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .tool-icon {
+          width: 80px;
+          height: 80px;
+          background: var(--gradient-primary);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 20px;
+          color: white;
+        }
+
+        .bmi-result {
+          background: white;
+          border-radius: 15px;
+          padding: 20px;
+          text-align: center;
+        }
+
+        .symptom-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .symptom-tag {
+          background: white;
+          border: 2px solid #e2e8f0;
+          padding: 8px 16px;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.875rem;
+        }
+
+        .symptom-tag:hover,
+        .symptom-tag.active {
+          border-color: var(--primary);
+          background: var(--primary);
+          color: white;
+        }
+
+        .symptom-result .alert {
+          text-align: left;
+        }
+
+        .risk-factors {
+          text-align: left;
+          margin: 20px 0;
+        }
+
+        .risk-item {
+          display: block;
+          padding: 10px;
+          margin-bottom: 10px;
+          background: white;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .risk-item:hover {
+          background: #e2e8f0;
+        }
+
+        .risk-item input {
+          margin-right: 10px;
+        }
+
+        .risk-meter {
+          margin-top: 20px;
+        }
+
+        .meter-bar {
+          height: 20px;
+          background: #e2e8f0;
+          border-radius: 10px;
+          overflow: hidden;
+        }
+
+        .meter-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+          transition: width 0.5s ease;
+        }
