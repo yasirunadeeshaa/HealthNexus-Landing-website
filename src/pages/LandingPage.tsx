@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Calendar, Video, FileText, Shield, Heart, Activity, Phone, Check, Star, ArrowRight, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap, ChevronDown, PlayCircle, Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Lock, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Database, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
-
+import { Calendar, Video,Wifi,ChevronLeft,Send, FileText, Shield, Heart, Activity, Phone, Check, Star, ArrowRight, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap, PlayCircle, Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Lock, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Database, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
+import './Main.css'
+import './Journuy.css'; // Custom styles for the landing page
+import './EmergencySection.css'; // Custom styles for the landing page
+import './HeroSection.css'
+import './LiveDemo.css'
+import './Footer.css'; // Custom styles for the landing page
+import './Tools.css'; // Custom styles for the animated background
+import './Pricing.css';
+import './comparison.css';
+import './Security.css';
+import './Benifits.css';
+import './Features.css';
+import './Navigation.css';
 interface VisibleSections {
   [key: string]: boolean;
 }
@@ -552,7 +564,7 @@ const LandingPage = () => {
 
       {/* Navigation */}
       <nav className={`navbar navbar-expand-lg fixed-top transition-all ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}>
-        <div className="container">
+        <div className="container-fluid">
           <a className="navbar-brand d-flex align-items-center" href="#">
             <div className="brand-icon-wrapper">
               <Heart className="brand-icon" size={32} />
@@ -601,111 +613,216 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section className="hero-section position-relative">
-        <div className="hero-background">
-          <div className="hero-shape shape-1"></div>
-          <div className="hero-shape shape-2"></div>
-          <div className="hero-shape shape-3"></div>
+      {/* Animated Background */}
+      <div className="hero-background">
+        <div className="hero-shape shape-1"></div>
+        <div className="hero-shape shape-2"></div>
+        <div className="hero-shape shape-3"></div>
+        {/* Particle Effect */}
+        <div className="particles">
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className="particle" style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${15 + Math.random() * 20}s`
+            }}></div>
+          ))}
         </div>
+      </div>
         
-        <div className="container">
+        <div className="container-fluid px-4">
           <div className="row align-items-center min-vh-100 py-5">
             <div className="col-lg-6 hero-content">
+              {/* Enhanced Badge */}
               <div className="badge-wrapper mb-4">
-                <span className="badge-gradient">
-                  <Zap size={16} className="me-1" />
+                <span className="badge-gradient animated-badge">
+                  <Zap size={16} className="me-1 pulse-icon" />
                   #1 Healthcare Platform 2024
+                </span>
+                <span className="trust-badge ms-3">
+                  <Shield size={16} className="me-1" />
+                  HIPAA Certified
                 </span>
               </div>
               
-              <h1 className="hero-title mb-4">
-                Your Health,<span className="gradient-text d-block">Our Priority</span>
+              {/* Animated Title */}
+              <h1 className="hero-titlee mb-4">
+                Making Health
+                <span className="gradient-textt d-block typing-text">
+                  Care Better Together
+                </span>
               </h1>
               
-              <p className="hero-description mb-5">
+              <p className="hero-description mb-4">
                 Experience healthcare like never before. Connect instantly with world-class doctors, 
                 manage your health digitally, and access cutting-edge medical care from anywhere.
               </p>
-              
-              <div className="d-flex flex-wrap gap-3 mb-5">
-                <button className="btn btn-primary-gradient btn-lg px-5 py-3">
-                  Start Your Journey
-                  <ArrowRight className="ms-2 arrow-icon" size={20} />
-                </button>
-                <button className="btn btn-glass-dark btn-lg px-5 py-3">
-                  <PlayCircle className="me-2" size={20} />
-                  Watch Demo
-                </button>
+
+              {/* Quick Stats */}
+              <div className="quick-stats mb-5">
+                <div className="stat-pill">
+                  <span className="stat-number">2M+</span>
+                  <span className="stat-label">Happy Patients</span>
+                </div>
+                <div className="stat-pill">
+                  <span className="stat-number">50K+</span>
+                  <span className="stat-label">Expert Doctors</span>
+                </div>
+                <div className="stat-pill">
+                  <span className="stat-number">4.9★</span>
+                  <span className="stat-label">User Rating</span>
+                </div>
               </div>
               
-              <div className="hero-stats d-flex flex-wrap gap-4">
-                {['24/7 Available', 'Verified Doctors', 'Instant Connect'].map((item, idx) => (
-                  <div key={idx} className="stat-item d-flex align-items-center">
-                    <div className="check-circle">
-                      <Check size={16} />
-                    </div>
-                    <span className="ms-2">{item}</span>
-                  </div>
-                ))}
+              {/* Enhanced CTA Buttons */}
+              <div className="hero-cta-wrapper mb-5">
+                <div className="primary-cta">
+                  <button className="btn btn-hero-primary">
+                    <span className="btn-text">Start Your Journey</span>
+                    <div className="btn-shine"></div>
+                    <ArrowRight className="ms-2 arrow-icon" size={20} />
+                  </button>
+                  <small className="cta-hint">
+                    <CheckCircle size={14} className="me-1" />
+                    No credit card required
+                  </small>
+                </div>
+                
+                <div className="secondary-cta">
+                  <button className="btn btn-hero-secondary">
+                    <PlayCircle className="me-2 play-icon" size={20} />
+                    <span>Watch Demo</span>
+                  </button>
+                  <small className="cta-hint">2 min overview</small>
+                </div>
+              </div>
+              
+              {/* Trust Indicators */}
+              <div className="trust-section">
+                <p className="trust-text mb-3">Trusted by leading healthcare providers</p>
+                <div className="partner-logos">
+                  <div className="logo-item">Mayo Clinic</div>
+                  <div className="logo-item">Johns Hopkins</div>
+                  <div className="logo-item">Cleveland</div>
+                </div>
               </div>
             </div>
             
             <div className="col-lg-6 hero-image-section">
-              <div className="hero-image-wrapper">
-                <div className="hero-main-image">
-                  <img 
-                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600" 
-                    alt="Healthcare Professional" 
-                    className="img-fluid rounded-4"
-                  />
-                  <div className="image-overlay"></div>
-                </div>
-                
-                {/* Floating Cards */}
-                <div className="floating-card card-1">
-                  <div className="d-flex align-items-center">
-                    <div className="icon-circle bg-success">
-                      <Video size={20} />
-                    </div>
-                    <div className="ms-3">
-                      <h6 className="mb-0">Dr. Sarah Online</h6>
-                      <small className="text-muted">Join consultation</small>
+              <div className="hero-visual-wrapper">
+                {/* Main Device Mockup */}
+                <div className="device-mockup">
+                  <div className="device-frame">
+                    <div className="device-screen">
+                      <img 
+                        src="../assets/main.jpg"
+                        alt="Healthcare Professional" 
+                        className="screen-image"
+                      />
+                      {/* Live Consultation Indicator */}
+                      <div className="live-indicator">
+                        <span className="live-dot"></span>
+                        <span>Live Consultation</span>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="floating-card card-2">
-                  <div className="d-flex align-items-center">
-                    <div className="icon-circle bg-primary">
-                      <Calendar size={20} />
+                {/* Enhanced Floating Cards */}
+                <div className="floating-elements">
+                  {/* Doctor Card */}
+                  <div className="floating-card card-doctor">
+                    <div className="card-glow"></div>
+                    <div className="card-content">
+                      <img src="https://i.pravatar.cc/60?img=12" alt="Doctor" className="doctor-avatar" />
+                      <div className="doctor-info">
+                        <h6>Dr. Sarah Johnson</h6>
+                        <p>Cardiologist</p>
+                        <div className="availability">
+                          <span className="status-dot"></span>
+                          Available Now
+                        </div>
+                      </div>
+                      <button className="connect-btn">
+                        <Video size={16} />
+                      </button>
                     </div>
-                    <div className="ms-3">
-                      <h6 className="mb-0">Next Available</h6>
-                      <small className="text-muted">In 15 minutes</small>
+                  </div>
+                  
+                  {/* Appointment Card */}
+                  <div className="floating-card card-appointment">
+                    <div className="appointment-content">
+                      <div className="appointment-header">
+                        <Calendar size={20} className="text-primary" />
+                        <span>Next Appointment</span>
+                      </div>
+                      <div className="appointment-time">
+                        <h5>Today, 3:00 PM</h5>
+                        <p>General Checkup</p>
+                      </div>
+                      <div className="countdown">
+                        <Clock size={14} />
+                        <span>In 2 hours</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Health Metrics Card */}
+                  <div className="floating-card card-metrics">
+                    <div className="metrics-content">
+                      <h6>Your Health Score</h6>
+                      <div className="score-circle">
+                        <svg viewBox="0 0 36 36" className="circular-chart">
+                          <path className="circle-bg"
+                            d="M18 2.0845
+                              a 15.9155 15.9155 0 0 1 0 31.831
+                              a 15.9155 15.9155 0 0 1 0 -31.831"
+                          />
+                          <path className="circle"
+                            strokeDasharray="85, 100"
+                            d="M18 2.0845
+                              a 15.9155 15.9155 0 0 1 0 31.831
+                              a 15.9155 15.9155 0 0 1 0 -31.831"
+                          />
+                        </svg>
+                        <div className="score-text">85%</div>
+                      </div>
+                      <p>Excellent</p>
+                    </div>
+                  </div>
+
+                  {/* Success Story Card */}
+                  <div className="floating-card card-testimonial">
+                    <div className="testimonial-mini">
+                      <div className="quote-mark">"</div>
+                      <p>Life-changing platform!</p>
+                      <div className="testimonial-author">
+                        <img src="https://i.pravatar.cc/40?img=5" alt="Patient" />
+                        <div>
+                          <strong>John D.</strong>
+                          <div className="stars">★★★★★</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                
-                <div className="floating-card card-3">
-                  <div className="rating-card">
-                    <div className="stars mb-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={16} fill="currentColor" className="text-warning" />
-                      ))}
-                    </div>
-                    <small>4.9/5 Patient Rating</small>
-                  </div>
-                </div>
+
+                {/* Animated Ring */}
+                <div className="hero-ring ring-1"></div>
+                <div className="hero-ring ring-2"></div>
               </div>
             </div>
           </div>
         </div>
         
-        {/* Scroll Indicator */}
+        {/* Enhanced Scroll Indicator */}
         <div className="scroll-indicator">
-          <ChevronDown className="scroll-icon" />
+          <div className="mouse">
+            <div className="wheel"></div>
+          </div>
+          <div className="scroll-text">Scroll to explore</div>
         </div>
       </section>
-
 
       {/* Services Quick Access */}
       <section className="services-quick py-5">
@@ -747,9 +864,8 @@ const LandingPage = () => {
                   </div>
                   <h4 className="feature-title">{feature.title}</h4>
                   <p className="feature-description">{feature.description}</p>
-                  <a href="#" className="feature-link">
-                    Learn more <ArrowRight size={16} />
-                  </a>
+                  
+                   
                 </div>
               </div>
             ))}
@@ -858,7 +974,7 @@ const LandingPage = () => {
 
       {/* User Journey Section */}
       <section id="user-journey" className="user-journey-section py-5 animate-section">
-        <div className="container py-5">
+        
           <div className="text-center mb-5">
             <span className="section-badge text-white bg-white bg-opacity-25">USER JOURNEY</span>
             <h2 className="section-title mt-3 text-white">
@@ -885,25 +1001,34 @@ const LandingPage = () => {
             </div>
 
             <div className="journey-timeline">
-              <div className="timeline-track"></div>
-              {(activeJourney === 'patient' ? patientJourney : doctorJourney).map((step, idx) => (
-                <div key={idx} className={`journey-step ${isVisible['user-journey'] ? 'fade-in-up' : ''}`} style={{ animationDelay: `${idx * 0.15}s` }}>
-                  <div className="step-number">{step.step}</div>
-                  <div className="step-content">
-                    <div className="step-icon-wrapper">
-                      {step.icon}
+                
+                
+                {(activeJourney === 'patient' ? patientJourney : doctorJourney).map((step, idx) => (
+                  <div key={idx} className={`journey-step ${isVisible['user-journey'] ? 'fade-in-up' : ''}`} 
+                      style={{ animationDelay: `${idx * 0.15}s` }}>
+                    
+                    {/* Animated step indicator */}
+                    <div className="step-indicator">
+                      <div className="step-number">{step.step}</div>
+                      <div className="step-pulse"></div>
+                      {idx < (activeJourney === 'patient' ? patientJourney : doctorJourney).length - 1 && (
+                        <div className="step-connector"></div>
+                      )}
                     </div>
-                    <h4 className="step-title">{step.title}</h4>
-                    <p className="step-description">{step.description}</p>
+                    
+                    {/* Enhanced content card */}
+                    <div className="step-card">
+                      <div className="step-icon-wrapper">
+                        {step.icon}
+                      </div>
+                      <h4 className="step-title">{step.title}</h4>
+                      <p className="step-description">{step.description}</p>
+                    </div>
                   </div>
-                  {idx < (activeJourney === 'patient' ? patientJourney : doctorJourney).length - 1 && (
-                    <ChevronRight className="step-arrow" size={24} />
-                  )}
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
           </div>
-        </div>
+        
       </section>
 
       {/* Vendor Benefits Section */}
@@ -975,7 +1100,7 @@ const LandingPage = () => {
           <div className="text-center mb-5">
             <span className="section-badge">LIVE DEMO</span>
             <h2 className="section-title mt-3">
-              Experience MediFlow
+              Experience HealthNexus
               <span className="gradient-text d-block">In Action</span>
             </h2>
           </div>
@@ -1015,6 +1140,22 @@ const LandingPage = () => {
                       E-Prescription
                     </button>
                   </div>
+
+                  {/* Feature Info Card */}
+                  <div className="feature-info-card mt-4">
+                    <h5>
+                      {activeDemo === 'video' && 'HD Video Calls'}
+                      {activeDemo === 'booking' && 'Smart Scheduling'}
+                      {activeDemo === 'doctors' && 'Find Specialists'}
+                      {activeDemo === 'prescription' && 'Digital Prescriptions'}
+                    </h5>
+                    <p className="text-muted small">
+                      {activeDemo === 'video' && 'Connect with doctors instantly through secure HD video consultations'}
+                      {activeDemo === 'booking' && 'Book appointments in seconds with real-time availability'}
+                      {activeDemo === 'doctors' && 'Search from 10,000+ verified doctors by specialty and location'}
+                      {activeDemo === 'prescription' && 'Get digital prescriptions sent directly to your pharmacy'}
+                    </p>
+                  </div>
                 </div>
               </div>
               
@@ -1026,42 +1167,189 @@ const LandingPage = () => {
                       <span className="control yellow"></span>
                       <span className="control green"></span>
                     </div>
-                    <span className="demo-title">MediFlow - Video Consultation</span>
+                    <span className="demo-title">
+                      HealthNexus - {activeDemo === 'video' && 'Video Consultation'}
+                      {activeDemo === 'booking' && 'Appointment Booking'}
+                      {activeDemo === 'doctors' && 'Find Doctors'}
+                      {activeDemo === 'prescription' && 'E-Prescription'}
+                    </span>
+                    <div className="demo-time">2:45 PM</div>
                   </div>
                   
                   <div className="demo-content">
-                    <div className="video-consultation-demo">
-                      <div className="video-grid">
-                        <div className="video-participant doctor">
-                          <img src="https://i.pravatar.cc/300?img=12" alt="Doctor" />
-                          <div className="participant-info">
-                            <span className="name">Dr. Sarah Johnson</span>
-                            <span className="status">Cardiologist</span>
+                    {/* Video Consultation Demo */}
+                    {activeDemo === 'video' && (
+                      <div className="video-consultation-demo fade-in">
+                        <div className="video-grid">
+                          <div className="video-participant doctor">
+                            <img src="https://i.pravatar.cc/300?img=12" alt="Doctor" />
+                            <div className="participant-info">
+                              <span className="name">Dr. Sarah Johnson</span>
+                              <span className="status">Cardiologist</span>
+                            </div>
+                            <div className="connection-quality">
+                              <Wifi size={16} />
+                              <span>Excellent</span>
+                            </div>
+                          </div>
+                          <div className="video-participant patient">
+                            <img src="https://i.pravatar.cc/300?img=5" alt="Patient" />
+                            <div className="participant-info">
+                              <span className="name">You</span>
+                              <span className="status">Connected</span>
+                            </div>
                           </div>
                         </div>
-                        <div className="video-participant patient">
-                          <img src="https://i.pravatar.cc/300?img=5" alt="Patient" />
-                          <div className="participant-info">
-                            <span className="name">You</span>
-                            <span className="status">Connected</span>
-                          </div>
+                        
+                        <div className="consultation-tools">
+                          <button className="tool-btn">
+                            <MessageSquare size={18} />
+                            <span>Chat</span>
+                          </button>
+                          <button className="tool-btn">
+                            <FileText size={18} />
+                            <span>Notes</span>
+                          </button>
+                          <button className="tool-btn">
+                            <Camera size={18} />
+                            <span>Capture</span>
+                          </button>
+                        </div>
+                        
+                        <div className="video-controls">
+                          <button className="control-btn"><Mic size={20} /></button>
+                          <button className="control-btn"><Video size={20} /></button>
+                          <button className="control-btn"><Share2 size={20} /></button>
+                          <button className="control-btn end-call"><Phone size={20} /></button>
                         </div>
                       </div>
-                      
-                      <div className="video-controls">
-                        <button className="control-btn"><Mic size={20} /></button>
-                        <button className="control-btn"><Video size={20} /></button>
-                        <button className="control-btn"><Share2 size={20} /></button>
-                        <button className="control-btn end-call"><Phone size={20} /></button>
+                    )}
+
+                    {/* Booking Demo */}
+                    {activeDemo === 'booking' && (
+                      <div className="booking-demo fade-in">
+                        <div className="booking-calendar">
+                          <div className="calendar-header">
+                            <h5>December 2024</h5>
+                            <div className="calendar-nav">
+                              <ChevronLeft size={20} />
+                              <ChevronRight size={20} />
+                            </div>
+                          </div>
+                          <div className="calendar-grid">
+                            {[...Array(7)].map((_, i) => (
+                              <div key={i} className="calendar-day available">
+                                <span>{20 + i}</span>
+                                <small>4 slots</small>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="time-slots">
+                          <h6>Available Times</h6>
+                          <div className="slots-grid">
+                            {['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM'].map((time, i) => (
+                              <button key={i} className={`time-slot ${i === 2 ? 'selected' : ''}`}>
+                                {time}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <button className="btn btn-primary w-100 mt-4">
+                          Confirm Appointment
+                          <CheckCircle className="ms-2" size={20} />
+                        </button>
                       </div>
-                    </div>
+                    )}
+
+                    {/* Find Doctors Demo */}
+                    {activeDemo === 'doctors' && (
+                      <div className="doctors-demo fade-in">
+                        <div className="search-bar mb-4">
+                          <Search size={20} />
+                          <input type="text" placeholder="Search by specialty, condition, or doctor name" />
+                        </div>
+                        
+                        <div className="filter-tags">
+                          <span className="tag active">Cardiologist</span>
+                          <span className="tag">Near me</span>
+                          <span className="tag">Available today</span>
+                          <span className="tag">4+ rating</span>
+                        </div>
+                        
+                        <div className="doctors-list">
+                          {[1, 2, 3].map((_, i) => (
+                            <div key={i} className="doctor-card">
+                              <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Doctor" />
+                              <div className="doctor-info">
+                                <h6>Dr. {['Michael Chen', 'Emily Brown', 'James Wilson'][i]}</h6>
+                                <p>{['Cardiologist', 'Heart Specialist', 'Cardiac Surgeon'][i]}</p>
+                                <div className="doctor-meta">
+                                  <span><Star size={14} /> 4.{8 - i}/5</span>
+                                  <span>{15 + i * 5} years exp</span>
+                                  <span className="available">Available</span>
+                                </div>
+                              </div>
+                              <button className="book-btn">Book</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* E-Prescription Demo */}
+                    {activeDemo === 'prescription' && (
+                      <div className="prescription-demo fade-in">
+                        <div className="prescription-header">
+                          <div className="rx-symbol">℞</div>
+                          <div className="prescription-info">
+                            <h5>Digital Prescription</h5>
+                            <p className="text-muted">Dr. Sarah Johnson • Dec 20, 2024</p>
+                          </div>
+                        </div>
+                        
+                        <div className="medications-list">
+                          <div className="medication-item">
+                            <div className="med-icon">💊</div>
+                            <div className="med-details">
+                              <h6>Lisinopril</h6>
+                              <p>10mg - Once daily with food</p>
+                              <span className="duration">30 days supply</span>
+                            </div>
+                          </div>
+                          <div className="medication-item">
+                            <div className="med-icon">💊</div>
+                            <div className="med-details">
+                              <h6>Metformin</h6>
+                              <p>500mg - Twice daily</p>
+                              <span className="duration">90 days supply</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="pharmacy-section">
+                          <h6>Send to Pharmacy</h6>
+                          <div className="pharmacy-selector">
+                            <Building size={20} />
+                            <select>
+                              <option>CVS Pharmacy - 2 miles</option>
+                              <option>Walgreens - 3 miles</option>
+                            </select>
+                          </div>
+                          <button className="btn btn-success w-100 mt-3">
+                            Send Prescription
+                            <Send className="ms-2" size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          
         </div>
       </section>
 
@@ -1072,7 +1360,7 @@ const LandingPage = () => {
             <span className="section-badge">COMPARISON</span>
             <h2 className="section-title mt-3">
               Traditional Healthcare vs
-              <span className="gradient-text d-block">MediFlow Platform</span>
+              <span className="gradient-text d-block">HealthNexus Platform</span>
             </h2>
           </div>
 
@@ -1090,7 +1378,7 @@ const LandingPage = () => {
                   <th className="mediflow-col">
                     <div className="header-content">
                       <CheckCircle className="mb-2" size={32} />
-                      <h4>MediFlow Platform</h4>
+                      <h4>HealthNexus Platform</h4>
                     </div>
                   </th>
                 </tr>
@@ -1186,7 +1474,7 @@ const LandingPage = () => {
 
           <div className="savings-calculator mt-5">
             <div className="calculator-card">
-              <h4 className="text-center mb-4">User Annual Savings with MediFlow</h4>
+              <h4 className="text-center mb-4">User Annual Savings with HealthNexus</h4>
               <div className="row g-4">
                 <div className="col-md-4">
                   <div className="saving-item">
@@ -1379,7 +1667,7 @@ const LandingPage = () => {
                   <span className="amount negative">${calculateSavings().traditional.toLocaleString()}/year</span>
                 </div>
                 <div className="savings-row">
-                  <span>MediFlow Cost</span>
+                  <span>HealthNexus Cost</span>
                   <span className="amount">${calculateSavings().mediflow.toLocaleString()}/year</span>
                 </div>
                 <div className="savings-row total">
@@ -1546,7 +1834,7 @@ const LandingPage = () => {
                 <div className="footer-brand">
                   <div className="d-flex align-items-center mb-3">
                     <Heart className="text-primary me-2" size={32} />
-                    <span className="fs-4 fw-bold">MediFlow</span>
+                    <span className="fs-4 fw-bold">HealthNexus</span>
                   </div>
                   <p className="footer-description">
                     Your trusted partner in digital healthcare, making quality medical care accessible to everyone, everywhere.
@@ -1608,2519 +1896,12 @@ const LandingPage = () => {
           
           <div className="footer-bottom py-4">
             <div className="text-center">
-              <p className="mb-0">© 2024 MediFlow. All rights reserved. Made with ❤️ for better health.</p>
+              <p className="mb-0">© 2024 HealthNexus. All rights reserved. Made with ❤️ for better health.</p>
             </div>
           </div>
         </div>
       </footer>
 
-      <style>{`
-        /* CSS Variables */
-        :root {
-          --primary: #667eea;
-          --secondary: #764ba2;
-          --accent: #f093fb;
-          --warning: #feca57;
-          --success: #48bb78;
-          --dark: #1a202c;
-          --light: #f7fafc;
-          --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-          --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-          --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-          --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
-          --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-          --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
-        }
-
-        /* Global Styles */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          overflow-x: hidden;
-          background: #fafbfc;
-        }
-
-        /* Floating Background Gradients */
-        .floating-gradient {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.3;
-          animation: float 20s ease-in-out infinite;
-        }
-
-        .gradient-1 {
-          width: 600px;
-          height: 600px;
-          background: var(--gradient-primary);
-          top: -10%;
-          left: -10%;
-          animation-delay: 0s;
-        }
-
-        .gradient-2 {
-          width: 500px;
-          height: 500px;
-          background: var(--gradient-secondary);
-          top: 50%;
-          right: -10%;
-          animation-delay: 5s;
-        }
-
-        .gradient-3 {
-          width: 400px;
-          height: 400px;
-          background: var(--gradient-accent);
-          bottom: -10%;
-          left: 30%;
-          animation-delay: 10s;
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(30px, -50px) scale(1.1); }
-          50% { transform: translate(-30px, 30px) scale(0.9); }
-          75% { transform: translate(50px, 50px) scale(1.05); }
-        }
-
-        /* Navigation Styles */
-        .navbar {
-          padding: 1.2rem 0;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-        }
-
-        .navbar-transparent {
-          background: rgba(255, 255, 255, 0.05);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .navbar-scrolled {
-          background: rgba(255, 255, 255, 0.95);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          padding: 1rem 0;
-        }
-
-        .brand-icon-wrapper {
-          width: 45px;
-          height: 45px;
-          background: var(--gradient-primary);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-          transition: transform 0.3s ease;
-        }
-
-        .navbar-brand:hover .brand-icon-wrapper {
-          transform: scale(1.1) rotate(5deg);
-        }
-
-        .brand-icon {
-          color: white;
-        }
-
-        .brand-text {
-          font-size: 1.4rem;
-          font-weight: 700;
-          background: var(--gradient-primary);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        /* Custom Hamburger Menu */
-        .hamburger-lines {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 20px;
-          width: 28px;
-        }
-
-        .line {
-          display: block;
-          height: 3px;
-          width: 100%;
-          border-radius: 2px;
-          background: var(--dark);
-          transition: all 0.3s ease;
-        }
-
-        .line1.rotate-45 {
-          transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .line2.opacity-0 {
-          opacity: 0;
-        }
-
-        .line3.rotate--45 {
-          transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Nav Links */
-        .nav-link-animated {
-          position: relative;
-          font-weight: 500;
-          color: var(--dark) !important;
-          transition: color 0.3s ease;
-        }
-
-        .nav-link-animated::after {
-          content: '';
-          position: absolute;
-          bottom: -5px;
-          left: 50%;
-          width: 0;
-          height: 2px;
-          background: var(--gradient-primary);
-          transition: all 0.3s ease;
-          transform: translateX(-50%);
-        }
-
-        .nav-link-animated:hover::after {
-          width: 100%;
-        }
-
-        /* Button Styles */
-        .btn {
-          font-weight: 600;
-          padding: 0.75rem 1.5rem;
-          border-radius: 12px;
-          transition: all 0.3s ease;
-          border: none;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .btn-gradient-primary {
-          background: var(--gradient-primary);
-          color: white;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-gradient-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-          color: white;
-        }
-
-        .btn-primary-gradient {
-          background: var(--gradient-primary);
-          color: white;
-          padding: 1rem 2.5rem;
-          font-size: 1.1rem;
-          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-primary-gradient:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-          color: white;
-        }
-
-        .btn-glass {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: var(--dark);
-        }
-
-        .btn-glass:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-        }
-
-        .btn-glass-dark {
-          background: rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: white;
-        }
-
-        .btn-glass-dark:hover {
-          background: rgba(0, 0, 0, 0.3);
-          color: white;
-          transform: translateY(-2px);
-        }
-
-        .btn-glass-light {
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          color: white;
-        }
-
-        .btn-glass-light:hover {
-          background: rgba(255, 255, 255, 0.3);
-          color: white;
-          transform: translateY(-2px);
-        }
-
-        .btn-white {
-          background: white;
-          color: var(--dark);
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-white:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Hero Section */
-        .hero-section {
-          min-height: 100vh;
-          position: relative;
-          overflow: hidden;
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .hero-background {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          z-index: -1;
-        }
-
-        .hero-shape {
-          position: absolute;
-          opacity: 0.1;
-        }
-
-        .shape-1 {
-          width: 500px;
-          height: 500px;
-          background: var(--gradient-primary);
-          border-radius: 50%;
-          top: -20%;
-          right: -10%;
-          filter: blur(100px);
-        }
-
-        .shape-2 {
-          width: 400px;
-          height: 400px;
-          background: var(--gradient-secondary);
-          border-radius: 50%;
-          bottom: -20%;
-          left: -10%;
-          filter: blur(100px);
-        }
-
-        .shape-3 {
-          width: 300px;
-          height: 300px;
-          background: var(--gradient-accent);
-          border-radius: 50%;
-          top: 50%;
-          left: 50%;
-          filter: blur(100px);
-          transform: translate(-50%, -50%);
-        }
-
-        .hero-content {
-          padding-top: 100px;
-          animation: fadeInUp 1s ease;
-        }
-
-        .badge-wrapper {
-          display: inline-block;
-        }
-
-        .badge-gradient {
-          background: var(--gradient-primary);
-          color: white;
-          padding: 0.5rem 1.5rem;
-          border-radius: 50px;
-          font-size: 0.875rem;
-          font-weight: 600;
-          display: inline-flex;
-          align-items: center;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .hero-title {
-          font-size: 3.5rem;
-          font-weight: 800;
-          line-height: 1.2;
-          color: var(--dark);
-          animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .gradient-text {
-          background: var(--gradient-primary);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .hero-description {
-          font-size: 1.25rem;
-          color: #718096;
-          line-height: 1.8;
-          animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .arrow-icon {
-          transition: transform 0.3s ease;
-        }
-
-        .btn:hover .arrow-icon {
-          transform: translateX(5px);
-        }
-
-        .hero-stats {
-          animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .stat-item {
-          position: relative;
-          color: #2d3748;
-          font-weight: 500;
-        }
-
-        .check-circle {
-          width: 24px;
-          height: 24px;
-          background: var(--gradient-primary);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Hero Image Section */
-        .hero-image-section {
-          padding-top: 100px;
-        }
-
-        .hero-image-wrapper {
-          position: relative;
-          animation: fadeIn 1.5s ease;
-        }
-
-        .hero-main-image {
-          position: relative;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-        }
-
-        .hero-main-image img {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-
-        .image-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(to bottom, transparent 50%, rgba(102, 126, 234, 0.1) 100%);
-        }
-
-        /* Floating Cards */
-        .floating-card {
-          position: absolute;
-          background: white;
-          border-radius: 16px;
-          padding: 1.25rem;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-          animation: floatCard 3s ease-in-out infinite;
-        }
-
-        .card-1 {
-          top: 10%;
-          left: -20px;
-          animation-delay: 0s;
-        }
-
-        .card-2 {
-          bottom: 30%;
-          right: -20px;
-          animation-delay: 1s;
-        }
-
-        .card-3 {
-          bottom: 10%;
-          left: 20px;
-          animation-delay: 2s;
-        }
-
-        @keyframes floatCard {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
-        }
-
-        .icon-circle {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-        }
-
-        .bg-success {
-          background: #48bb78;
-        }
-
-        .bg-primary {
-          background: var(--primary);
-        }
-
-        .rating-card {
-          text-align: center;
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-          position: absolute;
-          bottom: 30px;
-          left: 50%;
-          transform: translateX(-50%);
-          animation: bounce 2s infinite;
-        }
-
-        .scroll-icon {
-          color: var(--primary);
-        }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-          40% { transform: translateX(-50%) translateY(-10px); }
-          60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        /* Stats Section */
-        .stats-section {
-          background: white;
-          position: relative;
-          z-index: 10;
-          box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
-        }
-
-        .stat-card {
-          text-align: center;
-          padding: 2rem;
-          border-radius: 16px;
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-          transform: translateY(-5px);
-        }
-
-        .stat-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: var(--gradient-primary);
-        }
-
-        .stat-icon {
-          width: 60px;
-          height: 60px;
-          background: white;
-          border-radius: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 1rem;
-          color: var(--primary);
-          box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
-        }
-
-        .stat-value {
-          font-size: 2.5rem;
-          font-weight: 800;
-          color: var(--dark);
-          margin-bottom: 0.5rem;
-          background: var(--gradient-primary);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .stat-label {
-          color: #718096;
-          font-weight: 500;
-          font-size: 1.1rem;
-        }
-
-        /* Services Quick Access */
-        .services-quick {
-          background: #f8f9fa;
-        }
-
-        .services-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-        }
-
-        .service-pill {
-          background: white;
-          border-radius: 50px;
-          padding: 1rem 1.5rem;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          border: 2px solid transparent;
-        }
-
-        .service-pill:hover {
-          border-color: var(--primary);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-icon {
-          width: 50px;
-          height: 50px;
-          background: var(--gradient-primary);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          flex-shrink: 0;
-        }
-
-        /* Features Section */
-        .features-section {
-          background: white;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .section-badge {
-          background: rgba(102, 126, 234, 0.1);
-          color: var(--primary);
-          padding: 0.5rem 1rem;
-          border-radius: 50px;
-          font-size: 0.875rem;
-          font-weight: 600;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-        }
-
-        .section-title {
-          font-size: 3rem;
-          font-weight: 800;
-          color: var(--dark);
-          line-height: 1.2;
-        }
-
-        .section-subtitle {
-          font-size: 1.25rem;
-          color: #718096;
-          margin-top: 1rem;
-        }
-
-        .feature-card {
-          background: #f8f9fa;
-          border-radius: 20px;
-          padding: 2.5rem;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .feature-card::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          right: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-        }
-
-        .feature-card:hover::before {
-          opacity: 1;
-        }
-
-        .feature-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon-wrapper {
-          width: 70px;
-          height: 70px;
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 1.5rem;
-          color: white;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .bg-gradient {
-          position: relative;
-        }
-
-        .bg-gradient.from-blue-500.to-indigo-600 {
-          background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
-        }
-
-        .bg-gradient.from-purple-500.to-pink-600 {
-          background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-        }
-
-        .bg-gradient.from-green-500.to-teal-600 {
-          background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
-        }
-
-        .bg-gradient.from-orange-500.to-red-600 {
-          background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-        }
-
-        .bg-gradient.from-cyan-500.to-blue-600 {
-          background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-        }
-
-        .bg-gradient.from-pink-500.to-rose-600 {
-          background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
-        }
-
-        .feature-title {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--dark);
-          margin-bottom: 1rem;
-        }
-
-        .feature-description {
-          color: #718096;
-          line-height: 1.6;
-          margin-bottom: 1.5rem;
-        }
-
-        .feature-link {
-          color: var(--primary);
-          font-weight: 600;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          transition: gap 0.3s ease;
-        }
-
-        .feature-link:hover {
-          gap: 0.75rem;
-          color: var(--secondary);
-        }
-
-        /* Detailed Features Section */
-        .detailed-features-section {
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-          padding: 80px 0;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .feature-tabs {
-          background: white;
-          border-radius: 50px;
-          padding: 5px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-          display: inline-flex;
-          gap: 5px;
-        }
-
-        .feature-tabs .btn {
-          border-radius: 45px;
-          padding: 12px 24px;
-          display: flex;
-          align-items: center;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        }
-
-        .feature-tabs .btn-outline-primary {
-          background: transparent;
-          color: var(--primary);
-          border: none;
-        }
-
-        .feature-tabs .btn-primary {
-          background: var(--gradient-primary);
-          color: white;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .feature-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-          gap: 25px;
-          margin-top: 50px;
-        }
-
-        .detailed-feature-card {
-          background: white;
-          border-radius: 20px;
-          padding: 30px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-          transition: all 0.3s ease;
-          border-left: 4px solid transparent;
-        }
-
-        .detailed-feature-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-          border-left-color: var(--primary);
-        }
-
-        .feature-header {
-          display: flex;
-          align-items: center;
-          margin-bottom: 15px;
-        }
-
-        .feature-icon-box {
-          width: 50px;
-          height: 50px;
-          background: var(--gradient-primary);
-          border-radius: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 15px;
-          color: white;
-        }
-
-        /* Benefits Comparison */
-        .benefits-comparison {
-          background: white;
-          padding: 80px 0;
-        }
-
-        .comparison-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          margin-top: 50px;
-        }
-
-        .benefit-column {
-          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-          border-radius: 30px;
-          padding: 40px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .benefit-column.patients {
-          border-top: 5px solid var(--primary);
-        }
-
-        .benefit-column.doctors {
-          border-top: 5px solid var(--secondary);
-        }
-
-        .benefit-list {
-          list-style: none;
-          padding: 0;
-        }
-
-        .benefit-item {
-          display: flex;
-          align-items: start;
-          margin-bottom: 20px;
-          padding: 15px;
-          background: white;
-          border-radius: 15px;
-          transition: all 0.3s ease;
-        }
-
-        .benefit-item:hover {
-          transform: translateX(10px);
-          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .benefit-check {
-          width: 30px;
-          height: 30px;
-          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          margin-right: 15px;
-          flex-shrink: 0;
-        }
-
-        /* User Journey Section */
-        .user-journey-section {
-          background: var(--gradient-primary);
-          padding: 80px 0;
-          color: white;
-          position: relative;
-        }
-
-        .journey-tabs {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 50px;
-          background: rgba(255,255,255,0.1);
-          backdrop-filter: blur(10px);
-          border-radius: 50px;
-          padding: 10px;
-          width: fit-content;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .journey-tab {
-          padding: 15px 40px;
-          background: transparent;
-          border: none;
-          color: white;
-          font-weight: 600;
-          font-size: 1.1rem;
-          cursor: pointer;
-          border-radius: 40px;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-        }
-
-        .journey-tab.active {
-          background: rgba(255,255,255,0.2);
-        }
-
-        .journey-timeline {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          position: relative;
-          max-width: 1200px;
-          margin: 0 auto;
-          flex-wrap: wrap;
-          gap: 30px;
-        }
-
-        .timeline-track {
-          position: absolute;
-          top: 50px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: rgba(255,255,255,0.2);
-          z-index: 0;
-        }
-
-        .journey-step {
-          flex: 1;
-          text-align: center;
-          position: relative;
-          z-index: 1;
-          min-width: 150px;
-        }
-
-        .step-number {
-          width: 60px;
-          height: 60px;
-          background: white;
-          color: var(--primary);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 20px;
-          font-weight: 800;
-          font-size: 1.5rem;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .step-content {
-          background: rgba(255,255,255,0.1);
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          padding: 20px;
-          margin-top: 20px;
-        }
-
-        .step-icon-wrapper {
-          width: 50px;
-          height: 50px;
-          background: rgba(255,255,255,0.2);
-          border-radius: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 15px;
-        }
-
-        .step-title {
-          font-weight: 700;
-          margin-bottom: 10px;
-          font-size: 1.1rem;
-        }
-
-        .step-description {
-          font-size: 0.9rem;
-          opacity: 0.9;
-        }
-
-        .step-arrow {
-          position: absolute;
-          right: -15px;
-          top: 40px;
-          color: rgba(255,255,255,0.5);
-        }
-
-        /* Vendor Benefits Section */
-        .vendor-benefits {
-          background: #f8f9fa;
-        }
-
-        .vendor-card {
-          background: white;
-          border-radius: 20px;
-          padding: 30px;
-          height: 100%;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-          transition: all 0.3s ease;
-        }
-
-        .vendor-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .vendor-header {
-          display: flex;
-          align-items: center;
-          margin-bottom: 25px;
-        }
-
-        .vendor-icon {
-          width: 60px;
-          height: 60px;
-          background: var(--gradient-primary);
-          border-radius: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          margin-right: 20px;
-        }
-
-        .vendor-title {
-          font-weight: 700;
-          font-size: 1.5rem;
-          color: var(--dark);
-          margin: 0;
-        }
-
-        .vendor-benefits-list {
-          list-style: none;
-          padding: 0;
-        }
-
-        .vendor-benefits-list li {
-          display: flex;
-          align-items: center;
-          margin-bottom: 15px;
-          color: #4a5568;
-        }
-
-        /* Security Section */
-        .security-section {
-          background: white;
-        }
-
-        .security-card {
-          text-align: center;
-          padding: 30px;
-          border-radius: 20px;
-          background: #f8f9fa;
-          height: 100%;
-          transition: all 0.3s ease;
-        }
-
-        .security-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .security-icon {
-          width: 80px;
-          height: 80px;
-          background: var(--gradient-primary);
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 20px;
-          color: white;
-          font-size: 40px;
-        }
-
-        .compliance-badges {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 20px;
-          justify-content: center;
-        }
-
-        .compliance-badge {
-          background: var(--gradient-primary);
-          color: white;
-          padding: 15px 30px;
-          border-radius: 50px;
-          font-weight: 600;
-          box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        /* How It Works Section */
-        .how-it-works-section {
-          background: #f8f9fa;
-          position: relative;
-        }
-
-        .process-timeline {
-          position: relative;
-          margin-top: 4rem;
-        }
-
-        .timeline-line {
-          position: absolute;
-          top: 60px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80%;
-          height: 2px;
-          background: linear-gradient(to right, transparent 0%, #e2e8f0 20%, #e2e8f0 80%, transparent 100%);
-          z-index: 1;
-        }
-
-        .process-step {
-          text-align: center;
-          position: relative;
-          z-index: 2;
-        }
-
-        .step-number {
-          font-size: 3rem;
-          font-weight: 800;
-          color: #e2e8f0;
-          margin-bottom: 1rem;
-        }
-
-        .step-icon {
-          width: 120px;
-          height: 120px;
-          background: white;
-          border-radius: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 1.5rem;
-          color: var(--primary);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-          position: relative;
-          transition: all 0.4s ease;
-        }
-
-        .process-step:hover .step-icon {
-          transform: translateY(-10px) scale(1.05);
-          box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
-        }
-
-        .step-title {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--dark);
-          margin-bottom: 1rem;
-        }
-
-        .step-description {
-          color: #718096;
-          line-height: 1.6;
-        }
-
-        /* Testimonials Section */
-        .testimonials-section {
-          background: #f8f9fa;
-          position: relative;
-        }
-
-        .testimonial-wrapper {
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .testimonial-card-main {
-          background: white;
-          border-radius: 30px;
-          padding: 3rem;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .testimonial-card-main::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 6px;
-          background: var(--gradient-primary);
-        }
-
-        .quote-icon {
-          color: #e2e8f0;
-          margin-bottom: 2rem;
-        }
-
-        .testimonial-text {
-          font-size: 1.5rem;
-          line-height: 1.8;
-          color: var(--dark);
-          margin-bottom: 2rem;
-          font-style: italic;
-        }
-
-        .testimonial-author {
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
-        }
-
-        .author-image {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .author-info h5 {
-          font-weight: 700;
-          color: var(--dark);
-          margin-bottom: 0.25rem;
-        }
-
-        .author-info p {
-          color: #718096;
-          margin: 0;
-        }
-
-        .rating {
-          margin-left: auto;
-        }
-
-        .testimonial-nav {
-          display: flex;
-          justify-content: center;
-          gap: 0.75rem;
-          margin-top: 2rem;
-        }
-
-        .nav-dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #e2e8f0;
-          border: none;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .nav-dot.active {
-          width: 40px;
-          border-radius: 6px;
-          background: var(--gradient-primary);
-        }
-
-        /* CTA Section */
-        .cta-section {
-          background: var(--gradient-primary);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .cta-wrapper {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border-radius: 30px;
-          padding: 4rem;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .cta-title {
-          font-size: 3rem;
-          font-weight: 800;
-          color: white;
-        }
-
-        .cta-subtitle {
-          font-size: 1.25rem;
-          color: rgba(255, 255, 255, 0.9);
-        }
-
-        .cta-buttons {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
-          justify-content: center;
-        }
-
-        .trust-indicators {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-          justify-content: center;
-        }
-
-        .trust-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          color: white;
-          font-weight: 500;
-        }
-
-        /* Language Banner */
-        .language-banner {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          position: sticky;
-          top: 0;
-          z-index: 1020;
-        }
-
-        .language-wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow-x: auto;
-        }
-
-        .language-content {
-          display: flex;
-          align-items: center;
-          white-space: nowrap;
-        }
-
-        .language-flags {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .flag-item {
-          font-size: 24px;
-          cursor: pointer;
-          transition: transform 0.2s ease;
-        }
-
-        .flag-item:hover {
-          transform: scale(1.2);
-        }
-
-        .more-languages {
-          background: rgba(255,255,255,0.2);
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 0.875rem;
-          cursor: pointer;
-        }
-
-        /* Live Demo Section */
-        .live-demo-section {
-          background: #f8f9fa;
-        }
-
-        .demo-container {
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-
-        .demo-sidebar {
-          background: white;
-          border-radius: 20px;
-          padding: 30px;
-          height: 100%;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .demo-options {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .demo-option {
-          padding: 15px 20px;
-          border: 2px solid #e2e8f0;
-          border-radius: 12px;
-          background: white;
-          text-align: left;
-          font-weight: 600;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-        }
-
-        .demo-option:hover,
-        .demo-option.active {
-          border-color: var(--primary);
-          background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-          transform: translateX(5px);
-        }
-
-        .demo-option.active {
-          color: var(--primary);
-        }
-
-        .demo-screen {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-          height: 500px;
-        }
-
-        .demo-header {
-          background: #2d3748;
-          padding: 15px 20px;
-          display: flex;
-          align-items: center;
-          gap: 20px;
-        }
-
-        .demo-controls {
-          display: flex;
-          gap: 8px;
-        }
-
-        .control {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-        }
-
-        .control.red { background: #ff5f57; }
-        .control.yellow { background: #ffbd2e; }
-        .control.green { background: #28ca42; }
-
-        .demo-title {
-          color: white;
-          font-weight: 500;
-        }
-
-        .demo-content {
-          padding: 30px;
-          height: calc(100% - 60px);
-          background: #f8f9fa;
-        }
-
-        .video-consultation-demo {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .video-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-          flex: 1;
-        }
-
-        .video-participant {
-          position: relative;
-          border-radius: 15px;
-          overflow: hidden;
-          background: #1a202c;
-        }
-
-        .video-participant img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .participant-info {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-          padding: 20px;
-          color: white;
-        }
-
-        .participant-info .name {
-          display: block;
-          font-weight: 600;
-          margin-bottom: 5px;
-        }
-
-        .participant-info .status {
-          font-size: 0.875rem;
-          opacity: 0.8;
-        }
-
-        .video-controls {
-          display: flex;
-          justify-content: center;
-          gap: 15px;
-          margin-top: 20px;
-        }
-
-        .control-btn {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background: white;
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .control-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .control-btn.end-call {
-          background: #ff4444;
-          color: white;
-        }
-
-        /* Comparison Section */
-        .comparison-section {
-          background: white;
-        }
-
-        .comparison-table-wrapper {
-          overflow-x: auto;
-          border-radius: 20px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .comparison-table {
-          width: 100%;
-          background: white;
-          border-collapse: collapse;
-        }
-
-        .comparison-table thead {
-          background: #f8f9fa;
-        }
-
-        .comparison-table th {
-          padding: 30px;
-          text-align: center;
-          border-bottom: 2px solid #e2e8f0;
-        }
-
-        .feature-col {
-          text-align: left !important;
-          width: 30%;
-        }
-
-        .traditional-col .header-content {
-          color: #e53e3e;
-        }
-
-        .mediflow-col .header-content {
-          color: #48bb78;
-        }
-
-        .header-content h4 {
-          margin: 0;
-          font-size: 1.5rem;
-        }
-
-        .comparison-table tbody tr {
-          border-bottom: 1px solid #e2e8f0;
-        }
-
-        .comparison-table tbody tr:hover {
-          background: #f8f9fa;
-        }
-
-        .comparison-table td {
-          padding: 25px 30px;
-        }
-
-        .feature-name {
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          color: var(--dark);
-        }
-
-        .traditional {
-          text-align: center;
-        }
-
-        .mediflow {
-          text-align: center;
-        }
-
-        .negative {
-          color: #e53e3e;
-          font-weight: 600;
-        }
-
-        .positive {
-          color: #48bb78;
-          font-weight: 600;
-        }
-
-        .savings-calculator {
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .calculator-card {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          border-radius: 30px;
-          padding: 50px;
-          box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
-        }
-
-        .saving-item {
-          text-align: center;
-        }
-
-        .saving-amount {
-          font-size: 2.5rem;
-          font-weight: 800;
-          margin-bottom: 10px;
-        }
-
-        .saving-label {
-          font-size: 1.1rem;
-          opacity: 0.9;
-        }
-
-        /* Emergency Section */
-        .emergency-section {
-          background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
-        }
-
-        .emergency-features {
-          display: flex;
-          flex-direction: column;
-          gap: 25px;
-          margin: 30px 0;
-        }
-
-        .emergency-feature {
-          display: flex;
-          align-items: start;
-          gap: 20px;
-        }
-
-        .feature-icon-emergency {
-          width: 60px;
-          height: 60px;
-          background: white;
-          border-radius: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #e53e3e;
-          box-shadow: 0 5px 20px rgba(229, 62, 62, 0.2);
-          flex-shrink: 0;
-        }
-
-        .emergency-demo {
-          display: flex;
-          justify-content: center;
-        }
-
-        .phone-mockup {
-          width: 350px;
-          height: 700px;
-          background: #1a202c;
-          border-radius: 40px;
-          padding: 20px;
-          box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .emergency-screen {
-          background: #2d3748;
-          height: 100%;
-          border-radius: 25px;
-          padding: 30px;
-          color: white;
-        }
-
-        .emergency-header {
-          text-align: center;
-          margin-bottom: 30px;
-        }
-
-        .emergency-btn {
-          width: 150px;
-          height: 150px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-          border: none;
-          color: white;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto;
-          cursor: pointer;
-          box-shadow: 0 10px 40px rgba(255, 68, 68, 0.5);
-          transition: all 0.3s ease;
-          animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-          0% { transform: scale(1); box-shadow: 0 10px 40px rgba(255, 68, 68, 0.5); }
-          50% { transform: scale(1.05); box-shadow: 0 15px 50px rgba(255, 68, 68, 0.7); }
-          100% { transform: scale(1); box-shadow: 0 10px 40px rgba(255, 68, 68, 0.5); }
-        }
-
-        .emergency-btn span {
-          font-weight: 700;
-          margin-top: 10px;
-        }
-
-        .nearest-facilities {
-          background: rgba(255,255,255,0.1);
-          border-radius: 20px;
-          padding: 20px;
-        }
-
-        .facility-list {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        .facility-item {
-          background: rgba(255,255,255,0.1);
-          border-radius: 15px;
-          padding: 15px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .facility-info h6 {
-          margin: 0 0 5px 0;
-          font-size: 1rem;
-        }
-
-        .facility-info p {
-          margin: 0;
-          font-size: 0.875rem;
-          opacity: 0.8;
-        }
-
-        .wait-time {
-          text-align: center;
-          background: rgba(255,255,255,0.2);
-          border-radius: 10px;
-          padding: 10px 15px;
-        }
-
-        .wait-time .time {
-          font-size: 1.5rem;
-          font-weight: 700;
-          display: block;
-        }
-
-        .wait-time small {
-          font-size: 0.75rem;
-          opacity: 0.8;
-        }
-
-        /* Pricing Calculator Section */
-        .pricing-calculator-section {
-          background: #f8f9fa;
-        }
-
-        .calculator-container {
-          max-width: 1000px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 30px;
-          padding: 50px;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 50px;
-        }
-
-        .input-group-custom {
-          margin-bottom: 25px;
-        }
-
-        .input-group-custom label {
-          display: block;
-          font-weight: 600;
-          margin-bottom: 10px;
-          color: var(--dark);
-        }
-
-        .form-range {
-          width: 100%;
-          height: 8px;
-          background: #e2e8f0;
-          border-radius: 5px;
-          outline: none;
-          -webkit-appearance: none;
-        }
-
-        .form-range::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          background: var(--gradient-primary);
-          cursor: pointer;
-          border-radius: 50%;
-          box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
-        }
-
-        .range-value {
-          display: inline-block;
-          background: var(--gradient-primary);
-          color: white;
-          padding: 5px 15px;
-          border-radius: 20px;
-          font-weight: 600;
-          font-size: 0.875rem;
-          margin-top: 10px;
-        }
-
-        .calculator-results {
-          background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-          border-radius: 20px;
-          padding: 40px;
-        }
-
-        .savings-breakdown {
-          background: white;
-          border-radius: 15px;
-          padding: 25px;
-          margin: 20px 0;
-        }
-
-        .savings-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 15px 0;
-          border-bottom: 1px solid #e2e8f0;
-        }
-
-        .savings-row:last-child {
-          border-bottom: none;
-        }
-
-        .savings-row.total {
-          padding-top: 20px;
-          margin-top: 10px;
-          border-top: 2px solid #e2e8f0;
-          font-weight: 700;
-          font-size: 1.2rem;
-        }
-
-        .amount {
-          font-weight: 600;
-        }
-
-        .amount.negative {
-          color: #e53e3e;
-        }
-
-        .amount.positive {
-          color: #48bb78;
-        }
-
-        .benefit-list-calc {
-          list-style: none;
-          padding: 0;
-        }
-
-        .benefit-list-calc li {
-          display: flex;
-          align-items: center;
-          margin-bottom: 10px;
-          color: #4a5568;
-        }
-
-        /* Health Tools Section */
-        .health-tools-section {
-          background: white;
-        }
-
-        .health-tool-card {
-          background: #f8f9fa;
-          border-radius: 20px;
-          padding: 30px;
-          height: 100%;
-          transition: all 0.3s ease;
-          text-align: center;
-        }
-
-        .health-tool-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .tool-icon {
-          width: 80px;
-          height: 80px;
-          background: var(--gradient-primary);
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 20px;
-          color: white;
-        }
-
-        .bmi-result {
-          background: white;
-          border-radius: 15px;
-          padding: 20px;
-          text-align: center;
-        }
-
-        .symptom-tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .symptom-tag {
-          background: white;
-          border: 2px solid #e2e8f0;
-          padding: 8px 16px;
-          border-radius: 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          font-size: 0.875rem;
-        }
-
-        .symptom-tag:hover,
-        .symptom-tag.active {
-          border-color: var(--primary);
-          background: var(--primary);
-          color: white;
-        }
-
-        .symptom-result .alert {
-          text-align: left;
-        }
-
-        .risk-factors {
-          text-align: left;
-          margin: 20px 0;
-        }
-
-        .risk-item {
-          display: block;
-          padding: 10px;
-          margin-bottom: 10px;
-          background: white;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .risk-item:hover {
-          background: #e2e8f0;
-        }
-
-        .risk-item input {
-          margin-right: 10px;
-        }
-
-        .risk-meter {
-          margin-top: 20px;
-        }
-
-        .meter-bar {
-          height: 20px;
-          background: #e2e8f0;
-          border-radius: 10px;
-          overflow: hidden;
-        }
-
-        .meter-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
-          transition: width 0.5s ease;
-        }
-
-        /* Blog Section */
-        .blog-section {
-          background: #f8f9fa;
-        }
-
-        .blog-card {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          height: 100%;
-          transition: all 0.3s ease;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .blog-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .blog-image {
-          position: relative;
-          height: 200px;
-          overflow: hidden;
-        }
-
-        .blog-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-
-        .blog-card:hover .blog-image img {
-          transform: scale(1.1);
-        }
-
-        .blog-category {
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          background: var(--gradient-primary);
-          color: white;
-          padding: 5px 15px;
-          border-radius: 20px;
-          font-size: 0.875rem;
-          font-weight: 600;
-        }
-
-        .blog-category.platform-update {
-          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        }
-
-        .blog-content {
-          padding: 30px;
-        }
-
-        .blog-content h4 {
-          margin-bottom: 15px;
-          font-size: 1.3rem;
-          line-height: 1.4;
-        }
-
-        .blog-meta {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin: 20px 0;
-          color: #718096;
-          font-size: 0.875rem;
-        }
-
-        .read-more {
-          color: var(--primary);
-          font-weight: 600;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          transition: gap 0.3s ease;
-        }
-
-        .read-more:hover {
-          gap: 10px;
-          color: var(--secondary);
-        }
-
-        /* Footer */
-        .footer-section {
-          background: var(--dark);
-          color: white;
-        }
-
-        .footer-brand {
-          margin-bottom: 2rem;
-        }
-
-        .footer-description {
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.6;
-        }
-
-        .social-links {
-          display: flex;
-          gap: 1rem;
-        }
-
-        .social-link {
-          width: 40px;
-          height: 40px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-          background: var(--gradient-primary);
-          transform: translateY(-3px);
-        }
-
-        .footer-title {
-          font-weight: 700;
-          margin-bottom: 1.5rem;
-        }
-
-        .footer-links {
-          list-style: none;
-          padding: 0;
-        }
-
-        .footer-links li {
-          margin-bottom: 1rem;
-        }
-
-        .footer-links a {
-          color: rgba(255, 255, 255, 0.7);
-          text-decoration: none;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .footer-links a:hover {
-          color: white;
-          padding-left: 10px;
-        }
-
-        .app-button {
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 12px;
-          padding: 0.75rem;
-          width: 100%;
-          transition: all 0.3s ease;
-          cursor: pointer;
-        }
-
-        .app-button:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-        }
-
-        .app-button img {
-          height: 40px;
-          width: auto;
-        }
-
-        .footer-bottom {
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes fadeInRight {
-          from {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .fade-in-up {
-          animation: fadeInUp 0.8s ease forwards;
-          opacity: 0;
-        }
-
-        .fade-in-left {
-          animation: fadeInLeft 0.8s ease forwards;
-          opacity: 0;
-        }
-
-        .fade-in-right {
-          animation: fadeInRight 0.8s ease forwards;
-          opacity: 0;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-          .journey-timeline {
-            flex-direction: column;
-            gap: 40px;
-          }
-
-          .timeline-track {
-            display: none;
-          }
-
-          .step-arrow {
-            display: none;
-          }
-
-          .calculator-container {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 992px) {
-          .comparison-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .feature-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .demo-screen {
-            height: 400px;
-          }
-
-          .video-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .hero-title {
-            font-size: 2.5rem;
-          }
-          
-          .section-title {
-            font-size: 2rem;
-          }
-          
-          .timeline-line {
-            display: none;
-          }
-          
-          .floating-card {
-            display: none;
-          }
-          
-          .cta-wrapper {
-            padding: 2rem;
-          }
-          
-          .cta-title {
-            font-size: 2rem;
-          }
-
-          .feature-tabs {
-            flex-direction: column;
-            width: 100%;
-          }
-
-          .feature-tabs .btn {
-            width: 100%;
-            justify-content: center;
-          }
-
-          .journey-tabs {
-            flex-direction: column;
-            width: 100%;
-          }
-
-          .journey-tab {
-            width: 100%;
-            justify-content: center;
-          }
-
-          .comparison-table {
-            font-size: 0.875rem;
-          }
-
-          .comparison-table th,
-          .comparison-table td {
-            padding: 15px;
-          }
-
-          .phone-mockup {
-            width: 300px;
-            height: 600px;
-          }
-
-          .calculator-container {
-            padding: 30px;
-          }
-
-          .health-tool-card {
-            margin-bottom: 20px;
-          }
-
-          .language-banner {
-            font-size: 0.875rem;
-          }
-
-          .language-flags {
-            gap: 5px;
-          }
-
-          .flag-item {
-            font-size: 20px;
-          }
-
-          .demo-sidebar {
-            margin-bottom: 30px;
-          }
-
-          .blog-card {
-            margin-bottom: 20px;
-          }
-        }
-
-        /* Form Controls */
-        .form-control {
-          display: block;
-          width: 100%;
-          padding: 0.75rem 1rem;
-          font-size: 1rem;
-          font-weight: 400;
-          line-height: 1.5;
-          color: var(--dark);
-          background-color: white;
-          background-clip: padding-box;
-          border: 2px solid #e2e8f0;
-          appearance: none;
-          border-radius: 12px;
-          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-control:focus {
-          color: var(--dark);
-          background-color: white;
-          border-color: var(--primary);
-          outline: 0;
-          box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
-        }
-
-        .form-group {
-          margin-bottom: 1rem;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 600;
-          color: var(--dark);
-        }
-
-        /* Alert Styles */
-        .alert {
-          position: relative;
-          padding: 1rem 1.25rem;
-          margin-bottom: 1rem;
-          border: 1px solid transparent;
-          border-radius: 0.5rem;
-        }
-
-        .alert-info {
-          color: #0c5460;
-          background-color: #d1ecf1;
-          border-color: #bee5eb;
-        }
-
-        /* Badge Styles */
-        .badge {
-          display: inline-block;
-          padding: 0.35em 0.65em;
-          font-size: 0.75em;
-          font-weight: 700;
-          line-height: 1;
-          color: white;
-          text-align: center;
-          white-space: nowrap;
-          vertical-align: baseline;
-          border-radius: 0.375rem;
-        }
-
-        .bg-success {
-          background-color: #48bb78 !important;
-        }
-
-        .bg-warning {
-          background-color: #feca57 !important;
-        }
-
-        .bg-danger {
-          background-color: #e53e3e !important;
-        }
-
-        /* Additional Hover Effects and Animations */
-        .demo-option {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .emergency-btn:hover {
-          transform: scale(1.1);
-        }
-
-        .btn-danger {
-          background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-          color: white;
-          box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
-        }
-
-        .btn-danger:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(255, 68, 68, 0.6);
-          color: white;
-        }
-
-        .btn-outline-primary {
-          color: var(--primary);
-          border: 2px solid var(--primary);
-          background: transparent;
-        }
-
-        .btn-outline-primary:hover {
-          background: var(--gradient-primary);
-          border-color: transparent;
-          color: white;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Smooth scrolling for anchor links */
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* Loading states for interactive elements */
-        .calculating {
-          opacity: 0.6;
-          pointer-events: none;
-        }
-
-        /* Accessibility improvements */
-        .btn:focus,
-        .form-control:focus,
-        .demo-option:focus {
-          outline: 2px solid var(--primary);
-          outline-offset: 2px;
-        }
-
-        /* Print styles */
-        @media print {
-          .navbar,
-          .language-banner,
-          .cta-section,
-          .footer-section {
-            display: none;
-          }
-
-          .comparison-table {
-            page-break-inside: avoid;
-          }
-        }
-
-        /* Additional Utility Classes */
-        .transition-all {
-          transition: all 0.3s ease;
-        }
-
-        .w-8 { width: 2rem; }
-        .h-8 { height: 2rem; }
-        .w-6 { width: 1.5rem; }
-        .h-6 { height: 1.5rem; }
-      `}</style>
     </div>
   );
 };
