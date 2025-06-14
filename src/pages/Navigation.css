@@ -1,0 +1,481 @@
+/* =============================================
+   NAVIGATION BAR - NEXT LEVEL DESIGN
+   ============================================= */
+
+/* Navigation Base */
+.navbar {
+  padding: 1.5rem 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Transparent State - Enhanced Glass Effect */
+.navbar-transparent {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+/* Add subtle gradient overlay */
+.navbar-transparent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(102, 126, 234, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Scrolled State - Premium Feel */
+.navbar-scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 
+    0 1px 3px 0 rgba(0, 0, 0, 0.05),
+    0 20px 40px -15px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Dynamic Background Blur on Scroll */
+.navbar-scrolled::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.3),
+    transparent
+  );
+  animation: shimmerLine 3s ease-in-out infinite;
+}
+
+@keyframes shimmerLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Container Fluid Enhancement */
+.navbar .container-fluid {
+  padding: 0 2rem;
+  position: relative;
+}
+
+/* Brand Section - Premium Design */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+/* Brand Icon Wrapper - 3D Effect */
+.brand-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: var(--gradient-primary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 5px 20px rgba(102, 126, 234, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Glow Effect */
+.brand-icon-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  animation: iconGlow 3s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: 0; }
+  50% { transform: rotate(180deg) scale(1.1); opacity: 1; }
+}
+
+.navbar-brand:hover .brand-icon-wrapper {
+  transform: scale(1.1) rotate(10deg) translateY(-2px);
+  box-shadow: 
+    0 10px 30px rgba(102, 126, 234, 0.6),
+    0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+}
+
+.brand-icon {
+  color: white;
+  z-index: 1;
+  position: relative;
+}
+
+/* Brand Text - Premium Typography */
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 50%,
+    #f093fb 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: textGradient 3s ease-in-out infinite;
+  margin-left: 0.75rem;
+}
+
+@keyframes textGradient {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* Custom Hamburger Menu - Premium Animation */
+.custom-toggler {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.custom-toggler:hover {
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 12px;
+}
+
+.custom-toggler:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+}
+
+.hamburger-lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 18px;
+  width: 26px;
+  position: relative;
+}
+
+.line {
+  display: block;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--dark);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+}
+
+/* Gradient lines on hover */
+.custom-toggler:hover .line {
+  background: var(--gradient-primary);
+}
+
+/* Smooth hamburger animation */
+.line1.rotate-45 {
+  transform: rotate(45deg) translate(5px, 5px);
+  background: var(--gradient-primary);
+}
+
+.line2.opacity-0 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.line3.rotate--45 {
+  transform: rotate(-45deg) translate(6px, -6px);
+  background: var(--gradient-primary);
+}
+
+/* Navigation Menu */
+.navbar-collapse {
+  transition: all 0.4s ease;
+}
+
+/* Nav Links Container */
+.navbar-nav {
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Enhanced Nav Links */
+.nav-link-animated {
+  position: relative;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--dark) !important;
+  padding: 0.75rem 1.25rem !important;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Transparent navbar link colors */
+.navbar-transparent .nav-link-animated {
+  color: rgba(26, 32, 44, 0.9) !important;
+}
+
+/* Hover background effect */
+.nav-link-animated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.nav-link-animated:hover::before {
+  left: 100%;
+}
+
+/* Underline effect */
+.nav-link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-link-animated:hover {
+  color: var(--primary) !important;
+  background: rgba(102, 126, 234, 0.05);
+  transform: translateY(-1px);
+}
+
+.nav-link-animated:hover::after {
+  width: calc(100% - 2rem);
+}
+
+/* Active state */
+.nav-link-animated.active {
+  color: var(--primary) !important;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.nav-link-animated.active::after {
+  width: calc(100% - 2rem);
+  background: var(--gradient-primary);
+}
+
+/* Premium CTA Buttons in Nav */
+.navbar-nav .btn {
+  margin-left: 1rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Login Button */
+.btn-login {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Get Started Button */
+.btn-get-started {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-get-started::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.5s ease;
+}
+
+.btn-get-started:hover::before {
+  left: 100%;
+}
+
+.btn-get-started:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+}
+
+/* Mobile Menu Enhancements */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-top: 0.5rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+
+  .navbar-collapse.show {
+    max-height: 80vh;
+    opacity: 1;
+    overflow-y: auto;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .nav-link-animated {
+    width: 100%;
+    text-align: center;
+    padding: 1rem !important;
+    border-radius: 12px;
+  }
+
+  .nav-link-animated:hover {
+    background: rgba(102, 126, 234, 0.1);
+  }
+
+  .navbar-nav .btn {
+    margin: 0.5rem 0;
+    width: 100%;
+  }
+}
+
+/* Scroll Progress Indicator */
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  transition: width 0.3s ease;
+  width: var(--scroll-progress, 0%);
+}
+
+/* Notification Badge for Nav Items */
+.nav-item {
+  position: relative;
+}
+
+.nav-notification {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  background: #ff4444;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Accessibility */
+.navbar:focus-within {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.nav-link-animated:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* Performance */
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .nav-link-animated,
+  .brand-icon-wrapper,
+  .line {
+    transition: none;
+    animation: none;
+  }
+}
