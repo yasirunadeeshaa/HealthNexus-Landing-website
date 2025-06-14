@@ -1,0 +1,47 @@
+/* Security Section */
+        .security-section {
+          background: white;
+        }
+
+        .security-card {
+          text-align: center;
+          padding: 30px;
+          border-radius: 20px;
+          background: #f8f9fa;
+          height: 100%;
+          transition: all 0.3s ease;
+        }
+
+        .security-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .security-icon {
+          width: 80px;
+          height: 80px;
+          background: var(--gradient-primary);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 20px;
+          color: white;
+          font-size: 40px;
+        }
+
+        .compliance-badges {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+        }
+
+        .compliance-badge {
+          background: var(--gradient-primary);
+          color: white;
+          padding: 15px 30px;
+          border-radius: 50px;
+          font-weight: 600;
+          box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
