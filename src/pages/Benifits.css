@@ -1,0 +1,118 @@
+/* Benefits Comparison */
+        .benefits-comparison {
+          background: rgba(255, 255, 255, 0.2);
+          padding: 80px 0;
+        }
+
+        .comparison-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+          margin-top: 50px;
+        }
+
+        .benefit-column {
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          border-radius: 30px;
+          padding: 40px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .benefit-column.patients {
+          border-top: 5px solid var(--primary);
+        }
+
+        .benefit-column.doctors {
+          border-top: 5px solid var(--secondary);
+        }
+
+        .benefit-list {
+          list-style: none;
+          padding: 0;
+        }
+
+        .benefit-item {
+          display: flex;
+          align-items: start;
+          margin-bottom: 20px;
+          padding: 15px;
+          background: white;
+          border-radius: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+          transform: translateX(10px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .benefit-check {
+          width: 30px;
+          height: 30px;
+          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          margin-right: 15px;
+          flex-shrink: 0;
+        }
+
+
+        /* Vendor Benefits Section */
+        .vendor-benefits {
+          background: #f8f9fa;
+        }
+
+        .vendor-card {
+          background: white;
+          border-radius: 20px;
+          padding: 30px;
+          height: 100%;
+          box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+          transition: all 0.3s ease;
+        }
+
+        .vendor-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .vendor-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 25px;
+        }
+
+        .vendor-icon {
+          width: 60px;
+          height: 60px;
+          background: var(--gradient-primary);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          margin-right: 20px;
+        }
+
+        .vendor-title {
+          font-weight: 700;
+          font-size: 1.5rem;
+          color: var(--dark);
+          margin: 0;
+        }
+
+        .vendor-benefits-list {
+          list-style: none;
+          padding: 0;
+        }
+
+        .vendor-benefits-list li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+          color: #4a5568;
+        }
