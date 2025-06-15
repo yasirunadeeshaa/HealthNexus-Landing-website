@@ -1,47 +1,1014 @@
-/* Security Section */
-        .security-section {
-          background: white;
-        }
+/* ============================================
+   ENHANCED SECURITY SECTION - COMPLETE CSS
+   All classes prefixed with 'sec-' to avoid conflicts
+   ============================================ */
 
-        .security-card {
-          text-align: center;
-          padding: 30px;
-          border-radius: 20px;
-          background: #f8f9fa;
-          height: 100%;
-          transition: all 0.3s ease;
-        }
+/* Main Section Container */
+.sec-main-section {
+  position: relative;
+  background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+  overflow: hidden;
+  padding: 80px 0;
+}
 
-        .security-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
+/* Animated Background Elements */
+.sec-bg-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
 
-        .security-icon {
-          width: 80px;
-          height: 80px;
-          background: var(--gradient-primary);
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 20px;
-          color: white;
-          font-size: 40px;
-        }
+.sec-floating-shield {
+  position: absolute;
+  opacity: 0.05;
+  animation: sec-float 20s ease-in-out infinite;
+}
 
-        .compliance-badges {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 20px;
-          justify-content: center;
-        }
+.sec-shield-1 {
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
 
-        .compliance-badge {
-          background: var(--gradient-primary);
-          color: white;
-          padding: 15px 30px;
-          border-radius: 50px;
-          font-weight: 600;
-          box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
-        }
+.sec-shield-2 {
+  top: 50%;
+  right: 10%;
+  animation-delay: 7s;
+}
+
+.sec-shield-3 {
+  bottom: 20%;
+  left: 50%;
+  animation-delay: 14s;
+}
+
+/* Section Header Styles */
+.sec-section-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(30, 41, 59, 0.3);
+  margin-bottom: 1rem;
+}
+
+.sec-section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.sec-gradient-text {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.sec-section-subtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+}
+
+/* Security Score Card */
+.sec-score-card {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+.sec-score-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+}
+
+/* Shield Animation Container */
+.sec-shield-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.sec-shield-outer {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.sec-shield-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+  animation: sec-shield-float 3s ease-in-out infinite;
+}
+
+.sec-shield-icon {
+  color: white;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.sec-shield-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(99, 102, 241, 0.5);
+  border-radius: 50%;
+  animation: sec-pulse 2s ease-out infinite;
+}
+
+.sec-pulse-2 {
+  animation-delay: 1s;
+}
+
+/* Score Content Styles */
+.sec-score-content {
+  padding-left: 2rem;
+}
+
+.sec-score-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 1rem;
+}
+
+.sec-score-bar {
+  height: 30px;
+  background: #e5e7eb;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.sec-score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+  border-radius: 15px;
+  position: relative;
+  animation: sec-fill-bar 2s ease-out;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.sec-score-value {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.sec-score-badges {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sec-mini-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sec-mini-badge:hover {
+  background: rgba(16, 185, 129, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Security Features Grid */
+.sec-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.sec-feature-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sec-feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.sec-card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.sec-feature-card:hover .sec-card-glow {
+  opacity: 1;
+}
+
+/* Feature Header and Icon */
+.sec-feature-header {
+  margin-bottom: 1.5rem;
+}
+
+.sec-feature-icon-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #6366F1;
+  transition: all 0.3s ease;
+}
+
+.sec-feature-card:hover .sec-feature-icon-wrapper {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.sec-feature-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 0.75rem;
+}
+
+.sec-feature-description {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Encryption Card Specific Styles */
+.sec-icon-float {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sec-floating-bit {
+  position: absolute;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6366F1;
+  opacity: 0;
+  animation: sec-bit-float 3s ease-in-out infinite;
+}
+
+.sec-floating-bit:nth-child(1) {
+  top: -20px;
+  left: 10px;
+  animation-delay: 0s;
+}
+
+.sec-floating-bit:nth-child(2) {
+  top: -10px;
+  right: -10px;
+  animation-delay: 1s;
+}
+
+.sec-floating-bit:nth-child(3) {
+  bottom: -20px;
+  left: 20px;
+  animation-delay: 2s;
+}
+
+.sec-feature-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sec-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  transition: all 0.3s ease;
+}
+
+.sec-detail-item:hover {
+  color: #6366F1;
+  transform: translateX(5px);
+}
+
+.sec-detail-item svg {
+  color: #10B981;
+}
+
+.sec-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 8px 16px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 50px;
+  width: fit-content;
+}
+
+.sec-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: sec-pulse 2s ease-in-out infinite;
+}
+
+.sec-live-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Compliance Card Specific Styles */
+.sec-compliance-ring {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #10B981;
+  border-radius: 50%;
+  animation: sec-ring-rotate 3s linear infinite;
+}
+
+.sec-compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sec-compliance-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sec-compliance-item:hover {
+  background: #f3f4f6;
+  transform: translateX(5px);
+}
+
+.sec-compliance-item img {
+  width: 40px;
+  height: 40px;
+}
+
+.sec-compliance-item span {
+  font-weight: 600;
+  color: #374151;
+}
+
+.sec-audit-info {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+/* Infrastructure Card Specific Styles */
+.sec-data-flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sec-flow-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #6366F1 50%, transparent 100%);
+  animation: sec-flow 2s linear infinite;
+  width: 100%;
+}
+
+.sec-flow-line:nth-child(1) {
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.sec-flow-line:nth-child(2) {
+  top: 50%;
+  animation-delay: 0.7s;
+}
+
+.sec-flow-line:nth-child(3) {
+  top: 80%;
+  animation-delay: 1.4s;
+}
+
+.sec-infra-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sec-stat-item {
+  text-align: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.sec-stat-item:hover {
+  background: #f3f4f6;
+  transform: translateY(-3px);
+}
+
+.sec-stat-item h5 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6366F1;
+  margin-bottom: 0.25rem;
+}
+
+.sec-stat-item span {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.sec-backup-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #f3f4f6;
+  border-radius: 12px;
+}
+
+.sec-server-icon {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sec-server-icon:hover {
+  transform: scale(1.1);
+}
+
+.sec-server-icon.sec-primary {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+}
+
+.sec-server-icon.sec-backup {
+  color: #6b7280;
+}
+
+.sec-sync-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sec-sync-line {
+  width: 30px;
+  height: 2px;
+  background: #6366F1;
+  opacity: 0.5;
+  animation: sec-sync 1.5s ease-in-out infinite;
+}
+
+.sec-sync-line:nth-child(2) {
+  animation-delay: 0.75s;
+}
+
+/* Access Control Card Specific Styles */
+.sec-auth-bubble {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 30px;
+  height: 30px;
+  background: #10B981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  animation: sec-bubble-bounce 2s ease-in-out infinite;
+}
+
+.sec-auth-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sec-auth-method {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #4b5563;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sec-auth-method:hover {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366F1;
+  transform: translateY(-2px);
+}
+
+.sec-session-info {
+  padding: 1rem;
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.sec-session-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.sec-session-fill {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+  border-radius: 3px;
+  animation: sec-session-tick 30s linear;
+}
+
+.sec-session-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Timeline Section Styles */
+.sec-timeline-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-top: 3rem;
+}
+
+.sec-timeline-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sec-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.sec-timeline-line {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e5e7eb;
+}
+
+.sec-timeline-item {
+  position: relative;
+  padding-bottom: 2rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.sec-timeline-item:hover {
+  opacity: 1;
+}
+
+.sec-timeline-dot {
+  position: absolute;
+  left: -26px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 3px solid #e5e7eb;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.sec-timeline-item.sec-active .sec-timeline-dot {
+  background: #10B981;
+  border-color: #10B981;
+  box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.2);
+}
+
+.sec-timeline-content {
+  padding-left: 1rem;
+}
+
+.sec-time {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.sec-timeline-content p {
+  margin: 0.5rem 0 0 0;
+  color: #374151;
+}
+
+/* Trust Section Styles */
+.sec-trust-section {
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 20px;
+  padding: 3rem;
+  margin-top: 3rem;
+}
+
+.sec-trust-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 2rem;
+}
+
+.sec-trust-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.sec-trust-stat {
+  text-align: center;
+}
+
+.sec-trust-stat h4 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6366F1 0%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.sec-trust-stat span {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.sec-certification-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.sec-cert-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sec-cert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.sec-cert-icon {
+  color: #6366F1;
+  margin-bottom: 1rem;
+}
+
+.sec-cert-card h5 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.sec-cert-card p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Keyframe Animations */
+@keyframes sec-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-30px) rotate(10deg);
+  }
+  50% {
+    transform: translateY(20px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes sec-shield-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -55%) scale(1.05);
+  }
+}
+
+@keyframes sec-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes sec-fill-bar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 98%;
+  }
+}
+
+@keyframes sec-bit-float {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes sec-ring-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sec-flow {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes sec-sync {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes sec-bubble-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes sec-session-tick {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .sec-features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .sec-shield-container {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sec-section-title {
+    font-size: 2rem;
+  }
+  
+  .sec-features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .sec-trust-stats {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .sec-compliance-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sec-auth-methods {
+    grid-template-columns: 1fr;
+  }
+  
+  .sec-infra-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .sec-certification-showcase {
+    grid-template-columns: 1fr;
+  }
+  
+  .sec-score-card {
+    padding: 2rem;
+  }
+  
+  .sec-shield-container {
+    height: 150px;
+  }
+  
+  .sec-shield-inner {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .sec-trust-stat h4 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sec-section-badge {
+    font-size: 0.75rem;
+    padding: 8px 20px;
+  }
+  
+  .sec-section-title {
+    font-size: 1.75rem;
+  }
+  
+  .sec-section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .sec-feature-card {
+    padding: 2rem;
+  }
+  
+  .sec-timeline-section {
+    padding: 1.5rem;
+  }
+}
+
+/* Dark Mode Support (Optional) */
+@media (prefers-color-scheme: dark) {
+  .sec-main-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+  }
+  
+  .sec-feature-card,
+  .sec-score-card,
+  .sec-timeline-section {
+    background: #1e1e2e;
+    border-color: #2a2a3e;
+  }
+  
+  .sec-section-title,
+  .sec-feature-title,
+  .sec-score-title,
+  .sec-timeline-title,
+  .sec-trust-title {
+    color: #f0f0f0;
+  }
+  
+  .sec-feature-description,
+  .sec-section-subtitle {
+    color: #a0a0b0;
+  }
+  
+  .sec-compliance-item,
+  .sec-auth-method,
+  .sec-stat-item {
+    background: #2a2a3e;
+  }
+  
+  .sec-trust-section {
+    background: linear-gradient(135deg, #1e1e2e 0%, #1a1a2e 100%);
+  }
+  
+  .sec-cert-card {
+    background: #2a2a3e;
+  }
+  
+  .sec-detail-item,
+  .sec-timeline-content p {
+    color: #b0b0c0;
+  }
+}
