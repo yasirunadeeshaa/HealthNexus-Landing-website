@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Calendar, Video,Wifi,ChevronLeft,Send, FileText, Shield, Heart, Activity, Phone, Check, Star, ArrowRight, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap, PlayCircle, Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Lock, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Database, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
+//import { Link } from 'react-router-dom';
+import mainImage from '../assets/doctor1.jpg';
+import logo from '../assets/logo.png';
+import { Calendar,Watch,Dna,Home,Settings, Rocket,Database,Cpu,AlertTriangle,Building2,Users2, Video,Wifi,ChevronLeft,Send, FileText, Shield, Heart, Activity, Phone, Check, Star, ArrowRight, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap, PlayCircle, Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
 import './Main.css'
 import './Journuy.css'; // Custom styles for the landing page
 import './EmergencySection.css'; // Custom styles for the landing page
@@ -14,6 +17,7 @@ import './Security.css';
 import './Benifits.css';
 import './Features.css';
 import './Navigation.css';
+import './Roadmap.css'
 interface VisibleSections {
   [key: string]: boolean;
 }
@@ -479,72 +483,6 @@ const LandingPage = () => {
     }
   ];
 
-  const vendorBenefits = [
-    {
-      category: "Pharmacies",
-      icon: <Building />,
-      benefits: [
-        "Direct prescription delivery pipeline",
-        "Increased customer base",
-        "Digital inventory management",
-        "Automated order processing"
-      ]
-    },
-    {
-      category: "Diagnostic Labs",
-      icon: <Activity />,
-      benefits: [
-        "Home collection requests",
-        "Digital report delivery",
-        "Seamless doctor integration",
-        "Payment gateway integration"
-      ]
-    },
-    {
-      category: "Insurance Providers",
-      icon: <Shield />,
-      benefits: [
-        "Automated claim processing",
-        "Fraud detection system",
-        "Real-time verification",
-        "Reduced paperwork"
-      ]
-    },
-    {
-      category: "Hospitals & Clinics",
-      icon: <Building />,
-      benefits: [
-        "Patient flow management",
-        "Digital health records",
-        "Multi-doctor coordination",
-        "Revenue optimization"
-      ]
-    }
-  ];
-
-  const securityFeatures = [
-    {
-      icon: <Lock />,
-      title: "End-to-End Encryption",
-      description: "Military-grade encryption for all data"
-    },
-    {
-      icon: <Shield />,
-      title: "HIPAA Compliant",
-      description: "Meets all healthcare data standards"
-    },
-    {
-      icon: <Database />,
-      title: "Secure Cloud Storage",
-      description: "Redundant backups with 99.9% uptime"
-    },
-    {
-      icon: <UserCheck />,
-      title: "Two-Factor Authentication",
-      description: "Extra layer of account security"
-    }
-  ];
-
   const services = [
     { icon: <Monitor />, title: "Telemedicine", desc: "Video consultations" },
     { icon: <Pill />, title: "Pharmacy", desc: "Medicine delivery" },
@@ -567,7 +505,7 @@ const LandingPage = () => {
         <div className="container-fluid">
           <a className="navbar-brand d-flex align-items-center" href="#">
             <div className="brand-icon-wrapper">
-              <Heart className="brand-icon" size={32} />
+               <img src={logo} alt="HealthNexus Logo" className="brand-icon"  />
             </div>
             <span className="brand-text ms-2">HealthNexus</span>
           </a>
@@ -595,7 +533,7 @@ const LandingPage = () => {
                 <a className="nav-link nav-link-animated px-3" href="#benefits">Benefits</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link nav-link-animated px-3" href="#how-it-works">How it Works</a>
+                <a className="nav-link nav-link-animated px-3" href="#user-journey">How it Works</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#security">Security</a>
@@ -604,8 +542,18 @@ const LandingPage = () => {
                 <a className="nav-link nav-link-animated px-3" href="#comparison">Comparison</a>
               </li>
               <li className="nav-item">
+                <a className="nav-link nav-link-animated px-3" href="#future-roadmap">RoadMap</a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#health-tools">Tools</a>
               </li>
+              
+              {/* <li className="nav-item">
+                <Link className="nav-link nav-link-animated px-3" to="/api-docs">
+                  API Docs
+                </Link>
+              </li> */}
+              
             </ul>
           </div>
         </div>
@@ -715,15 +663,12 @@ const LandingPage = () => {
                   <div className="device-frame">
                     <div className="device-screen">
                       <img 
-                        src="../assets/main.jpg"
+                        src={mainImage}
                         alt="Healthcare Professional" 
                         className="screen-image"
                       />
                       {/* Live Consultation Indicator */}
-                      <div className="live-indicator">
-                        <span className="live-dot"></span>
-                        <span>Live Consultation</span>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -1032,67 +977,661 @@ const LandingPage = () => {
       </section>
 
       {/* Vendor Benefits Section */}
-      <section id="vendor-benefits" className="vendor-benefits py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">ECOSYSTEM</span>
-            <h2 className="section-title mt-3">
-              Benefits for Healthcare
-              <span className="gradient-text d-block">Ecosystem Partners</span>
-            </h2>
-          </div>
+      <section id="vendor-benefits" className="vb-section py-5 animate-section">
+  <div className="container py-5">
+    {/* Section Header */}
+    <div className="text-center mb-5">
+      <span className="vb-section-badge">
+        <Zap size={16} className="me-1" />
+        ECOSYSTEM PARTNERS
+      </span>
+      <h2 className="vb-section-title mt-3">
+        Empowering Every Healthcare
+        <span className="vb-gradient-text d-block">Ecosystem Partner</span>
+      </h2>
+      <p className="vb-section-subtitle">
+        Join the digital healthcare revolution and unlock unprecedented growth opportunities
+      </p>
+    </div>
 
-          <div className="row g-4">
-            {vendorBenefits.map((vendor, idx) => (
-              <div key={idx} className="col-lg-6">
-                <div className={`vendor-card ${isVisible['vendor-benefits'] ? 'fade-in-up' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
-                  <div className="vendor-header">
-                    <div className="vendor-icon">
-                      {vendor.icon}
-                    </div>
-                    <h4 className="vendor-title">{vendor.category}</h4>
-                  </div>
-                  <ul className="vendor-benefits-list">
-                    {vendor.benefits.map((benefit, benefitIdx) => (
-                      <li key={benefitIdx}>
-                        <CheckCircle size={16} className="text-success me-2" />
-                        {benefit}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+    {/* Stats Overview */}
+    <div className="vb-stats-row">
+      <div className="vb-stat-card">
+        <div className="vb-stat-icon">
+          <TrendingUp size={24} />
+        </div>
+        <h3 className="vb-stat-value">45%</h3>
+        <p className="vb-stat-label">Revenue Growth</p>
+      </div>
+      <div className="vb-stat-card">
+        <div className="vb-stat-icon">
+          <Users size={24} />
+        </div>
+        <h3 className="vb-stat-value">10K+</h3>
+        <p className="vb-stat-label">Partner Network</p>
+      </div>
+      <div className="vb-stat-card">
+        <div className="vb-stat-icon">
+          <Globe size={24} />
+        </div>
+        <h3 className="vb-stat-value">50+</h3>
+        <p className="vb-stat-label">Countries</p>
+      </div>
+      <div className="vb-stat-card">
+        <div className="vb-stat-icon">
+          <Award size={24} />
+        </div>
+        <h3 className="vb-stat-value">98%</h3>
+        <p className="vb-stat-label">Satisfaction</p>
+      </div>
+    </div>
+
+    {/* Enhanced Vendor Cards Grid */}
+    <div className="vb-grid">
+      {/* Pharmacies Card */}
+      <div className="vb-partner-card vb-pharmacy">
+        <div className="vb-card-glow"></div>
+        <div className="vb-card-header">
+          <div className="vb-icon-wrapper">
+            <Building size={32} />
+            <div className="vb-icon-bg"></div>
+            <div className="vb-icon-pulse"></div>
+          </div>
+          <div className="vb-header-content">
+            <h4 className="vb-card-title">Pharmacies</h4>
+            <span className="vb-partner-count">2,500+ Partners</span>
+          </div>
+          <div className="vb-growth-indicator">
+            <TrendingUp size={20} />
+            <span>+32%</span>
           </div>
         </div>
-      </section>
+
+        <div className="vb-benefits-section">
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Zap size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Direct Prescription Pipeline</h5>
+              <p>Instant digital prescriptions from 10,000+ doctors</p>
+              <div className="vb-metric">
+                <span className="vb-metric-value">50K+</span>
+                <span className="vb-metric-label">Monthly Orders</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Users size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Expanded Customer Base</h5>
+              <p>Access to 2M+ verified patients</p>
+              <div className="vb-progress">
+                <div className="vb-progress-bar" style={{width: '75%'}}></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Package size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Smart Inventory Management</h5>
+              <p>AI-powered demand forecasting</p>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <CreditCard size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Automated Payments</h5>
+              <p>Instant settlement & reconciliation</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="vb-cta-section">
+          <button className="vb-cta-button">
+            Join as Pharmacy Partner
+            <ArrowRight size={16} className="ms-2" />
+          </button>
+        </div>
+      </div>
+
+      {/* Diagnostic Labs Card */}
+      <div className="vb-partner-card vb-labs">
+        <div className="vb-card-glow"></div>
+        <div className="vb-card-header">
+          <div className="vb-icon-wrapper">
+            <Activity size={32} />
+            <div className="vb-icon-bg"></div>
+            <div className="vb-icon-pulse"></div>
+          </div>
+          <div className="vb-header-content">
+            <h4 className="vb-card-title">Diagnostic Labs</h4>
+            <span className="vb-partner-count">500+ Centers</span>
+          </div>
+          <div className="vb-growth-indicator">
+            <TrendingUp size={20} />
+            <span>+45%</span>
+          </div>
+        </div>
+
+        <div className="vb-benefits-section">
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Home size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Home Collection Network</h5>
+              <p>Automated scheduling & routing</p>
+              <div className="vb-metric">
+                <span className="vb-metric-value">15K+</span>
+                <span className="vb-metric-label">Daily Collections</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <FileText size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Digital Report Delivery</h5>
+              <p>Instant report sharing with doctors</p>
+              <div className="vb-status-badge vb-active">
+                <span className="vb-status-dot"></span>
+                Live Integration
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Stethoscope size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Doctor Collaboration</h5>
+              <p>Direct consultations on results</p>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <BarChart size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Analytics Dashboard</h5>
+              <p>Test trends & demand insights</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="vb-cta-section">
+          <button className="vb-cta-button">
+            Partner with Us
+            <ArrowRight size={16} className="ms-2" />
+          </button>
+        </div>
+      </div>
+
+      {/* Insurance Providers Card */}
+      <div className="vb-partner-card vb-insurance">
+        <div className="vb-card-glow"></div>
+        <div className="vb-card-header">
+          <div className="vb-icon-wrapper">
+            <Shield size={32} />
+            <div className="vb-icon-bg"></div>
+            <div className="vb-icon-pulse"></div>
+          </div>
+          <div className="vb-header-content">
+            <h4 className="vb-card-title">Insurance Providers</h4>
+            <span className="vb-partner-count">50+ Companies</span>
+          </div>
+          <div className="vb-growth-indicator">
+            <TrendingUp size={20} />
+            <span>+28%</span>
+          </div>
+        </div>
+
+        <div className="vb-benefits-section">
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Cpu size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Automated Claim Processing</h5>
+              <p>90% faster claim settlements</p>
+              <div className="vb-time-saved">
+                <Clock size={14} />
+                <span>Save 15 days/claim</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <AlertTriangle size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Fraud Detection System</h5>
+              <p>AI-powered anomaly detection</p>
+              <div className="vb-metric">
+                <span className="vb-metric-value">99.9%</span>
+                <span className="vb-metric-label">Accuracy</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <CheckCircle size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Real-time Verification</h5>
+              <p>Instant eligibility checks</p>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <FileCheck size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Paperless Workflow</h5>
+              <p>100% digital documentation</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="vb-cta-section">
+          <button className="vb-cta-button">
+            Explore Integration
+            <ArrowRight size={16} className="ms-2" />
+          </button>
+        </div>
+      </div>
+
+      {/* Hospitals & Clinics Card */}
+      <div className="vb-partner-card vb-hospitals">
+        <div className="vb-card-glow"></div>
+        <div className="vb-card-header">
+          <div className="vb-icon-wrapper">
+            <Building2 size={32} />
+            <div className="vb-icon-bg"></div>
+            <div className="vb-icon-pulse"></div>
+          </div>
+          <div className="vb-header-content">
+            <h4 className="vb-card-title">Hospitals & Clinics</h4>
+            <span className="vb-partner-count">1,000+ Facilities</span>
+          </div>
+          <div className="vb-growth-indicator">
+            <TrendingUp size={20} />
+            <span>+52%</span>
+          </div>
+        </div>
+
+        <div className="vb-benefits-section">
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Users size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Patient Flow Optimization</h5>
+              <p>Smart queue management system</p>
+              <div className="vb-metric">
+                <span className="vb-metric-value">60%</span>
+                <span className="vb-metric-label">Less Wait Time</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Database size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Unified Health Records</h5>
+              <p>Centralized patient data access</p>
+              <div className="vb-integration-status">
+                <Wifi size={14} />
+                <span>Cloud Sync</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <Users2 size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Multi-doctor Coordination</h5>
+              <p>Seamless referral management</p>
+            </div>
+          </div>
+
+          <div className="vb-benefit-item">
+            <div className="vb-benefit-icon">
+              <DollarSign size={16} />
+            </div>
+            <div className="vb-benefit-content">
+              <h5>Revenue Optimization</h5>
+              <p>25% increase in patient volume</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="vb-cta-section">
+          <button className="vb-cta-button">
+            Transform Your Hospital
+            <ArrowRight size={16} className="ms-2" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Integration Process */}
+    <div className="vb-integration-section">
+      <h3 className="vb-integration-title">Simple Integration Process</h3>
+      <div className="vb-process-timeline">
+        <div className="vb-process-step vb-completed">
+          <div className="vb-step-icon">
+            <FileText size={20} />
+          </div>
+          <h5>Apply</h5>
+          <p>Submit partnership application</p>
+          <span className="vb-step-time">Day 1</span>
+        </div>
+        <div className="vb-process-connector"></div>
+        <div className="vb-process-step vb-completed">
+          <div className="vb-step-icon">
+            <CheckCircle size={20} />
+          </div>
+          <h5>Verify</h5>
+          <p>Quick verification process</p>
+          <span className="vb-step-time">Day 2-3</span>
+        </div>
+        <div className="vb-process-connector"></div>
+        <div className="vb-process-step vb-active">
+          <div className="vb-step-icon">
+            <Settings size={20} />
+          </div>
+          <h5>Integrate</h5>
+          <p>API integration & setup</p>
+          <span className="vb-step-time">Day 4-7</span>
+        </div>
+        <div className="vb-process-connector"></div>
+        <div className="vb-process-step">
+          <div className="vb-step-icon">
+            <Rocket size={20} />
+          </div>
+          <h5>Launch</h5>
+          <p>Go live & start growing</p>
+          <span className="vb-step-time">Day 8</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Call to Action */}
+    <div className="vb-cta-main">
+      <h3>Ready to Transform Your Healthcare Business?</h3>
+      <p>Join thousands of partners already benefiting from our ecosystem</p>
+      <button className="vb-main-cta-button">
+        Become a Partner Today
+        <ArrowRight size={20} className="ms-2" />
+      </button>
+    </div>
+  </div>
+
+  {/* Background Pattern */}
+  <div className="vb-bg-pattern">
+    <div className="vb-pattern-circle vb-circle-1"></div>
+    <div className="vb-pattern-circle vb-circle-2"></div>
+    <div className="vb-pattern-circle vb-circle-3"></div>
+  </div>
+</section>
 
       {/* Security Section */}
-      <section id="security" className="security-section py-5 animate-section">
+      {/* <section id="security" className="sec-main-section py-5 animate-section">
         <div className="container py-5">
           <div className="text-center mb-5">
-            <span className="section-badge">SECURITY</span>
-            <h2 className="section-title mt-3">
-              Your Data is
-              <span className="gradient-text d-block">Safe & Secure</span>
+            <span className="sec-section-badge">
+              <Shield size={16} className="me-1" />
+              SECURITY & COMPLIANCE
+            </span>
+            <h2 className="sec-section-title mt-3">
+              Bank-Level Security for Your
+              <span className="sec-gradient-text d-block">Healthcare Data</span>
             </h2>
+            <p className="sec-section-subtitle">
+              Protected by multiple layers of security, ensuring your medical information stays private and secure
+            </p>
           </div>
 
-          <div className="row g-4">
-            {securityFeatures.map((feature, idx) => (
-              <div key={idx} className="col-lg-3 col-md-6">
-                <div className={`security-card ${isVisible.security ? 'fade-in-up' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
-                  <div className="security-icon">
-                    {feature.icon}
+          <div className="sec-score-card mb-5">
+            <div className="row align-items-center">
+              <div className="col-lg-4">
+                <div className="sec-shield-container">
+                  <div className="sec-shield-outer">
+                    <div className="sec-shield-inner">
+                      <Shield size={60} className="sec-shield-icon" />
+                    </div>
+                    <div className="sec-shield-pulse"></div>
+                    <div className="sec-shield-pulse sec-pulse-2"></div>
                   </div>
-                  <h5>{feature.title}</h5>
-                  <p className="text-muted">{feature.description}</p>
                 </div>
               </div>
-            ))}
+              <div className="col-lg-8">
+                <div className="sec-score-content">
+                  <h3 className="sec-score-title">Security Score</h3>
+                  <div className="sec-score-bar">
+                    <div className="sec-score-fill" style={{width: '98%'}}>
+                      <span className="sec-score-value">98/100</span>
+                    </div>
+                  </div>
+                  <div className="sec-score-badges">
+                    <span className="sec-mini-badge">
+                      <CheckCircle size={14} className="me-1" />
+                      ISO 27001
+                    </span>
+                    <span className="sec-mini-badge">
+                      <CheckCircle size={14} className="me-1" />
+                      HIPAA
+                    </span>
+                    <span className="sec-mini-badge">
+                      <CheckCircle size={14} className="me-1" />
+                      SOC 2 Type II
+                    </span>
+                    <span className="sec-mini-badge">
+                      <CheckCircle size={14} className="me-1" />
+                      GDPR
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="sec-features-grid">
+            <div className="sec-feature-card sec-encryption">
+              <div className="sec-card-glow"></div>
+              <div className="sec-feature-header">
+                <div className="sec-feature-icon-wrapper">
+                  <Lock size={30} />
+                  <div className="sec-icon-float">
+                    <span className="sec-floating-bit">256</span>
+                    <span className="sec-floating-bit">AES</span>
+                    <span className="sec-floating-bit">RSA</span>
+                  </div>
+                </div>
+                <h4 className="sec-feature-title">Military-Grade Encryption</h4>
+              </div>
+              <p className="sec-feature-description">
+                256-bit AES encryption for data at rest and TLS 1.3 for data in transit
+              </p>
+              <div className="sec-feature-details">
+                <div className="sec-detail-item">
+                  <Key size={16} />
+                  <span>End-to-end encrypted</span>
+                </div>
+                <div className="sec-detail-item">
+                  <Lock size={16} />
+                  <span>Zero-knowledge architecture</span>
+                </div>
+                <div className="sec-detail-item">
+                  <Shield size={16} />
+                  <span>Quantum-resistant algorithms</span>
+                </div>
+              </div>
+              <div className="sec-live-indicator">
+                <span className="sec-live-dot"></span>
+                <span className="sec-live-text">Active Protection</span>
+              </div>
+            </div>
+
+            <div className="sec-feature-card sec-infrastructure">
+              <div className="sec-card-glow"></div>
+              <div className="sec-feature-header">
+                <div className="sec-feature-icon-wrapper">
+                  <Database size={30} />
+                  <div className="sec-data-flow">
+                    <div className="sec-flow-line"></div>
+                    <div className="sec-flow-line"></div>
+                    <div className="sec-flow-line"></div>
+                  </div>
+                </div>
+                <h4 className="sec-feature-title">Secure Infrastructure</h4>
+              </div>
+              <p className="sec-feature-description">
+                Enterprise-grade cloud infrastructure with multiple redundancy layers
+              </p>
+              <div className="sec-infra-stats">
+                <div className="sec-stat-item">
+                  <h5>99.99%</h5>
+                  <span>Uptime SLA</span>
+                </div>
+                <div className="sec-stat-item">
+                  <h5>3</h5>
+                  <span>Data Centers</span>
+                </div>
+                <div className="sec-stat-item">
+                  <h5>24/7</h5>
+                  <span>Monitoring</span>
+                </div>
+              </div>
+              <div className="sec-backup-visual">
+                <div className="sec-server-icon sec-primary">
+                  <Server size={20} />
+                </div>
+                <div className="sec-sync-lines">
+                  <div className="sec-sync-line"></div>
+                  <div className="sec-sync-line"></div>
+                </div>
+                <div className="sec-server-icon sec-backup">
+                  <HardDrive size={20} />
+                </div>
+                <div className="sec-server-icon sec-backup">
+                  <HardDrive size={20} />
+                </div>
+              </div>
+            </div>
+
+            <div className="sec-feature-card sec-access">
+              <div className="sec-card-glow"></div>
+              <div className="sec-feature-header">
+                <div className="sec-feature-icon-wrapper">
+                  <UserCheck size={30} />
+                  <div className="sec-auth-bubble">
+                    <Fingerprint size={16} />
+                  </div>
+                </div>
+                <h4 className="sec-feature-title">Advanced Authentication</h4>
+              </div>
+              <p className="sec-feature-description">
+                Multi-layered authentication system with biometric support
+              </p>
+              <div className="sec-auth-methods">
+                <div className="sec-auth-method">
+                  <Smartphone size={20} />
+                  <span>2FA/MFA</span>
+                </div>
+                <div className="sec-auth-method">
+                  <Fingerprint size={20} />
+                  <span>Biometric</span>
+                </div>
+                <div className="sec-auth-method">
+                  <Key size={20} />
+                  <span>SSO</span>
+                </div>
+                <div className="sec-auth-method">
+                  <ShieldCheck size={20} />
+                  <span>Passkeys</span>
+                </div>
+              </div>
+              <div className="sec-session-info">
+                <div className="sec-session-bar">
+                  <div className="sec-session-fill"></div>
+                </div>
+                <span className="sec-session-text">Session expires in 30 min</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="sec-trust-section mt-5">
+            <div className="row align-items-center">
+              <div className="col-lg-6">
+                <h3 className="sec-trust-title">Trusted by Healthcare Leaders</h3>
+                <div className="sec-trust-stats">
+                  <div className="sec-trust-stat">
+                    <h4>2M+</h4>
+                    <span>Secure Transactions Daily</span>
+                  </div>
+                  <div className="sec-trust-stat">
+                    <h4>0</h4>
+                    <span>Security Breaches</span>
+                  </div>
+                  <div className="sec-trust-stat">
+                    <h4>256-bit</h4>
+                    <span>Encryption Standard</span>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="sec-certification-showcase">
+                  <div className="sec-cert-card">
+                    <Globe size={40} className="sec-cert-icon" />
+                    <h5>Global Standards</h5>
+                    <p>Compliant with international healthcare regulations</p>
+                  </div>
+                  <div className="sec-cert-card">
+                    <Shield size={40} className="sec-cert-icon" />
+                    <h5>24/7 Protection</h5>
+                    <p>Round-the-clock security monitoring and threat detection</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+
+        <div className="sec-bg-elements">
+          <div className="sec-floating-shield sec-shield-1">
+            <Shield size={60} />
+          </div>
+          <div className="sec-floating-shield sec-shield-2">
+            <Lock size={40} />
+          </div>
+          <div className="sec-floating-shield sec-shield-3">
+            <Key size={50} />
+          </div>
+        </div>
+      </section> */}
 
       {/* Live Demo Section */}
       <section id="live-demo" className="live-demo-section py-5 animate-section">
@@ -1689,6 +2228,160 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Future Roadmap Section  */}
+<section id="future-roadmap" className="future-roadmap-section py-5 animate-section">
+  <div className="container py-5">
+    <div className="text-center mb-5">
+      <span className="section-badge">FUTURE VISION</span>
+      <h2 className="section-title mt-3">
+        Shaping the Future of
+        <span className="gradient-text d-block">Digital Healthcare</span>
+      </h2>
+      <p className="section-subtitle">
+        Our ambitious roadmap to revolutionize global healthcare accessibility
+      </p>
+    </div>
+
+    <div className="roadmap-container">
+      <div className="roadmap-section vision-expansion">
+        <div className="row align-items-center g-5">
+          <div className="col-lg-6">
+            <div className="roadmap-content">
+              <h3 className="roadmap-title">
+                <TrendingUp className="me-2" size={28} />
+                Vision & Expansion
+              </h3>
+              
+              <div className="timeline-container mt-4">
+                <div className="timeline-item active">
+                  <div className="timeline-year">2026</div>
+                  <div className="timeline-content">
+                    <h5>Foundation Year</h5>
+                    <p>Launch core platform with 10K+ users</p>
+                  </div>
+                </div>
+                
+                <div className="timeline-item">
+                  <div className="timeline-year">2027</div>
+                  <div className="timeline-content">
+                    <h5>AI Integration</h5>
+                    <p>Advanced diagnostics & predictive health</p>
+                  </div>
+                </div>
+                
+                <div className="timeline-item">
+                  <div className="timeline-year">2028</div>
+                  <div className="timeline-content">
+                    <h5>Global Expansion</h5>
+                    <p>Launch in 15+ countries</p>
+                  </div>
+                </div>
+                
+                <div className="timeline-item">
+                  <div className="timeline-year">2029</div>
+                  <div className="timeline-content">
+                    <h5>Ecosystem Leader</h5>
+                    <p>1M+ active users, full health ecosystem</p>
+                  </div>
+                </div>
+                
+                <div className="timeline-item">
+                  <div className="timeline-year">2030</div>
+                  <div className="timeline-content">
+                    <h5>Healthcare Revolution</h5>
+                    <p>Setting new standards in digital health</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="col-lg-6">
+            <div className="expansion-visuals">
+              <div className="expansion-card">
+                <h4><Globe className="me-2" size={24} />International Expansion</h4>
+                <div className="world-map-container">
+                  <div className="map-stats">
+                    <div className="stat-item">
+                      <span className="stat-number">50+</span>
+                      <span className="stat-label">Target Countries</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-number">25+</span>
+                      <span className="stat-label">Languages</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-number">100M+</span>
+                      <span className="stat-label">Potential Users</span>
+                    </div>
+                  </div>
+                  <div className="region-list">
+                    <div className="region-item active">
+                      <span className="region-dot"></span>
+                      South Asia - Q1 2025
+                    </div>
+                    <div className="region-item">
+                      <span className="region-dot"></span>
+                      Southeast Asia - Q3 2025
+                    </div>
+                    <div className="region-item">
+                      <span className="region-dot"></span>
+                      Middle East - Q1 2026
+                    </div>
+                    <div className="region-item">
+                      <span className="region-dot"></span>
+                      Africa - Q3 2026
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="feature-pipeline mt-4">
+                <h4><Zap className="me-2" size={24} />Upcoming Features</h4>
+                <div className="feature-cards">
+                  <div className="pipeline-card">
+                    <div className="card-icon">
+                      <Brain size={20} />
+                    </div>
+                    <h6>AI Health Assistant</h6>
+                    <p>24/7 personalized health companion</p>
+                    <span className="release-tag">Q2 2025</span>
+                  </div>
+                  <div className="pipeline-card">
+                    <div className="card-icon">
+                      <Watch size={20} />
+                    </div>
+                    <h6>Wearable Integration</h6>
+                    <p>Real-time health monitoring</p>
+                    <span className="release-tag">Q3 2025</span>
+                  </div>
+                  <div className="pipeline-card">
+                    <div className="card-icon">
+                      <Dna size={20} />
+                    </div>
+                    <h6>Genomic Health</h6>
+                    <p>Personalized medicine based on DNA</p>
+                    <span className="release-tag">Q1 2026</span>
+                  </div>
+                  <div className="pipeline-card">
+                    <div className="card-icon">
+                      <Smartphone size={20} />
+                    </div>
+                    <h6>AR Consultations</h6>
+                    <p>Augmented reality medical exams</p>
+                    <span className="release-tag">Q4 2026</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Interactive Health Tools */}
       <section id="health-tools" className="health-tools-section py-5 animate-section">
