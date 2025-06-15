@@ -237,7 +237,7 @@
   padding: 5px;
   box-shadow: 0 20px 100px rgba(0, 0, 0, 0.3);
   position: relative;
-  background: linear-gradient(to bottom, transparent 50%, rgba(102, 126, 234, 0.1) 50%);
+  background: linear-gradient(to bottom, transparent 50%, rgba(12, 12, 12, 0.1) 50%);
 }
 
 .device-screen {
