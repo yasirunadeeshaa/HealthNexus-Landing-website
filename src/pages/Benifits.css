@@ -116,3 +116,776 @@
           margin-bottom: 15px;
           color: #4a5568;
         }
+/* =========================================== */
+      .vb-section {
+  position: relative;
+  background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+  overflow: hidden;
+}
+
+/* Background Pattern */
+.vb-bg-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vb-pattern-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.03;
+}
+
+.vb-circle-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #6366F1 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  animation: vb-float 20s ease-in-out infinite;
+}
+
+.vb-circle-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #EC4899 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  animation: vb-float 25s ease-in-out infinite reverse;
+}
+
+.vb-circle-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #10B981 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  animation: vb-float 30s ease-in-out infinite;
+}
+
+/* Section Header */
+.vb-section-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  animation: vb-badge-glow 2s ease-in-out infinite;
+}
+
+.vb-section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.vb-gradient-text {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.vb-section-subtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+/* Stats Row */
+.vb-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.vb-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6366F1 0%, #EC4899 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.vb-stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+.vb-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.vb-stat-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #6366F1;
+}
+
+.vb-stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6366F1 0%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.vb-stat-label {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Partner Cards Grid */
+.vb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-partner-card {
+  background: white;
+  border-radius: 24px;
+  padding: 0px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.vb-partner-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
+}
+
+.vb-card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.vb-partner-card:hover .vb-card-glow {
+  opacity: 1;
+}
+
+/* Card Header */
+.vb-card-header {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f3f4f6 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.vb-icon-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.vb-icon-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border-radius: 20px;
+  opacity: 0.1;
+  transition: all 0.3s ease;
+}
+
+.vb-partner-card:hover .vb-icon-bg {
+  opacity: 0.2;
+  transform: scale(1.1);
+}
+
+.vb-icon-wrapper svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6366F1;
+  z-index: 1;
+}
+
+.vb-icon-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 20px;
+  animation: vb-pulse 2s ease-out infinite;
+}
+
+.vb-header-content {
+  flex: 1;
+}
+
+.vb-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.vb-partner-count {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.vb-growth-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 16px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Benefits Section */
+.vb-benefits-section {
+  padding: 2rem;
+  width: 100%;
+}
+
+.vb-benefit-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: #f9fafb;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.vb-benefit-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #6366F1 0%, #EC4899 100%);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.vb-benefit-item:hover {
+  background: #f3f4f6;
+  transform: translateX(5px);
+}
+
+.vb-benefit-item:hover::before {
+  transform: scaleY(1);
+}
+
+.vb-benefit-icon {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #6366F1;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+.vb-benefit-content {
+  flex: 1;
+}
+
+.vb-benefit-content h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.vb-benefit-content p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Metrics and Indicators */
+.vb-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.vb-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6366F1;
+}
+
+.vb-metric-label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.vb-progress {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.vb-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366F1 0%, #EC4899 100%);
+  border-radius: 3px;
+  animation: vb-progress-fill 2s ease-out;
+}
+
+.vb-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 12px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.vb-status-dot {
+  width: 6px;
+  height: 6px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: vb-blink 2s ease-in-out infinite;
+}
+
+.vb-time-saved {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #059669;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.vb-integration-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6366F1;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* CTA Section */
+.vb-cta-section {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f3f4f6 100%);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.vb-cta-button {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.vb-cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  transition: left 0.6s ease;
+}
+
+.vb-cta-button:hover::before {
+  left: 100%;
+}
+
+.vb-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* Integration Process */
+.vb-integration-section {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  margin-top: 4rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.vb-integration-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.vb-process-timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.vb-process-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-step-icon {
+  width: 60px;
+  height: 60px;
+  background: #f3f4f6;
+  border: 3px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #9ca3af;
+  transition: all 0.3s ease;
+}
+
+.vb-process-step.vb-completed .vb-step-icon {
+  background: #10B981;
+  border-color: #10B981;
+  color: white;
+}
+
+.vb-process-step.vb-active .vb-step-icon {
+  background: white;
+  border-color: #6366F1;
+  color: #6366F1;
+  box-shadow: 0 0 0 8px rgba(99, 102, 241, 0.1);
+  animation: vb-active-pulse 2s ease-in-out infinite;
+}
+
+.vb-process-step h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.vb-process-step p {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.vb-step-time {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.vb-process-connector {
+  flex: 1;
+  height: 3px;
+  background: #e5e7eb;
+  position: relative;
+  margin: 0 -20px;
+  margin-bottom: 80px;
+}
+
+.vb-process-connector::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #10B981;
+  transform-origin: left;
+  transform: scaleX(0.5);
+  animation: vb-connector-fill 2s ease-out;
+}
+
+/* Main CTA */
+.vb-cta-main {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 3rem;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border-radius: 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.vb-cta-main::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: vb-rotate 30s linear infinite;
+}
+
+.vb-cta-main h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-cta-main p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-main-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 16px 32px;
+  background: white;
+  color: #6366F1;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-main-cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Partner-specific styles */
+.vb-pharmacy .vb-icon-wrapper svg,
+.vb-pharmacy .vb-benefit-icon {
+  color: #6366F1;
+}
+
+.vb-labs .vb-icon-wrapper svg,
+.vb-labs .vb-benefit-icon {
+  color: #EC4899;
+}
+
+.vb-insurance .vb-icon-wrapper svg,
+.vb-insurance .vb-benefit-icon {
+  color: #10B981;
+}
+
+.vb-hospitals .vb-icon-wrapper svg,
+.vb-hospitals .vb-benefit-icon {
+  color: #F59E0B;
+}
+
+/* Animations */
+@keyframes vb-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes vb-badge-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(99, 102, 241, 0.5);
+  }
+}
+
+@keyframes vb-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes vb-progress-fill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes vb-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes vb-active-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(99, 102, 241, 0.05);
+  }
+}
+
+@keyframes vb-connector-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes vb-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .vb-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .vb-process-timeline {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .vb-process-connector {
+    width: 3px;
+    height: 60px;
+    margin: -20px auto;
+  }
+  
+  .vb-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .vb-section-title {
+    font-size: 2rem;
+  }
+  
+  .vb-stat-value {
+    font-size: 2rem;
+  }
+  
+  .vb-cta-main h3 {
+    font-size: 1.75rem;
+  }
+  
+  .vb-benefit-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .vb-benefit-icon {
+    margin: 0 auto;
+  }
+}
