@@ -163,17 +163,21 @@
       
         /* Services Quick Access */
         .services-quick {
-          background: #f8f9fa;
+          background:rgba(255, 255, 255, 0.1);
         }
 
         .services-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 1rem;
+          padding-right: 30px;
+          margin-top: -20px;
+          margin-bottom: -30px;
+          
         }
 
         .service-pill {
-          background: white;
+          background: rgb(255, 255, 255,0.8);
           border-radius: 50px;
           padding: 1rem 1.5rem;
           display: flex;
@@ -182,6 +186,8 @@
           transition: all 0.3s ease;
           cursor: pointer;
           border: 2px solid transparent;
+          border-color: #ffffff;
+          box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
         }
 
         .service-pill:hover {
