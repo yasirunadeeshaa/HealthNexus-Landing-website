@@ -172,8 +172,8 @@
   display: inline-flex;
   align-items: center;
   padding: 10px 24px;
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgb(90, 74, 121);
   border-radius: 50px;
   font-size: 0.875rem;
   font-weight: 600;

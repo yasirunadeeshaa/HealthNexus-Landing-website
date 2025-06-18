@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import { Link } from 'react-router-dom';
 import mainImage from '../assets/doctor1.jpg';
 import logo from '../assets/logo.png';
-import { Calendar,Watch,Dna,Home,Settings,Sparkles,Timer, Rocket,Database,Cpu,AlertTriangle,Building2,Users2, Video,Wifi,ChevronLeft,Send, FileText, Shield, Heart, Activity, Phone, Check, Star, ArrowRight, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap,  Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
+import { Calendar,Watch,Dna,Home,Settings,Sparkles,Timer, Rocket,Database,Cpu,AlertTriangle,Building2,Users2, Video,Wifi,ChevronLeft,Send, FileText, Shield, Heart, Activity, Phone, Check, Star, Globe, Smartphone, CreditCard, UserCheck, Brain, Clock, Users, Award, Zap,  Monitor, Pill, Stethoscope, MessageSquare, BarChart, AlertCircle, RefreshCw, Clipboard, UserPlus, Search, DollarSign, FileCheck, Bell, Camera, Mic, Share2, ChevronRight, TrendingUp, Package, HeartHandshake, Building,CheckCircle, XCircle } from 'lucide-react';
 import './Main.css'
 import './Journuy.css'; // Custom styles for the landing page
 import './EmergencySection.css'; // Custom styles for the landing page
@@ -523,9 +523,6 @@ const LandingPage = () => {
           <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`}>
             <ul className="navbar-nav ms-auto align-items-center">
               <li className="nav-item">
-                <a className="nav-link nav-link-animated px-3" href="#features">Features</a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#detailed-features">Capabilities</a>
               </li>
               <li className="nav-item">
@@ -535,13 +532,13 @@ const LandingPage = () => {
                 <a className="nav-link nav-link-animated px-3" href="#user-journey">How it Works</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link nav-link-animated px-3" href="#security">Security</a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#comparison">Comparison</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#future-roadmap">RoadMap</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link nav-link-animated px-3" href="#features">Features</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link nav-link-animated px-3" href="#health-tools">Tools</a>
@@ -797,214 +794,6 @@ const LandingPage = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Benefits Comparison Section */}
-      <section id="benefits" className="benefits-comparison py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">BENEFITS</span>
-            <h2 className="section-title mt-3">
-              Transform Healthcare Experience
-              <span className="gradient-text d-block">For Everyone</span>
-            </h2>
-          </div>
-
-          <div className="comparison-grid">
-            <div className="benefit-column patients">
-              <h3 className="text-center mb-4">
-                <HeartHandshake className="me-2" />
-                For Patients
-              </h3>
-              <ul className="benefit-list">
-                {patientBenefits.map((benefit, idx) => (
-                  <li key={idx} className={`benefit-item ${isVisible.benefits ? 'fade-in-left' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
-                    <div className="benefit-check">
-                      <Check size={16} />
-                    </div>
-                    <div>
-                      <h6 className="mb-1">{benefit.title}</h6>
-                      <p className="text-muted mb-0 small">{benefit.description}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="benefit-column doctors">
-              <h3 className="text-center mb-4">
-                <Stethoscope className="me-2" />
-                For Doctors
-              </h3>
-              <ul className="benefit-list">
-                {doctorBenefits.map((benefit, idx) => (
-                  <li key={idx} className={`benefit-item ${isVisible.benefits ? 'fade-in-right' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
-                    <div className="benefit-check">
-                      <Check size={16} />
-                    </div>
-                    <div>
-                      <h6 className="mb-1">{benefit.title}</h6>
-                      <p className="text-muted mb-0 small">{benefit.description}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* User Journey Section */}
-      <section id="user-journey" className="section py-5 ">
-        {/* Animated Background Elements */}
-        
-
-        <div className="container-fluid py-5">
-          {/* Section Header */}
-          <div className="text-center mb-5">
-            <span className="uj-section-badge">
-              <Sparkles size={16} className="me-1" />
-              USER JOURNEY
-            </span>
-            <h2 className="uj-section-title mt-3">
-              Experience the Seamless
-              <span className="uj-gradient-text d-block">Healthcare Journey</span>
-            </h2>
-            <p className="uj-section-subtitle">
-              From sign-up to continuous care, every step is designed for your convenience
-            </p>
-          </div>
-
-          {/* Enhanced Journey Tabs */}
-          <div className="uj-tabs-wrapper">
-            <div className="uj-tabs-container">
-              <button
-                className={`uj-tab ${activeJourney === 'patient' ? 'uj-active' : ''}`}
-                onClick={() => setActiveJourney('patient')}
-              >
-                <div className="uj-tab-icon">
-                  <Heart size={20} />
-                </div>
-                <span className="uj-tab-text">Patient Journey</span>
-                <div className="uj-tab-indicator"></div>
-              </button>
-              
-              <button
-                className={`uj-tab ${activeJourney === 'doctor' ? 'uj-active' : ''}`}
-                onClick={() => setActiveJourney('doctor')}
-              >
-                <div className="uj-tab-icon">
-                  <Stethoscope size={20} />
-                </div>
-                <span className="uj-tab-text">Doctor Journey</span>
-                <div className="uj-tab-indicator"></div>
-              </button>
-            </div>
-          </div>
-
-          {/* Journey Statistics */}
-          <div className="uj-stats-bar">
-            <div className="uj-stat-item">
-              <div className="uj-stat-icon">
-                <Timer size={20} />
-              </div>
-              <div className="uj-stat-content">
-                <h4>5 Minutes</h4>
-                <p>Average Setup Time</p>
-              </div>
-            </div>
-            <div className="uj-stat-item">
-              <div className="uj-stat-icon">
-                <Shield size={20} />
-              </div>
-              <div className="uj-stat-content">
-                <h4>100% Secure</h4>
-                <p>End-to-End Encrypted</p>
-              </div>
-            </div>
-            <div className="uj-stat-item">
-              <div className="uj-stat-icon">
-                <Smartphone size={20} />
-              </div>
-              <div className="uj-stat-content">
-                <h4>Mobile First</h4>
-                <p>Access Anywhere</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Timeline */}
-          <div className="uj-timeline-wrapper">
-            <div className="uj-timeline-container">
-              {/* Progress Line */}
-              <div className="uj-progress-line">
-                <div className="uj-progress-fill"></div>
-              </div>
-
-              {/* Journey Steps */}
-              {(activeJourney === 'patient' ? patientJourney : doctorJourney).map((step, idx) => (
-                <div 
-                  key={idx} 
-                  className={`uj-step ${isVisible['user-journey'] ? 'uj-visible' : ''}`}
-                  style={{ animationDelay: `${idx * 0.1}s` }}
-                >
-                  {/* Step Number with Animation */}
-                  <div className="uj-step-number-wrapper">
-                    <div className="uj-step-number">
-                      <span>{step.step}</span>
-                      <div className="uj-number-bg"></div>
-                    </div>
-                    <div className="uj-pulse-ring"></div>
-                    <div className="uj-pulse-ring uj-pulse-2"></div>
-                  </div>
-
-                  {/* Enhanced Step Card */}
-                  <div className="uj-step-card">
-                    <div className="uj-card-glow"></div>
-                    
-                    {/* Icon Section */}
-                    <div className="uj-icon-section">
-                      <div className="uj-icon-wrapper">
-                        {step.icon}
-                        <div className="uj-icon-bg"></div>
-                      </div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="uj-content-section">
-                      <h4 className="uj-step-title">{step.title}</h4>
-                      <p className="uj-step-description">{step.description}</p>
-                      
-                      {/* Additional Features */}
-                      <div className="uj-features">
-                        <span className="uj-feature-tag">
-                          <CheckCircle size={14} />
-                          Quick & Easy
-                        </span>
-                        <span className="uj-time-estimate">
-                          <Clock size={14} />
-                          {idx === 0 ? '30 sec' : idx === 1 ? '1 min' : '2-5 min'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Hover Effect */}
-                    <div className="uj-card-hover-effect"></div>
-                  </div>
-                </div>
-              ))}
-
-              {/* Navigation Arrows */}
-              <button className="uj-nav-arrow uj-nav-prev">
-                <ChevronLeft size={24} />
-              </button>
-              <button className="uj-nav-arrow uj-nav-next">
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -1348,6 +1137,237 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Benefits Comparison Section */}
+      <section id="benefits" className="benefits-comparison py-5 animate-section">
+        <div className="container py-5">
+          <div className="text-center mb-5">
+            <span className="section-badge">BENEFITS</span>
+            <h2 className="section-title mt-3">
+              Transform Healthcare Experience
+              <span className="gradient-text d-block">For Everyone</span>
+            </h2>
+          </div>
+
+          <div className="comparison-grid">
+            <div className="benefit-column patients">
+              <h3 className="text-center mb-4">
+                <HeartHandshake className="me-2" />
+                For Patients
+              </h3>
+              <ul className="benefit-list">
+                {patientBenefits.map((benefit, idx) => (
+                  <li key={idx} className={`benefit-item ${isVisible.benefits ? 'fade-in-left' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
+                    <div className="benefit-check">
+                      <Check size={16} />
+                    </div>
+                    <div>
+                      <h6 className="mb-1">{benefit.title}</h6>
+                      <p className="text-muted mb-0 small">{benefit.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="benefit-column doctors">
+              <h3 className="text-center mb-4">
+                <Stethoscope className="me-2" />
+                For Doctors
+              </h3>
+              <ul className="benefit-list">
+                {doctorBenefits.map((benefit, idx) => (
+                  <li key={idx} className={`benefit-item ${isVisible.benefits ? 'fade-in-right' : ''}`} style={{ animationDelay: `${idx * 0.1}s` }}>
+                    <div className="benefit-check">
+                      <Check size={16} />
+                    </div>
+                    <div>
+                      <h6 className="mb-1">{benefit.title}</h6>
+                      <p className="text-muted mb-0 small">{benefit.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* User Journey Section */}
+      <section id="user-journey" className="section py-5 animate-section">
+        {/* Animated Background Elements */}
+        <div className="uj-bg-wrapper">
+          <div className="uj-gradient-orb uj-orb-1"></div>
+          <div className="uj-gradient-orb uj-orb-2"></div>
+          <div className="uj-gradient-orb uj-orb-3"></div>
+          
+          {/* Animated Particles */}
+          <div className="uj-particles">
+            {[...Array(15)].map((_, i) => (
+              <div key={i} className="uj-particle" style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${20 + Math.random() * 10}s`
+              }}></div>
+            ))}
+          </div>
+
+          {/* Grid Pattern */}
+          <div className="uj-grid-pattern"></div>
+        </div>
+
+        {/* Content Wrapper with proper z-index */}
+        <div className="uj-content-wrapper">
+          <div className="container-fluid py-5">
+            {/* Section Header */}
+            <div className="text-center mb-5">
+              <span className="uj-section-badge">
+                <Sparkles size={16} className="me-1" />
+                USER JOURNEY
+              </span>
+              <h2 className="uj-section-title mt-3">
+                Experience the Seamless
+                <span className="uj-gradient-text d-block">Healthcare Journey</span>
+              </h2>
+              <p className="uj-section-subtitle">
+                From sign-up to continuous care, every step is designed for your convenience
+              </p>
+            </div>
+
+            {/* Enhanced Journey Tabs */}
+            <div className="uj-tabs-wrapper">
+              <div className="uj-tabs-container">
+                <button
+                  className={`uj-tab ${activeJourney === 'patient' ? 'uj-active' : ''}`}
+                  onClick={() => setActiveJourney('patient')}
+                >
+                  <div className="uj-tab-icon">
+                    <Heart size={20} />
+                  </div>
+                  <span className="uj-tab-text">Patient Journey</span>
+                  <div className="uj-tab-indicator"></div>
+                </button>
+                
+                <button
+                  className={`uj-tab ${activeJourney === 'doctor' ? 'uj-active' : ''}`}
+                  onClick={() => setActiveJourney('doctor')}
+                >
+                  <div className="uj-tab-icon">
+                    <Stethoscope size={20} />
+                  </div>
+                  <span className="uj-tab-text">Doctor Journey</span>
+                  <div className="uj-tab-indicator"></div>
+                </button>
+              </div>
+            </div>
+
+            {/* Journey Statistics */}
+            <div className="uj-stats-bar">
+              <div className="uj-stat-item">
+                <div className="uj-stat-icon">
+                  <Timer size={20} />
+                </div>
+                <div className="uj-stat-content">
+                  <h4>5 Minutes</h4>
+                  <p>Average Setup Time</p>
+                </div>
+              </div>
+              <div className="uj-stat-item">
+                <div className="uj-stat-icon">
+                  <Shield size={20} />
+                </div>
+                <div className="uj-stat-content">
+                  <h4>100% Secure</h4>
+                  <p>End-to-End Encrypted</p>
+                </div>
+              </div>
+              <div className="uj-stat-item">
+                <div className="uj-stat-icon">
+                  <Smartphone size={20} />
+                </div>
+                <div className="uj-stat-content">
+                  <h4>Mobile First</h4>
+                  <p>Access Anywhere</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Timeline */}
+            <div className="uj-timeline-wrapper">
+              <div className="uj-timeline-container">
+                {/* Progress Line */}
+                <div className="uj-progress-line">
+                  <div className="uj-progress-fill"></div>
+                </div>
+
+                {/* Journey Steps */}
+                {(activeJourney === 'patient' ? patientJourney : doctorJourney).map((step, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`uj-step ${isVisible['user-journey'] ? 'uj-visible' : ''}`}
+                    style={{ animationDelay: `${idx * 0.1}s` }}
+                  >
+                    {/* Step Number with Animation */}
+                    <div className="uj-step-number-wrapper">
+                      <div className="uj-step-number">
+                        <span>{step.step}</span>
+                        <div className="uj-number-bg"></div>
+                      </div>
+                      <div className="uj-pulse-ring"></div>
+                      <div className="uj-pulse-ring uj-pulse-2"></div>
+                    </div>
+
+                    {/* Enhanced Step Card */}
+                    <div className="uj-step-card">
+                      <div className="uj-card-glow"></div>
+                      
+                      {/* Icon Section */}
+                      <div className="uj-icon-section">
+                        <div className="uj-icon-wrapper">
+                          {step.icon}
+                          <div className="uj-icon-bg"></div>
+                        </div>
+                      </div>
+
+                      {/* Content Section */}
+                      <div className="uj-content-section">
+                        <h4 className="uj-step-title">{step.title}</h4>
+                        <p className="uj-step-description">{step.description}</p>
+                        
+                        {/* Additional Features */}
+                        <div className="uj-features">
+                          <span className="uj-feature-tag">
+                            <CheckCircle size={14} />
+                            Quick & Easy
+                          </span>
+                          <span className="uj-time-estimate">
+                            <Clock size={14} />
+                            {idx === 0 ? '30 sec' : idx === 1 ? '1 min' : '2-5 min'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Hover Effect */}
+                      <div className="uj-card-hover-effect"></div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Navigation Arrows (optional) */}
+                <button className="uj-nav-arrow uj-nav-prev">
+                  <ChevronLeft size={24} />
+                </button>
+                <button className="uj-nav-arrow uj-nav-next">
+                  <ChevronRight size={24} />
+                </button>
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
+      </section>
+
       {/* Live Demo Section */}
       <section id="live-demo" className="live-demo-section py-5 animate-section">
         <div className="container py-5">
@@ -1607,153 +1627,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section id="comparison" className="comparison-section py-5 animate-section">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <span className="section-badge">COMPARISON</span>
-            <h2 className="section-title mt-3">
-              Traditional Healthcare vs
-              <span className="gradient-text d-block">HealthNexus Platform</span>
-            </h2>
-          </div>
-
-          <div className="comparison-table-wrapper">
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th className="feature-col">Feature</th>
-                  <th className="traditional-col">
-                    <div className="header-content">
-                      <XCircle className="mb-2" size={32} />
-                      <h4>Traditional Healthcare</h4>
-                    </div>
-                  </th>
-                  <th className="mediflow-col">
-                    <div className="header-content">
-                      <CheckCircle className="mb-2" size={32} />
-                      <h4>HealthNexus Platform</h4>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="feature-name">
-                    <Clock className="me-2" size={20} />
-                    Appointment Booking
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">Phone calls during office hours</span>
-                    <small className="d-block text-muted">2-3 days wait time</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">24/7 instant online booking</span>
-                    <small className="d-block text-success">Book in 30 seconds</small>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">
-                    <DollarSign className="me-2" size={20} />
-                    Average Consultation Cost
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">$150-300 + Travel costs</span>
-                    <small className="d-block text-muted">Hidden fees common</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">$50-100 flat rate</span>
-                    <small className="d-block text-success">Save up to 70%</small>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">
-                    <Activity className="me-2" size={20} />
-                    Wait Time
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">45-90 minutes in waiting room</span>
-                    <small className="d-block text-muted">Plus travel time</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">0 minutes - Join instantly</span>
-                    <small className="d-block text-success">From anywhere</small>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">
-                    <FileText className="me-2" size={20} />
-                    Medical Records
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">Paper files, often lost</span>
-                    <small className="d-block text-muted">Request takes days</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">Digital, always accessible</span>
-                    <small className="d-block text-success">Instant access 24/7</small>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">
-                    <Globe className="me-2" size={20} />
-                    Doctor Access
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">Limited to local area</span>
-                    <small className="d-block text-muted">Few specialists available</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">Global specialist network</span>
-                    <small className="d-block text-success">10,000+ verified doctors</small>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">
-                    <Pill className="me-2" size={20} />
-                    Prescriptions
-                  </td>
-                  <td className="traditional">
-                    <span className="negative">Paper prescriptions</span>
-                    <small className="d-block text-muted">Visit pharmacy in person</small>
-                  </td>
-                  <td className="mediflow">
-                    <span className="positive">E-prescriptions to pharmacy</span>
-                    <small className="d-block text-success">Home delivery available</small>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="savings-calculator mt-5">
-            <div className="calculator-card">
-              <h4 className="text-center mb-4">User Annual Savings with HealthNexus</h4>
-              <div className="row g-4">
-                <div className="col-md-4">
-                  <div className="saving-item">
-                    <h3 className="saving-amount">${(calculatorInputs.doctorVisits * (calculatorInputs.visitCost - 60) * calculatorInputs.familyMembers).toLocaleString()}+</h3>
-                    <p className="saving-label">Consultation Fees</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="saving-item">
-                    <h3 className="saving-amount">{calculatorInputs.doctorVisits * calculatorInputs.familyMembers * 2} Hours</h3>
-                    <p className="saving-label">Time Saved</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="saving-item">
-                    <h3 className="saving-amount">${(calculatorInputs.doctorVisits * calculatorInputs.familyMembers * 25).toLocaleString()}+</h3>
-                    <p className="saving-label">Travel Costs</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Emergency Response Feature */}
       <section id="emergency" className="emergency-section py-5 animate-section">
         <div className="container py-5">
@@ -1943,6 +1816,154 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Comparison Table */}
+      <section id="comparison" className="comparison-section py-5 animate-section">
+        <div className="container py-5">
+          <div className="text-center mb-5">
+            <span className="section-badge">COMPARISON</span>
+            <h2 className="section-title mt-3">
+              Traditional Healthcare vs
+              <span className="gradient-text d-block">HealthNexus Platform</span>
+            </h2>
+          </div>
+
+          <div className="comparison-table-wrapper">
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  <th className="feature-col">Feature</th>
+                  <th className="traditional-col">
+                    <div className="header-content">
+                      <XCircle className="mb-2" size={32} />
+                      <h4>Traditional Healthcare</h4>
+                    </div>
+                  </th>
+                  <th className="mediflow-col">
+                    <div className="header-content">
+                      <CheckCircle className="mb-2" size={32} />
+                      <h4>HealthNexus Platform</h4>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="feature-name">
+                    <Clock className="me-2" size={20} />
+                    Appointment Booking
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">Phone calls during office hours</span>
+                    <small className="d-block text-muted">2-3 days wait time</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">24/7 instant online booking</span>
+                    <small className="d-block text-success">Book in 30 seconds</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="feature-name">
+                    <DollarSign className="me-2" size={20} />
+                    Average Consultation Cost
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">$150-300 + Travel costs</span>
+                    <small className="d-block text-muted">Hidden fees common</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">$50-100 flat rate</span>
+                    <small className="d-block text-success">Save up to 70%</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="feature-name">
+                    <Activity className="me-2" size={20} />
+                    Wait Time
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">45-90 minutes in waiting room</span>
+                    <small className="d-block text-muted">Plus travel time</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">0 minutes - Join instantly</span>
+                    <small className="d-block text-success">From anywhere</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="feature-name">
+                    <FileText className="me-2" size={20} />
+                    Medical Records
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">Paper files, often lost</span>
+                    <small className="d-block text-muted">Request takes days</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">Digital, always accessible</span>
+                    <small className="d-block text-success">Instant access 24/7</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="feature-name">
+                    <Globe className="me-2" size={20} />
+                    Doctor Access
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">Limited to local area</span>
+                    <small className="d-block text-muted">Few specialists available</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">Global specialist network</span>
+                    <small className="d-block text-success">10,000+ verified doctors</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="feature-name">
+                    <Pill className="me-2" size={20} />
+                    Prescriptions
+                  </td>
+                  <td className="traditional">
+                    <span className="negative">Paper prescriptions</span>
+                    <small className="d-block text-muted">Visit pharmacy in person</small>
+                  </td>
+                  <td className="mediflow">
+                    <span className="positive">E-prescriptions to pharmacy</span>
+                    <small className="d-block text-success">Home delivery available</small>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="savings-calculator mt-5">
+            <div className="calculator-card">
+              <h4 className="text-center mb-4">User Annual Savings with HealthNexus</h4>
+              <div className="row g-4">
+                <div className="col-md-4">
+                  <div className="saving-item">
+                    <h3 className="saving-amount">${(calculatorInputs.doctorVisits * (calculatorInputs.visitCost - 60) * calculatorInputs.familyMembers).toLocaleString()}+</h3>
+                    <p className="saving-label">Consultation Fees</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="saving-item">
+                    <h3 className="saving-amount">{calculatorInputs.doctorVisits * calculatorInputs.familyMembers * 2} Hours</h3>
+                    <p className="saving-label">Time Saved</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="saving-item">
+                    <h3 className="saving-amount">${(calculatorInputs.doctorVisits * calculatorInputs.familyMembers * 25).toLocaleString()}+</h3>
+                    <p className="saving-label">Travel Costs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* Future Roadmap Section  */}
       <section id="future-roadmap" className="future-roadmap-section py-5 animate-section">
