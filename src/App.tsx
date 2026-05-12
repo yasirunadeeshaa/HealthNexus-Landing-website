@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import Home from './pages/LandingPage';
+import Home from './MainPage';
 import ApiDocumentation from './pages/ApiDocumentation';
 
 function App() {
