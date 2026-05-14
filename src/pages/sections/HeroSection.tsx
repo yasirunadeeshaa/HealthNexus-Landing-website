@@ -4,7 +4,7 @@ import mainImage from '../../assets/doctor1.jpg';
 import {
   Calendar, Video, Zap, Clock
 } from 'lucide-react';
-import '../HeroSection.css';
+import '../styles/HeroSection.css';
 
 const HeroSection = () => {
   const [, setMousePosition] = useState({ x: 0, y: 0 });
