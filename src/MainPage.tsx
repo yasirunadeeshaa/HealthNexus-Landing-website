@@ -10,11 +10,10 @@ import VendorBenefits from './pages/sections/VendorBenefits';
 import Benefits from './pages/sections/Benefits';
 import UserJourney from './pages/sections/UserJourney';
 import LiveDemo from './pages/sections/LiveDemo';
-import HomeVisit from './pages/sections/HomeVisit';
+import HomeVisit from './pages/sections/DoorStep';
 import PricingCalculator from './pages/sections/PricingCalculator';
 import Comparison from './pages/sections/Comparison';
 import Roadmap from './pages/sections/Roadmap';
-import Features from './pages/sections/Features';
 import HealthTools from './pages/sections/HealthTools';
 import Footer from './pages/sections/Footer';
 
@@ -97,15 +96,15 @@ const LandingPage = () => {
     <div className="min-vh-100 position-relative overflow-hidden">
       <NavigationBar />
       <HeroSection />
-
+      <AIModel />
       <DetailedFeatures
         activeFeatureCategory={activeFeatureCategory}
         setActiveFeatureCategory={setActiveFeatureCategory}
         isVisible={isVisible}
       />
-      <AIModel />
       <VendorBenefits />
       <Benefits isVisible={isVisible} />
+      <HomeVisit />
       <UserJourney
         activeJourney={activeJourney}
         setActiveJourney={setActiveJourney}
@@ -115,7 +114,6 @@ const LandingPage = () => {
         activeDemo={activeDemo}
         setActiveDemo={setActiveDemo}
       />
-      <HomeVisit />
       <PricingCalculator
         calculatorInputs={calculatorInputs}
         setCalculatorInputs={setCalculatorInputs}
@@ -123,7 +121,6 @@ const LandingPage = () => {
       />
       <Comparison calculatorInputs={calculatorInputs} />
       <Roadmap />
-      <Features isVisible={isVisible} />
       <HealthTools />
       <Footer />
     </div>
