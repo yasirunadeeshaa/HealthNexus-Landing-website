@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Home from './MainPage';
-import ApiDocumentation from './pages/ApiDocumentation';
+import ApiDocumentation from './pages/sections/ApiDocumentation';
+import ComparisonPage from './pages/ComparisonPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/api-docs" element={<ApiDocumentation />} />
+        <Route path="/comparison" element={<ComparisonPage />} />
       </Routes>
     </Router>
   );

@@ -12,7 +12,6 @@ import UserJourney from './pages/sections/UserJourney';
 import LiveDemo from './pages/sections/LiveDemo';
 import HomeVisit from './pages/sections/DoorStep';
 import PricingCalculator from './pages/sections/PricingCalculator';
-import Comparison from './pages/sections/Comparison';
 import Roadmap from './pages/sections/Roadmap';
 import HealthTools from './pages/sections/HealthTools';
 import Footer from './pages/sections/Footer';
@@ -23,34 +22,13 @@ interface VisibleSections {
 
 const LandingPage = () => {
   const [isVisible, setIsVisible] = useState<VisibleSections>({});
-  const [activeJourney, setActiveJourney] = useState('patient');
   const [activeFeatureCategory, setActiveFeatureCategory] = useState('appointment');
-  const [activeDemo, setActiveDemo] = useState('video');
-  const [calculatorInputs, setCalculatorInputs] = useState({
-    doctorVisits: 6,
-    visitCost: 200,
-    emergencyVisits: 1,
-    familyMembers: 4,
-  });
 
   const statsRef = useRef<HTMLElement>(null);
   const [animatedStats, setAnimatedStats] = useState({
     users: 0, doctors: 0, appointments: 0, rating: 0,
   });
 
-  const calculateSavings = () => {
-    const traditionalCost =
-      (calculatorInputs.doctorVisits * calculatorInputs.visitCost * calculatorInputs.familyMembers) +
-      (calculatorInputs.emergencyVisits * 500 * calculatorInputs.familyMembers);
-    const mediflowCost =
-      (calculatorInputs.doctorVisits * 60 * calculatorInputs.familyMembers) +
-      (calculatorInputs.emergencyVisits * 100 * calculatorInputs.familyMembers);
-    return {
-      traditional: traditionalCost,
-      mediflow: mediflowCost,
-      savings: traditionalCost - mediflowCost,
-    };
-  };
 
   const animateStats = () => {
     const duration = 2000;
@@ -105,21 +83,9 @@ const LandingPage = () => {
       <VendorBenefits />
       <Benefits isVisible={isVisible} />
       <HomeVisit />
-      <UserJourney
-        activeJourney={activeJourney}
-        setActiveJourney={setActiveJourney}
-        isVisible={isVisible}
-      />
-      <LiveDemo
-        activeDemo={activeDemo}
-        setActiveDemo={setActiveDemo}
-      />
-      <PricingCalculator
-        calculatorInputs={calculatorInputs}
-        setCalculatorInputs={setCalculatorInputs}
-        calculateSavings={calculateSavings}
-      />
-      <Comparison calculatorInputs={calculatorInputs} />
+      <UserJourney/>
+      <LiveDemo/>
+      <PricingCalculator/>
       <Roadmap />
       <HealthTools />
       <Footer />

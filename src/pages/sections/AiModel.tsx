@@ -13,7 +13,7 @@ import {
   type ChartDataset,
 } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
-import '../AiModel.css';
+import '../styles/AiModel.css';
 
 ChartJS.register(
   CategoryScale, LinearScale, BarElement, LineElement,
