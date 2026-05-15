@@ -1,7 +1,7 @@
 import {
   XCircle, CheckCircle, Clock, DollarSign, Activity, FileText, Globe, Pill
 } from 'lucide-react';
-import '../comparison.css';
+import '../styles/comparison.css';
 
 interface CalculatorInputs {
   doctorVisits: number;
