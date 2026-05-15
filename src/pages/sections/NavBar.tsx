@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react';
 import { Zap } from 'lucide-react';
 import logo from '../../assets/logo.png';
-import '../Navigation.css';
+import '../styles/Navigation.css';
 
 interface NavItem {
   href: string;
@@ -13,7 +13,7 @@ const navItems: NavItem[] = [
   { href: '#benefits', label: 'Benefits' },
   { href: '#user-journey', label: 'How it Works' },
   { href: '#home-visit', label: 'Home Visit' },
-  { href: '#comparison', label: 'Comparison' },
+  { href: '/comparison', label: 'Comparison' },
   { href: '#future-roadmap', label: 'RoadMap' },
   { href: '#features', label: 'Features' },
   { href: '#health-tools', label: 'Tools' },
