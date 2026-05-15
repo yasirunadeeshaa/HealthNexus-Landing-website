@@ -156,7 +156,6 @@ const VendorBenefits = () => {
       id="vendor-benefits"
       style={{
         position: 'relative',
-        background: 'linear-gradient(160deg, #fafbff 0%, #ffffff 60%, #f8f9ff 10%)',
         padding: '5rem 0',
         overflow: 'hidden',
       }}
