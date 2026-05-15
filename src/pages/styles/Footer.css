@@ -1,0 +1,87 @@
+/* Footer */
+        .footer-section {
+          background: var(--dark);
+          color: white;
+        }
+
+        .footer-brand {
+          margin-bottom: 2rem;
+        }
+
+        .footer-description {
+          color: rgba(255, 255, 255, 0.7);
+          line-height: 1.6;
+        }
+
+        .social-links {
+          display: flex;
+          gap: 1rem;
+        }
+
+        .social-link {
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+          background: var(--gradient-primary);
+          transform: translateY(-3px);
+        }
+
+        .footer-title {
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+          list-style: none;
+          padding: 0;
+        }
+
+        .footer-links li {
+          margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+          color: rgba(255, 255, 255, 0.7);
+          text-decoration: none;
+          transition: all 0.3s ease;
+          position: relative;
+        }
+
+        .footer-links a:hover {
+          color: white;
+          padding-left: 10px;
+        }
+
+        .app-button {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          padding: 0.75rem;
+          width: 100%;
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+
+        .app-button:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+
+        .app-button img {
+          height: 40px;
+          width: auto;
+        }
+
+        .footer-bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.7);
+        }

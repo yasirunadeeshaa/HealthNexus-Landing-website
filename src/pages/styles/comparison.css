@@ -1,0 +1,109 @@
+/* Comparison Section */
+        .comparison-section {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .comparison-table-wrapper {
+          overflow-x: auto;
+          border-radius: 20px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table {
+          width: 100%;
+          background: white;
+          border-collapse: collapse;
+        }
+
+        .comparison-table thead {
+          background: #f8f9fa;
+        }
+
+        .comparison-table th {
+          padding: 30px;
+          text-align: center;
+          border-bottom: 2px solid #e2e8f0;
+        }
+
+        .feature-col {
+          text-align: left !important;
+          width: 30%;
+        }
+
+        .traditional-col .header-content {
+          color: #e53e3e;
+        }
+
+        .mediflow-col .header-content {
+          color: #48bb78;
+        }
+
+        .header-content h4 {
+          margin: 0;
+          font-size: 1.5rem;
+        }
+
+        .comparison-table tbody tr {
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tbody tr:hover {
+          background: #f8f9fa;
+        }
+
+        .comparison-table td {
+          padding: 25px 30px;
+        }
+
+        .feature-name {
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          color: var(--dark);
+        }
+
+        .traditional {
+          text-align: center;
+        }
+
+        .mediflow {
+          text-align: center;
+        }
+
+        .negative {
+          color: #e53e3e;
+          font-weight: 600;
+        }
+
+        .positive {
+          color: #48bb78;
+          font-weight: 600;
+        }
+
+        .savings-calculator {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .calculator-card {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 30px;
+          padding: 50px;
+          box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .saving-item {
+          text-align: center;
+        }
+
+        .saving-amount {
+          font-size: 2.5rem;
+          font-weight: 800;
+          margin-bottom: 10px;
+        }
+
+        .saving-label {
+          font-size: 1.1rem;
+          opacity: 0.9;
+        }
