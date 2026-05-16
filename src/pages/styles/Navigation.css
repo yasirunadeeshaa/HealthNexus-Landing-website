@@ -52,12 +52,12 @@
   pointer-events: none;
 }
 
-.pnav-header.pnav-elevated {
+/* .pnav-header.pnav-elevated {
   height: var(--pnav-height-elevated);
   background: var(--pnav-glass-bg-elevated);
   border-bottom-color: var(--pnav-border-elevated);
   box-shadow: var(--pnav-shadow-elevated);
-}
+} */
 
 /* ── Scroll Progress Bar ── */
 .pnav-progress-track {
@@ -128,7 +128,7 @@
   animation: iconGlow 3s ease-in-out infinite;
 }
 
-@keyframes iconGlow {
+/* @keyframes iconGlow {
   0%, 100% { transform: rotate(0deg) scale(1); opacity: 0; }
   50%       { transform: rotate(180deg) scale(1.1); opacity: 1; }
 }
@@ -138,7 +138,7 @@
   box-shadow:
     0 12px 32px rgba(102, 126, 234, 0.55),
     0 0 0 2px rgba(255, 255, 255, 0.28) inset;
-}
+} */
 
 .brand-icon {
   width: 90px;
