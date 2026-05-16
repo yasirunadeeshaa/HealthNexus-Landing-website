@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from './pages/sections/NavBar';
 import HeroSection from './pages/sections/HeroSection';
 import DetailedFeatures from './pages/sections/DetailedFeatures';
-import AIModel from './pages/sections/AiModel';
 import VendorBenefits from './pages/sections/VendorBenefits';
 import Benefits from './pages/sections/Benefits';
 import UserJourney from './pages/sections/UserJourney';
@@ -15,6 +14,10 @@ import PricingCalculator from './pages/sections/PricingCalculator';
 import Roadmap from './pages/sections/Roadmap';
 import HealthTools from './pages/sections/HealthTools';
 import Footer from './pages/sections/Footer';
+import AiModelSection from './pages/sections/AiModelSection';
+
+// import DiabetesPredictionSection from './pages/DiabetesPredictionSection';
+// import DiseaseRiskPredictionSection from './pages/DiseaseRiskPredictionSection';
 
 interface VisibleSections {
   [key: string]: boolean;
@@ -74,7 +77,9 @@ const LandingPage = () => {
     <div className="min-vh-100 position-relative overflow-hidden">
       <NavigationBar />
       <HeroSection />
-      <AIModel />
+      <AiModelSection />
+      {/* <DiabetesPredictionSection />
+      <DiseaseRiskPredictionSection /> */}
       <DetailedFeatures
         activeFeatureCategory={activeFeatureCategory}
         setActiveFeatureCategory={setActiveFeatureCategory}
