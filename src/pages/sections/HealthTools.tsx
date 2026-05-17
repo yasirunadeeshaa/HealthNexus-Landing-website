@@ -1,8 +1,32 @@
 import { useState } from 'react';
-import { Activity, Brain, Heart, Sparkles, Info, Check } from 'lucide-react';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+/* ─── Shared token palette (same as VendorBenefits) ─── */
+const T = {
+  blue:         '#1a5fa8',
+  blueL:        'rgba(26,95,168,.12)',
+  blueBorder:   'rgba(26,95,168,.2)',
+  teal:         '#0d7a5f',
+  tealL:        'rgba(13,122,95,.12)',
+  tealBorder:   'rgba(13,122,95,.2)',
+  amber:        '#b85e0c',
+  amberL:       'rgba(184,94,12,.15)',
+  amberBorder:  'rgba(184,94,12,.2)',
+  red:          '#d94f4f',
+  redL:         'rgba(217,79,79,.12)',
+  redBorder:    'rgba(217,79,79,.2)',
+  purple:       '#6b3fa0',
+  purpleL:      'rgba(107,63,160,.12)',
+  purpleBorder: 'rgba(107,63,160,.2)',
+  pink:         '#993556',
+  pinkL:        'rgba(153,53,86,.12)',
+  pinkBorder:   'rgba(153,53,86,.2)',
+  gradBlue:     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  gradTeal:     'linear-gradient(135deg, #0d7a5f 0%, #1a5fa8 100%)',
+  gradAmber:    'linear-gradient(135deg, #b85e0c 0%, #d94f4f 100%)',
+  gradPink:     'linear-gradient(135deg, #993556 0%, #6b3fa0 100%)',
+};
 
+/* ─── Types ─── */
 type BMICategory = 'Underweight' | 'Normal Weight' | 'Overweight' | 'Obese';
 
 const SYMPTOMS = ['Headache', 'Fever', 'Cough', 'Fatigue', 'Nausea', 'Sore throat', 'Body aches'] as const;
@@ -26,53 +50,39 @@ const RISK_FACTORS = [
   'Sedentary lifestyle',
 ] as const;
 
-const RISK_LABELS   = ['Low Risk', 'Low-Moderate Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
-const RISK_SUBS     = ['Keep up the healthy lifestyle!', 'Consider a check-up soon.', 'Consult your doctor.', 'Seek medical advice promptly.', 'Please see a doctor immediately.'];
-const RISK_WIDTHS   = [10, 28, 50, 72, 90];
+const RISK_LABELS = ['Low Risk', 'Low-Moderate Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
+const RISK_SUBS   = ['Keep up the healthy lifestyle!', 'Consider a check-up soon.', 'Consult your doctor.', 'Seek medical advice promptly.', 'Please see a doctor immediately.'];
+const RISK_WIDTHS = [10, 28, 50, 72, 90];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-const bmiBadgeStyle = (cat: BMICategory): { background: string; color: string } => {
-  if (cat === 'Normal Weight') return { background: '#E1F5EE', color: '#0F6E56' };
-  if (cat === 'Obese')         return { background: '#FCEBEB', color: '#A32D2D' };
-  return                                { background: '#FAEEDA', color: '#854F0B' };
+/* ─── Helpers ─── */
+const bmiBadge = (cat: BMICategory): { color: string; bg: string; border: string } => {
+  if (cat === 'Normal Weight') return { color: T.teal,  bg: T.tealL,  border: T.tealBorder };
+  if (cat === 'Obese')         return { color: T.red,   bg: T.redL,   border: T.redBorder };
+  return                                { color: T.amber, bg: T.amberL, border: T.amberBorder };
 };
 
 const riskFillColor = (total: number): string => {
-  if (total <= 1) return 'linear-gradient(90deg, #68d391, #38a169)';
-  if (total <= 2) return 'linear-gradient(90deg, #FAC775, #EF9F27)';
-  return                 'linear-gradient(90deg, #F09595, #E24B4A)';
+  if (total <= 1) return T.gradTeal;
+  if (total <= 2) return T.gradAmber;
+  return T.gradAmber;
 };
 
 const bmiMarkerLeft = (bmi: number): string =>
   `${Math.min(100, Math.max(0, ((bmi - 10) / 35) * 100)).toFixed(1)}%`;
 
-// ─── SliderRow ────────────────────────────────────────────────────────────────
-
+/* ─── SliderRow ─── */
 interface SliderRowProps {
-  label: string;
-  subLabel: string;
-  value: number;
-  min: number;
-  max: number;
-  displayValue: string;
-  onChange: (v: number) => void;
+  label: string; value: number; min: number; max: number;
+  displayValue: string; onChange: (v: number) => void;
 }
-
-const SliderRow = ({ label, subLabel, value, min, max, displayValue, onChange }: SliderRowProps) => (
+const SliderRow = ({ label, value, min, max, displayValue, onChange }: SliderRowProps) => (
   <div style={{ marginBottom: 18 }}>
-    <span style={{ fontSize: 12, fontWeight: 500, color: '#4a5568', display: 'block', marginBottom: 7 }}>
-      {label}
-    </span>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
-      <span style={{ fontSize: 12, color: '#9ca3af' }}>{subLabel}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+      <span style={{ fontSize: 13, color: '#4a5568', fontWeight: 600 }}>{label}</span>
       <span style={{
-        fontSize: 11, fontWeight: 600, color: '#fff',
-        background: 'linear-gradient(135deg, #667eea, #764ba2)',
-        padding: '3px 12px', borderRadius: 20, whiteSpace: 'nowrap',
-      }}>
-        {displayValue}
-      </span>
+        fontSize: 12, fontWeight: 700, color: '#fff',
+        background: T.gradBlue, padding: '3px 12px', borderRadius: 20, whiteSpace: 'nowrap',
+      }}>{displayValue}</span>
     </div>
     <input
       type="range"
@@ -86,153 +96,238 @@ const SliderRow = ({ label, subLabel, value, min, max, displayValue, onChange }:
   </div>
 );
 
-// ─── HealthTools ──────────────────────────────────────────────────────────────
+/* ─── MetricBadge (same as VendorBenefits MetricRow pattern) ─── */
+const MetricBadge = ({ value, label, color, bg, border }: {
+  value: string; label: string; color: string; bg: string; border: string;
+}) => (
+  <div style={{
+    flex: '1 1 60px', background: bg, border: `1px solid ${border}`,
+    borderRadius: 12, padding: '8px 10px', textAlign: 'center',
+  }}>
+    <div style={{ fontSize: '0.95rem', fontWeight: 800, color, lineHeight: 1 }}>{value}</div>
+    <div style={{ fontSize: '0.58rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color, opacity: 0.75, marginTop: 3 }}>{label}</div>
+  </div>
+);
 
+/* ─── CardShell (same as VendorBenefits PartnerCard structure) ─── */
+const CardShell = ({ children, hovered, onEnter, onLeave }: {
+  children: React.ReactNode; hovered: boolean; onEnter: () => void; onLeave: () => void;
+}) => (
+  <div
+    onMouseEnter={onEnter}
+    onMouseLeave={onLeave}
+    style={{
+      background: '#fff', borderRadius: 24, overflow: 'hidden',
+      border: '1px solid rgba(102,126,234,.12)',
+      boxShadow: hovered ? '0 20px 60px rgba(0,0,0,.13)' : '0 4px 20px rgba(0,0,0,.07)',
+      transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+      transition: 'box-shadow .3s ease, transform .3s ease',
+      display: 'flex', flexDirection: 'column',
+    }}
+  >
+    {children}
+  </div>
+);
+
+/* ─── CardHero (same as VendorBenefits) ─── */
+const CardHero = ({ eyebrow, title, subtitle, grad }: {
+  eyebrow: string; title: string; subtitle: string; grad: string;
+}) => (
+  <div style={{ background: grad, padding: '22px 20px 18px', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', top: -40, right: -40, width: 140, height: 140, borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+    <div style={{ position: 'absolute', bottom: -50, right: 20, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
+    <div style={{
+      display: 'inline-block', background: 'rgba(255,255,255,.18)',
+      border: '1px solid rgba(255,255,255,.28)', color: '#fff',
+      fontSize: '0.68rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase',
+      padding: '4px 14px', borderRadius: 50, marginBottom: 14,
+    }}>{eyebrow}</div>
+    <h3 style={{ fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.4px', margin: '0 0 8px' }}>{title}</h3>
+    <p style={{ color: 'rgba(255,255,255,.82)', fontSize: '0.8rem', lineHeight: 1.6, margin: 0, maxWidth: 320 }}>{subtitle}</p>
+  </div>
+);
+
+/* ─── SectionLabel & Divider ─── */
+const SectionLabel = ({ text }: { text: string }) => (
+  <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 10px' }}>{text}</p>
+);
+const Divider = () => (
+  <div style={{ height: 1, background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 16px' }} />
+);
+
+/* ─── CapRow (identical to VendorBenefits) ─── */
+const CapRow = ({ icon, title, desc, accentColor }: {
+  icon: string; title: string; desc: string; accentColor: string;
+}) => {
+  const [hov, setHov] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display: 'flex', alignItems: 'flex-start', gap: 10,
+        padding: '9px 12px', borderRadius: 10, marginBottom: 6,
+        background: hov ? '#eef2f7' : '#f7fafc',
+        border: `1px solid ${hov ? accentColor : '#e2e8f0'}`,
+        transition: 'background .18s, border-color .18s', cursor: 'default',
+      }}
+    >
+      <span style={{ fontSize: '1rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
+      <div>
+        <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#1a202c', marginBottom: 2 }}>{title}</div>
+        <div style={{ fontSize: '0.72rem', color: '#718096', lineHeight: 1.5 }}>{desc}</div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── Main Component ─── */
 const HealthTools = () => {
-  // BMI
+  /* BMI state */
   const [heightCm, setHeightCm] = useState(170);
   const [weightKg, setWeightKg] = useState(70);
   const heightM = heightCm / 100;
   const bmi = parseFloat((weightKg / (heightM * heightM)).toFixed(1));
   const bmiCategory: BMICategory =
     bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal Weight' : bmi < 30 ? 'Overweight' : 'Obese';
+  const badge = bmiBadge(bmiCategory);
 
-  // Symptoms
+  /* Symptom state */
   const [activeSymptoms, setActiveSymptoms] = useState<Set<Symptom>>(new Set(['Headache']));
   const toggleSymptom = (s: Symptom) =>
-    setActiveSymptoms(prev => {
-      const next = new Set(prev);
-      next.has(s) ? next.delete(s) : next.add(s);
-      return next;
-    });
+    setActiveSymptoms(prev => { const n = new Set(prev); n.has(s) ? n.delete(s) : n.add(s); return n; });
   const firstActive = [...activeSymptoms][0] as Symptom | undefined;
   const conditions = firstActive ? SYMPTOM_MAP[firstActive] : ['Select a symptom to see conditions'];
 
-  // Heart risk
+  /* Heart risk state */
   const [checks, setChecks] = useState<boolean[]>(new Array(RISK_FACTORS.length).fill(false));
   const toggleCheck = (i: number) =>
-    setChecks(prev => { const next = [...prev]; next[i] = !next[i]; return next; });
+    setChecks(prev => { const n = [...prev]; n[i] = !n[i]; return n; });
   const riskTotal = checks.filter(Boolean).length;
 
+  /* Hover state */
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   return (
-    <section
-      id="health-tools"
-      style={{
-        position: 'relative',
-        background: 'linear-gradient(160deg, #fafbff 0%, #ffffff 60%, #f8f9ff 100%)',
-        padding: '5rem 0',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Background blobs — same as PricingCalculator */}
-      {[
-        { size: 500, top: '-160px', left: '-160px', color: '#6366F1' },
-        { size: 360, bottom: '-80px', right: '-80px', color: '#EC4899' },
-        { size: 280, top: '40%',  left: '50%',       color: '#10B981' },
-      ].map((b, i) => (
-        <div key={i} style={{
-          position: 'absolute', width: b.size, height: b.size, borderRadius: '50%',
-          background: `radial-gradient(circle, ${b.color}14 0%, transparent 70%)`,
-          top: (b as any).top, bottom: (b as any).bottom,
-          left: (b as any).left, right: (b as any).right,
-          pointerEvents: 'none',
-        }} />
-      ))}
+    <section id="health-tools" style={{
+      fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+      background: '#fafbfc', color: '#1a202c',
+    }}>
 
-      <div style={{ position: 'relative', zIndex: 1, maxWidth: 1200, margin: '0 auto', padding: '0 1.25rem' }}>
-
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            fontSize: 11, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase',
-            color: '#6366F1', background: '#EEEDFE', border: '1px solid #AFA9EC',
-            padding: '6px 16px', borderRadius: 50, marginBottom: 20,
-          }}>
-            <Sparkles size={13} /> Health Tools
-          </span>
-
-          <h2 style={{
-            fontSize: 'clamp(1.75rem, 3vw, 2.6rem)', fontWeight: 700,
-            color: '#1a202c', lineHeight: 1.2, marginBottom: '0.75rem',
-          }}>
-            Free Health Assessment
-            <span style={{
-              display: 'block',
-              background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>
-              Tools
-            </span>
-          </h2>
-
-          <p style={{ fontSize: 15, color: '#6b7280', maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>
-            Quick, accurate health tools to help you make informed decisions before your consultation.
-          </p>
-        </div>
-
-        {/* Three-column grid */}
+      {/* ── Section header ── */}
+      <div style={{ textAlign: 'center', padding: '72px 24px 48px' }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 22,
+          display: 'inline-block',
+          background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
+          border: '1px solid rgba(102,126,234,.2)',
+          color: '#667eea', fontSize: '0.7rem', fontWeight: 700,
+          letterSpacing: '2.5px', textTransform: 'uppercase',
+          padding: '6px 20px', borderRadius: 50, marginBottom: 24,
         }}>
+          Health Assessment Tools
+        </div>
+        <h2 style={{
+          fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800,
+          color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 16px',
+        }}>
+          Free health assessment{' '}
+          <span style={{
+            background: 'linear-gradient(135deg,#667eea,#764ba2)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>tools</span>
+        </h2>
+        <p style={{ fontSize: '0.95rem', color: '#718096', maxWidth: 480, margin: '0 auto', lineHeight: 1.75 }}>
+          Quick, accurate health tools to help you make informed decisions before your consultation.
+        </p>
+      </div>
 
-          {/* ── BMI Calculator ── */}
-          <div style={{
-            background: '#fff', border: '1px solid #e8ecf0',
-            borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column',
-          }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: 12, background: '#EEEDFE', color: '#534AB7',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14,
-            }}>
-              <Activity size={22} />
+      {/* ── Infrastructure banner ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto 40px', padding: '0 24px' }}>
+        <div style={{
+          background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
+          border: '1px solid rgba(102,126,234,.12)', borderRadius: 16,
+          padding: '20px 28px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+        }}>
+          <span style={{ fontSize: '1.2rem' }}>🩺</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a202c', marginBottom: 3 }}>
+              Three instant health checks — no sign-up required
             </div>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1a202c', marginBottom: 4 }}>BMI Calculator</h4>
-            <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 20 }}>Check if you're at a healthy weight range</p>
+            <div style={{ fontSize: '0.78rem', color: '#718096', lineHeight: 1.6 }}>
+              BMI Calculator · Symptom Checker · Heart Risk Assessment
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {['Free', 'Instant', 'Private', 'AI-Powered'].map(t => (
+              <span key={t} style={{
+                fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase',
+                padding: '4px 12px', borderRadius: 50,
+                background: '#fff', color: '#4a5568', border: '1px solid #e2e8f0',
+              }}>{t}</span>
+            ))}
+          </div>
+        </div>
+      </div>
 
-            <SliderRow
-              label="Height (cm)"
-              subLabel="Adjust height"
-              value={heightCm} min={140} max={210}
-              displayValue={`${heightCm} cm`}
-              onChange={setHeightCm}
-            />
-            <SliderRow
-              label="Weight (kg)"
-              subLabel="Adjust weight"
-              value={weightKg} min={30} max={160}
-              displayValue={`${weightKg} kg`}
-              onChange={setWeightKg}
-            />
+      {/* ── Three-column grid ── */}
+      <div style={{
+        maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px',
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24,
+        alignItems: 'start',
+      }}>
 
-            {/* BMI result */}
+        {/* ── BMI Calculator ── */}
+        <CardShell
+          hovered={hoveredCard === 'bmi'}
+          onEnter={() => setHoveredCard('bmi')}
+          onLeave={() => setHoveredCard(null)}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Tool 01"
+            title="BMI Calculator"
+            subtitle="Check if you're at a healthy weight range with instant results."
+            grad={T.gradBlue}
+          />
+          <div style={{ padding: '16px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+            {/* Live metric badges */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
+              {[
+                { value: `${heightCm}`,  label: 'Height cm',  color: T.blue,   bg: T.blueL,   border: T.blueBorder },
+                { value: `${weightKg}`,  label: 'Weight kg',  color: T.teal,   bg: T.tealL,   border: T.tealBorder },
+                { value: `${bmi}`,       label: 'BMI Score',  color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+                { value: bmiCategory.split(' ')[0], label: 'Category', color: badge.color, bg: badge.bg, border: badge.border },
+              ].map(m => <MetricBadge key={m.label} {...m} />)}
+            </div>
+
+            <Divider />
+            <SectionLabel text="Adjust your measurements" />
+
+            <SliderRow label="Height (cm)" value={heightCm} min={140} max={210} displayValue={`${heightCm} cm`} onChange={setHeightCm} />
+            <SliderRow label="Weight (kg)" value={weightKg} min={30}  max={160} displayValue={`${weightKg} kg`} onChange={setWeightKg} />
+
+            <Divider />
+            <SectionLabel text="Result" />
+
+            {/* BMI result box */}
             <div style={{
-              background: '#f8f9fa', borderRadius: 10, padding: '14px 16px',
-              textAlign: 'center', marginBottom: 14,
+              background: badge.bg, border: `1px solid ${badge.border}`,
+              borderRadius: 12, padding: '14px 16px', textAlign: 'center', marginBottom: 16,
             }}>
-              <div style={{ fontSize: 28, fontWeight: 700, color: '#1a202c', lineHeight: 1 }}>{bmi}</div>
-              <span style={{
-                display: 'inline-block', marginTop: 6,
-                fontSize: 11, fontWeight: 600, padding: '4px 14px', borderRadius: 20,
-                ...bmiBadgeStyle(bmiCategory),
-              }}>
-                {bmiCategory}
-              </span>
+              <div style={{ fontSize: 30, fontWeight: 800, color: badge.color, lineHeight: 1 }}>{bmi}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: badge.color, marginTop: 6 }}>{bmiCategory}</div>
             </div>
 
             {/* BMI scale */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#a0aec0', marginBottom: 5 }}>
-                <span>Underweight</span><span>Obese</span>
+                <span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span>
               </div>
               <div style={{ position: 'relative', height: 8, borderRadius: 4, background: 'linear-gradient(90deg,#85B7EB 0%,#68d391 25%,#EF9F27 65%,#E24B4A 100%)' }}>
                 <div style={{
                   position: 'absolute', top: -4, width: 16, height: 16, borderRadius: '50%',
-                  background: '#fff', border: '2.5px solid #6366F1',
-                  transform: 'translateX(-50%)',
-                  transition: 'left 0.3s ease',
+                  background: '#fff', border: `2.5px solid ${T.purple}`,
+                  transform: 'translateX(-50%)', transition: 'left 0.3s ease',
                   left: bmiMarkerLeft(bmi),
                 }} />
               </div>
@@ -240,24 +335,45 @@ const HealthTools = () => {
                 <span>&lt;18.5</span><span>18.5</span><span>25</span><span>30+</span>
               </div>
             </div>
-          </div>
 
-          {/* ── Symptom Checker ── */}
-          <div style={{
-            background: '#fff', border: '1px solid #e8ecf0',
-            borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column',
-          }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: 12, background: '#E1F5EE', color: '#0F6E56',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14,
-            }}>
-              <Brain size={22} />
+            <div style={{ marginTop: 16 }}>
+              {[
+                { icon: '📏', title: 'WHO standard ranges',    desc: 'Uses globally accepted BMI thresholds for adults.' },
+                { icon: '⚡', title: 'Instant recalculation',  desc: 'Results update live as you move the sliders.' },
+              ].map(r => <CapRow key={r.title} icon={r.icon} title={r.title} desc={r.desc} accentColor={T.blue} />)}
             </div>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1a202c', marginBottom: 4 }}>Symptom Checker</h4>
-            <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 20 }}>Select symptoms for instant health insights</p>
+          </div>
+        </CardShell>
 
-            {/* Tags */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 18 }}>
+        {/* ── Symptom Checker ── */}
+        <CardShell
+          hovered={hoveredCard === 'symptom'}
+          onEnter={() => setHoveredCard('symptom')}
+          onLeave={() => setHoveredCard(null)}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Tool 02"
+            title="Symptom Checker"
+            subtitle="Select your symptoms for instant health insights and possible conditions."
+            grad={T.gradTeal}
+          />
+          <div style={{ padding: '16px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+            {/* Metric badges */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
+              {[
+                { value: `${SYMPTOMS.length}`,        label: 'Symptoms',    color: T.teal,   bg: T.tealL,   border: T.tealBorder },
+                { value: `${activeSymptoms.size}`,    label: 'Selected',    color: T.blue,   bg: T.blueL,   border: T.blueBorder },
+                { value: `${conditions.length}`,      label: 'Conditions',  color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+                { value: 'AI',                        label: 'Powered',     color: T.amber,  bg: T.amberL,  border: T.amberBorder },
+              ].map(m => <MetricBadge key={m.label} {...m} />)}
+            </div>
+
+            <Divider />
+            <SectionLabel text="Select your symptoms" />
+
+            {/* Symptom tags */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
               {SYMPTOMS.map(s => {
                 const active = activeSymptoms.has(s);
                 return (
@@ -265,10 +381,10 @@ const HealthTools = () => {
                     key={s}
                     onClick={() => toggleSymptom(s)}
                     style={{
-                      fontSize: 12, fontWeight: 500, padding: '6px 14px', borderRadius: 20,
+                      fontSize: 12, fontWeight: 600, padding: '6px 14px', borderRadius: 50,
                       cursor: 'pointer', border: '1px solid',
                       transition: 'all 0.16s',
-                      background: active ? 'linear-gradient(135deg, #667eea, #764ba2)' : '#f8f9fa',
+                      background: active ? T.gradTeal : '#f7fafc',
                       color: active ? '#fff' : '#6b7280',
                       borderColor: active ? 'transparent' : '#e2e8f0',
                     }}
@@ -279,47 +395,73 @@ const HealthTools = () => {
               })}
             </div>
 
+            <Divider />
+            <SectionLabel text="Possible conditions" />
+
             {/* Conditions list */}
-            <div style={{ background: '#f8f9fa', borderRadius: 10, padding: '14px 16px', marginBottom: 14, flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#2d3748', marginBottom: 8 }}>Possible conditions</div>
-              <ul style={{ paddingLeft: 16, margin: 0, fontSize: 13, color: '#4a5568', lineHeight: 1.8 }}>
-                {conditions.map((c, i) => <li key={i}>{c}</li>)}
-              </ul>
+            <div style={{
+              background: T.tealL, border: `1px solid ${T.tealBorder}`,
+              borderRadius: 12, padding: '14px 16px', marginBottom: 16, flex: 1,
+            }}>
+              {conditions.map((c, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'flex-start', gap: 8,
+                  fontSize: 13, color: '#2d3748', padding: '7px 0',
+                  borderBottom: i < conditions.length - 1 ? `1px solid ${T.tealBorder}` : 'none',
+                }}>
+                  <span style={{ color: T.teal, fontWeight: 800, flexShrink: 0 }}>✓</span>
+                  <span>{c}</span>
+                </div>
+              ))}
             </div>
 
             {/* Disclaimer */}
             <div style={{
-              display: 'flex', gap: 8, alignItems: 'flex-start',
-              fontSize: 12, color: '#a0aec0', background: '#f8f9fa',
-              borderRadius: 8, padding: '10px 12px', marginBottom: 16, lineHeight: 1.5,
+              display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12, color: '#718096',
+              background: T.amberL, border: `1px solid ${T.amberBorder}`,
+              borderRadius: 10, padding: '12px 14px', marginBottom: 16, lineHeight: 1.5,
             }}>
-              <Info size={14} style={{ flexShrink: 0, marginTop: 1, color: '#cbd5e0' }} />
-              <span>This is not a diagnosis. Always consult a qualified doctor.</span>
+              <span style={{ flexShrink: 0, fontSize: '1rem' }}>⚠️</span>
+              <span>This is not a diagnosis. Always consult a qualified doctor before taking any action.</span>
             </div>
 
             <button style={{
-              width: '100%', padding: '11px', borderRadius: 10, border: 'none',
-              fontSize: 13, fontWeight: 600, cursor: 'pointer',
-              background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff',
-              marginTop: 'auto',
+              width: '100%', padding: '12px', borderRadius: 12, border: 'none',
+              fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              background: T.gradTeal, color: '#fff', marginTop: 'auto',
+              letterSpacing: '0.3px',
             }}>
               Consult a Doctor →
             </button>
           </div>
+        </CardShell>
 
-          {/* ── Heart Risk ── */}
-          <div style={{
-            background: '#fff', border: '1px solid #e8ecf0',
-            borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column',
-          }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: 12, background: '#FBEAF0', color: '#993556',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14,
-            }}>
-              <Heart size={22} />
+        {/* ── Heart Risk Assessment ── */}
+        <CardShell
+          hovered={hoveredCard === 'heart'}
+          onEnter={() => setHoveredCard('heart')}
+          onLeave={() => setHoveredCard(null)}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Tool 03"
+            title="Heart Risk Assessment"
+            subtitle="Evaluate your cardiovascular health profile in under 60 seconds."
+            grad={T.gradPink}
+          />
+          <div style={{ padding: '16px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+            {/* Metric badges */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
+              {[
+                { value: `${RISK_FACTORS.length}`,  label: 'Risk factors', color: T.pink,   bg: T.pinkL,   border: T.pinkBorder },
+                { value: `${riskTotal}`,            label: 'Selected',    color: T.red,    bg: T.redL,    border: T.redBorder },
+                { value: `${RISK_WIDTHS[riskTotal]}%`, label: 'Risk level', color: T.amber, bg: T.amberL, border: T.amberBorder },
+                { value: RISK_LABELS[riskTotal].split(' ')[0], label: 'Status', color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+              ].map(m => <MetricBadge key={m.label} {...m} />)}
             </div>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1a202c', marginBottom: 4 }}>Heart Risk Assessment</h4>
-            <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 20 }}>Evaluate your cardiovascular health profile</p>
+
+            <Divider />
+            <SectionLabel text="Select your risk factors" />
 
             {/* Checkboxes */}
             <div style={{ marginBottom: 20, flex: 1 }}>
@@ -329,32 +471,40 @@ const HealthTools = () => {
                   onClick={() => toggleCheck(i)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 12,
-                    fontSize: 13, color: '#4a5568', padding: '9px 0',
-                    borderBottom: i < RISK_FACTORS.length - 1 ? '1px solid #f0f4f8' : 'none',
-                    cursor: 'pointer',
+                    fontSize: 13, color: '#4a5568', fontWeight: 500,
+                    padding: '10px 12px', borderRadius: 10, marginBottom: 6,
+                    background: checks[i] ? T.pinkL : '#f7fafc',
+                    border: `1px solid ${checks[i] ? T.pinkBorder : '#e2e8f0'}`,
+                    cursor: 'pointer', transition: 'all .16s',
                   }}
                 >
                   <div style={{
                     width: 18, height: 18, borderRadius: 5, flexShrink: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    border: checks[i] ? 'none' : '1.5px solid #cbd5e0',
-                    background: checks[i] ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent',
+                    border: checks[i] ? 'none' : `1.5px solid #cbd5e0`,
+                    background: checks[i] ? T.gradPink : 'transparent',
                     transition: 'all 0.16s',
                   }}>
-                    {checks[i] && <Check size={11} color="#fff" strokeWidth={3} />}
+                    {checks[i] && <span style={{ color: '#fff', fontSize: 11, fontWeight: 900 }}>✓</span>}
                   </div>
-                  <span>{factor}</span>
+                  <span style={{ color: checks[i] ? T.pink : '#4a5568' }}>{factor}</span>
                 </div>
               ))}
             </div>
 
+            <Divider />
+            <SectionLabel text="Risk meter" />
+
             {/* Risk meter */}
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#9ca3af', marginBottom: 6, fontWeight: 500 }}>
+            <div style={{
+              background: T.pinkL, border: `1px solid ${T.pinkBorder}`,
+              borderRadius: 12, padding: '14px 16px', marginBottom: 16,
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#718096', marginBottom: 8, fontWeight: 600 }}>
                 <span>Risk level</span>
-                <span>{riskTotal} factor{riskTotal !== 1 ? 's' : ''}</span>
+                <span style={{ color: T.pink, fontWeight: 700 }}>{riskTotal} factor{riskTotal !== 1 ? 's' : ''}</span>
               </div>
-              <div style={{ background: '#edf2f7', borderRadius: 6, height: 10, overflow: 'hidden', marginBottom: 10 }}>
+              <div style={{ background: '#edf2f7', borderRadius: 6, height: 10, overflow: 'hidden', marginBottom: 12 }}>
                 <div style={{
                   height: '100%', borderRadius: 6,
                   background: riskFillColor(riskTotal),
@@ -362,24 +512,23 @@ const HealthTools = () => {
                   transition: 'width 0.4s ease',
                 }} />
               </div>
-              <div style={{ textAlign: 'center', fontSize: 13, fontWeight: 700, color: '#2d3748' }}>
-                {RISK_LABELS[riskTotal]}
-                <small style={{ display: 'block', fontSize: 11, color: '#a0aec0', fontWeight: 400, marginTop: 2 }}>
-                  {RISK_SUBS[riskTotal]}
-                </small>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 14, fontWeight: 800, color: '#1a202c' }}>{RISK_LABELS[riskTotal]}</div>
+                <div style={{ fontSize: 12, color: '#718096', marginTop: 3 }}>{RISK_SUBS[riskTotal]}</div>
               </div>
             </div>
 
             <button style={{
-              width: '100%', padding: '11px', borderRadius: 10, border: 'none',
-              fontSize: 13, fontWeight: 600, cursor: 'pointer', marginTop: 16,
-              background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff',
+              width: '100%', padding: '12px', borderRadius: 12, border: 'none',
+              fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              background: T.gradPink, color: '#fff',
+              letterSpacing: '0.3px',
             }}>
               Get Personalised Tips →
             </button>
           </div>
+        </CardShell>
 
-        </div>
       </div>
     </section>
   );
