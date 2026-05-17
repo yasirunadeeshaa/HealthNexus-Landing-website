@@ -8,26 +8,21 @@ import DetailedFeatures from './pages/sections/DetailedFeatures';
 import VendorBenefits from './pages/sections/VendorBenefits';
 import Benefits from './pages/sections/Benefits';
 import UserJourney from './pages/sections/UserJourney';
-import LiveDemo from './pages/sections/LiveDemo';
 import HomeVisit from './pages/sections/DoorStep';
 import PricingCalculator from './pages/sections/PricingCalculator';
-import Roadmap from './pages/sections/Roadmap';
+// import Roadmap from './pages/sections/Roadmap';
 import HealthTools from './pages/sections/HealthTools';
 import Footer from './pages/sections/Footer';
 import AiModelSection from './pages/sections/AiModelSection';
+import FeedbackSection from './pages/sections/FeedbackSection';
 
 // import DiabetesPredictionSection from './pages/DiabetesPredictionSection';
 // import DiseaseRiskPredictionSection from './pages/DiseaseRiskPredictionSection';
 
-interface VisibleSections {
-  [key: string]: boolean;
-}
 
 const LandingPage = () => {
-  const [isVisible, setIsVisible] = useState<VisibleSections>({});
-  const [activeFeatureCategory, setActiveFeatureCategory] = useState('appointment');
-
   const statsRef = useRef<HTMLElement>(null);
+  const [, setIsVisible] = useState<Record<string, boolean>>({});
   const [animatedStats, setAnimatedStats] = useState({
     users: 0, doctors: 0, appointments: 0, rating: 0,
   });
@@ -77,22 +72,16 @@ const LandingPage = () => {
     <div className="min-vh-100 position-relative overflow-hidden">
       <NavigationBar />
       <HeroSection />
+      <DetailedFeatures />
       <AiModelSection />
-      {/* <DiabetesPredictionSection />
-      <DiseaseRiskPredictionSection /> */}
-      <DetailedFeatures
-        activeFeatureCategory={activeFeatureCategory}
-        setActiveFeatureCategory={setActiveFeatureCategory}
-        isVisible={isVisible}
-      />
+      <Benefits/>
       <VendorBenefits />
-      <Benefits isVisible={isVisible} />
       <HomeVisit />
       <UserJourney/>
-      <LiveDemo/>
       <PricingCalculator/>
-      <Roadmap />
+      {/* <Roadmap /> */}
       <HealthTools />
+      <FeedbackSection />
       <Footer />
     </div>
   );
