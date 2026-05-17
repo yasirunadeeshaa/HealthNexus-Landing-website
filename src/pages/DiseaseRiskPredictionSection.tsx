@@ -1,4 +1,6 @@
 import React from 'react';
+import PremiumNav from './sections/NavBar';
+import Footer from './sections/Footer';
 
 /* ─── Design tokens ─── */
 const T = {
@@ -25,7 +27,7 @@ const S: Record<string, React.CSSProperties> = {
   },
   hero: {
     background: T.grad,
-    padding: '64px 48px 56px',
+    padding: '44px 48px 56px',
     textAlign: 'center',
     position: 'relative',
     overflow: 'hidden',
@@ -329,6 +331,8 @@ const DiseaseRiskPredictionSection: React.FC<Props> = ({ onViewMore }) => {
   };
 
   return (
+    <>
+      <PremiumNav />
     <section id="ai-disease-risk-section" style={S.root}>
 
       {/* Hero */}
@@ -537,6 +541,8 @@ const DiseaseRiskPredictionSection: React.FC<Props> = ({ onViewMore }) => {
 
       </div>
     </section>
+    <Footer />
+    </>
   );
 };
 
