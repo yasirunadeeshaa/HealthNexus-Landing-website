@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Home from './MainPage';
-import ApiDocumentation from './pages/sections/ApiDocumentation';
+import ApiDocumentation from './pages/ApiDocumentation';
 import ComparisonPage from './pages/ComparisonPage';
 import DiseaseRiskPredictionSection from './pages/DiseaseRiskPredictionSection';
 import DiabetesPredictionSection from './pages/DiabetesPredictionSection';
+import Features from './pages/Features';
+import PatientDemo from './pages/Patienthealthdemo';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/comparison" element={<ComparisonPage />} />
         <Route path="/diabetes-prediction" element={<DiabetesPredictionSection />} />
         <Route path="/disease-risk-prediction" element={<DiseaseRiskPredictionSection />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/patient-demo" element={<PatientDemo />} />
       </Routes>
     </Router>
   );
