@@ -1,42 +1,49 @@
 import {
-  Heart, Mail, Phone, MapPin,
-  Github, Linkedin, Twitter, Instagram
-} from 'lucide-react';
+  Mail,
+  Phone,
+  Github,
+  Linkedin,
+  Twitter,
+  Instagram,
+  GraduationCap,
+} from "lucide-react";
+
+import logo from "../../assets/logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const links = {
     platform: [
-      { label: 'AI Diabetes Prediction',  href: '#' },
-      { label: 'Smart Appointments',      href: '#' },
-      { label: 'Health Dashboard',        href: '#' },
-      { label: 'Patient Profile Control', href: '#' },
-      { label: 'Doctor Portal',           href: '#' },
+      { label: "AI Diabetes Prediction", href: "#" },
+      { label: "Smart Appointments", href: "#" },
+      { label: "Health Dashboard", href: "#" },
+      { label: "Patient Profile Control", href: "#" },
+      { label: "Doctor Portal", href: "#" },
     ],
     project: [
-      { label: 'About the Project', href: '#' },
-      { label: 'Tech Stack',        href: '#' },
-      { label: 'ML Model Details',  href: '#' },
-      { label: 'Research Paper',    href: '#' },
-      { label: 'GitHub Repository', href: '#' },
+      { label: "About the Project", href: "#" },
+      { label: "Tech Stack", href: "#" },
+      { label: "ML Model Details", href: "#" },
+      { label: "Research Paper", href: "#" },
+      { label: "GitHub Repository", href: "#" },
     ],
     team: [
-      { label: 'Meet the Team',    href: '#' },
-      { label: 'Supervisor',       href: '#' },
-      { label: 'Acknowledgements', href: '#' },
-      { label: 'Contact Us',       href: '#' },
+      { label: "Meet the Team", href: "#" },
+      { label: "Supervisor", href: "#" },
+      { label: "Acknowledgements", href: "#" },
+      { label: "Contact Us", href: "#" },
     ],
   };
 
   const socials = [
-    { icon: <Github    size={18} />, href: '#', label: 'GitHub'    },
-    { icon: <Linkedin  size={18} />, href: '#', label: 'LinkedIn'  },
-    { icon: <Twitter   size={18} />, href: '#', label: 'Twitter'   },
-    { icon: <Instagram size={18} />, href: '#', label: 'Instagram' },
+    { icon: <Github size={18} />, href: "#", label: "GitHub" },
+    { icon: <Linkedin size={18} />, href: "#", label: "LinkedIn" },
+    { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
+    { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
   ];
 
-  const techStack = ['React', 'Spring Boot', 'Python', 'TensorFlow', 'MySQL'];
+  const techStack = ["React", "Spring Boot", "Python", "TensorFlow", "MySQL"];
 
   return (
     <>
@@ -70,8 +77,9 @@ const Footer = () => {
             transparent 0%, #667eea 20%, #764ba2 40%,
             #f093fb 60%, #4facfe 80%, transparent 100%);
         }
+
         /* ── Main grid ── */
-        .f-main { padding: 60px 0 50px; position: relative; z-index: 1; }
+        .f-main { padding: 40px 0 32px; position: relative; z-index: 1; }
         .f-grid {
           display: grid;
           grid-template-columns: 2fr 1fr 1fr 1fr 1.1fr;
@@ -79,13 +87,19 @@ const Footer = () => {
         }
 
         /* ── Brand ── */
-        .f-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .f-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
         .f-logo-icon {
-          width: 44px; height: 44px; border-radius: 14px;
-          background: linear-gradient(135deg, #667eea, #764ba2);
-          color: white;
+          width: 50px; height: 40px; border-radius: 1px;
+          background: white;
+          border: 1.5px solid rgba(102,126,234,0.2);
+          box-shadow: 6px 6px 20px rgba(102,126,234,0.5);
           display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 6px 20px rgba(102,126,234,0.35);
+          overflow: hidden;
+          padding: 4px;
+        }
+        .f-logo-img {
+          width: 100%; height: 100%;
+          object-fit: contain;
         }
         .f-logo-text {
           font-size: 1.4rem; font-weight: 800;
@@ -95,10 +109,29 @@ const Footer = () => {
           background-clip: text;
           letter-spacing: -0.5px;
         }
-        .f-tagline {
-          font-size: 0.875rem; color: #64748b;
-          line-height: 1.75; margin-bottom: 24px; max-width: 320px;
+
+        /* ── Student intro card ── */
+        .f-student-card {
+          background: rgba(255,255,255,0.6);
+          border: 1px solid rgba(102,126,234,0.15);
+          border-radius: 14px;
+          padding: 14px 16px;
+          margin-bottom: 20px;
+          backdrop-filter: blur(6px);
         }
+        .f-student-name {
+          font-size: 0.95rem; font-weight: 700; color: #2d3748;
+          margin: 0 0 2px;
+        }
+        .f-student-role {
+          font-size: 0.775rem; font-weight: 600;
+          color: #667eea; margin: 0 0 10px;
+          display: flex; align-items: center; gap: 5px;
+        }
+        .f-student-desc {
+          font-size: 0.8rem; color: #64748b; line-height: 1.7; margin: 0;
+        }
+
         .f-contact-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
         .f-contact-item {
           display: flex; align-items: center; gap: 10px;
@@ -106,23 +139,6 @@ const Footer = () => {
         }
         .f-contact-item:hover { color: #667eea; }
         .f-contact-icon { color: #667eea; flex-shrink: 0; display: flex; }
-
-        /* ── Socials ── */
-        .f-socials { display: flex; gap: 10px; }
-        .f-social-btn {
-          width: 38px; height: 38px; border-radius: 12px;
-          background: rgba(255,255,255,0.8);
-          border: 1.5px solid rgba(102,126,234,0.2);
-          color: #667eea;
-          display: flex; align-items: center; justify-content: center;
-          text-decoration: none; transition: all 0.25s ease;
-        }
-        .f-social-btn:hover {
-          background: linear-gradient(135deg, #667eea, #764ba2);
-          color: white; border-color: transparent;
-          transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(102,126,234,0.35);
-        }
 
         /* ── Link columns ── */
         .f-col-title {
@@ -166,14 +182,32 @@ const Footer = () => {
           color: white; border-color: transparent;
         }
 
+        /* ── Socials (now in bottom bar) ── */
+        .f-socials { display: flex; gap: 8px; }
+        .f-social-btn {
+          width: 32px; height: 32px; border-radius: 10px;
+          background: rgba(255,255,255,0.8);
+          border: 1.5px solid rgba(102,126,234,0.2);
+          color: #667eea;
+          display: flex; align-items: center; justify-content: center;
+          text-decoration: none; transition: all 0.25s ease;
+        }
+        .f-social-btn:hover {
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          color: white; border-color: transparent;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(102,126,234,0.35);
+        }
+
         /* ── Bottom bar ── */
         .f-bottom {
           border-top: 1px solid rgba(102,126,234,0.12);
-          padding: 22px 0; position: relative; z-index: 1;
+          padding: 16px 0; position: relative; z-index: 1;
+          margin-top: -50px;
         }
         .f-bottom-inner {
           display: flex; align-items: center;
-          justify-content: space-between; flex-wrap: wrap; gap: 14px;
+          justify-content: space-between; flex-wrap: wrap; gap: 12px;
         }
         .f-bottom-left, .f-bottom-right {
           display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -218,30 +252,14 @@ const Footer = () => {
         .f-app-btn {
           position: relative;
           display: block;
-          border-radius: 12px;
+          border-radius: 6px;
           overflow: hidden;
-          opacity: 0.55;
           filter: grayscale(30%);
           cursor: not-allowed;
-          border: 1.5px solid rgba(102,126,234,0.2);
           transition: opacity 0.2s;
         }
         .f-app-btn:hover { opacity: 0.65; }
         .f-app-btn img { display: block; width: 148px; height: auto; }
-        .f-app-overlay {
-          position: absolute; inset: 0;
-          display: flex; align-items: center; justify-content: center;
-          background: rgba(102,126,234,0.08);
-          border-radius: 10px;
-        }
-        .f-app-overlay-label {
-          font-size: 10px; font-weight: 700;
-          color: #667eea;
-          background: rgba(255,255,255,0.92);
-          padding: 3px 9px; border-radius: 20px;
-          letter-spacing: 0.3px;
-          border: 1px solid rgba(102,126,234,0.3);
-        }
 
         /* ── Responsive ── */
         @media (max-width: 1200px) {
@@ -253,17 +271,13 @@ const Footer = () => {
           .f-col-last { grid-column: 1 / -1; }
         }
         @media (max-width: 992px) {
-          .f-stats-grid { grid-template-columns: repeat(2, 1fr); }
           .f-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
           .f-brand-col { grid-column: 1 / -1; }
         }
         @media (max-width: 640px) {
-          .f-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
           .f-grid { grid-template-columns: 1fr; gap: 28px; }
           .f-bottom-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
-          .f-tagline { max-width: 100%; }
         }
-
       `}</style>
 
       <footer className="f-section">
@@ -273,37 +287,63 @@ const Footer = () => {
         <div className="f-main">
           <div className="container">
             <div className="f-grid">
-
               {/* Brand */}
               <div className="f-brand-col">
                 <div className="f-logo">
                   <div className="f-logo-icon">
-                    <Heart size={22} fill="currentColor" />
+                    <img
+                      src={logo}
+                      alt="HealthNexus logo"
+                      style={{
+                        width: "28px",
+                        height: "28px",
+                        objectFit: "contain",
+                      }}
+                    />
                   </div>
                   <span className="f-logo-text">HealthNexus</span>
                 </div>
-                <p className="f-tagline">
-                  A Final Year Project redefining digital healthcare — connecting patients
-                  with verified doctors, predicting risks with AI, and putting health data
-                  control back in your hands.
-                </p>
+
+                {/* ── Student intro card ── */}
+                <div className="f-student-card">
+                  <p className="f-student-name">
+                    A. Yasiru Nadeesha Aththanayaka
+                  </p>
+                  <p className="f-student-role">
+                    <GraduationCap size={13} />
+                    Software Engineering Student · Final Year Project
+                  </p>
+                  <p className="f-student-desc">
+                    I am a Software Engineering student at the University of
+                    Westminster, and HealthNexus is my Final Year Project an
+                    AI-powered healthcare application redefining digital
+                    healthcare by connecting patients with verified doctors,
+                    predicting risks with AI, and putting health data control
+                    back in your hands.
+                  </p>
+                </div>
+
+                {/* Contact details */}
                 <div className="f-contact-list">
                   {[
-                    { icon: <Mail size={15} />,   text: 'healthnexus@university.edu'      },
-                    { icon: <Phone size={15} />,  text: '+94 71 234 5678'                 },
-                    { icon: <MapPin size={15} />, text: 'Faculty of Computing, Sri Lanka' },
+                    {
+                      icon: <Mail size={15} />,
+                      text: "W2054011@westminster.ac.uk",
+                    },
+                    { icon: <Phone size={15} />, text: "+94 76 287 3746" },
+                    {
+                      icon: <GraduationCap size={15} />,
+                      text: "University of Westminster, UK",
+                    },
+                    {
+                      icon: <GraduationCap size={15} />,
+                      text: "BEng (Hons) Software Engineering",
+                    },
                   ].map((c, i) => (
                     <div key={i} className="f-contact-item">
                       <span className="f-contact-icon">{c.icon}</span>
                       {c.text}
                     </div>
-                  ))}
-                </div>
-                <div className="f-socials">
-                  {socials.map((s, i) => (
-                    <a key={i} href={s.href} className="f-social-btn" aria-label={s.label}>
-                      {s.icon}
-                    </a>
                   ))}
                 </div>
               </div>
@@ -315,7 +355,8 @@ const Footer = () => {
                   {links.platform.map((l) => (
                     <li key={l.label}>
                       <a href={l.href} className="f-link">
-                        <span className="f-link-arrow">→</span>{l.label}
+                        <span className="f-link-arrow">→</span>
+                        {l.label}
                       </a>
                     </li>
                   ))}
@@ -329,7 +370,8 @@ const Footer = () => {
                   {links.project.map((l) => (
                     <li key={l.label}>
                       <a href={l.href} className="f-link">
-                        <span className="f-link-arrow">→</span>{l.label}
+                        <span className="f-link-arrow">→</span>
+                        {l.label}
                       </a>
                     </li>
                   ))}
@@ -343,7 +385,8 @@ const Footer = () => {
                   {links.team.map((l) => (
                     <li key={l.label}>
                       <a href={l.href} className="f-link">
-                        <span className="f-link-arrow">→</span>{l.label}
+                        <span className="f-link-arrow">→</span>
+                        {l.label}
                       </a>
                     </li>
                   ))}
@@ -351,7 +394,9 @@ const Footer = () => {
                 <h5 className="f-col-title f-mt">Built With</h5>
                 <div className="f-tech-badges">
                   {techStack.map((t) => (
-                    <span key={t} className="f-tech-badge">{t}</span>
+                    <span key={t} className="f-tech-badge">
+                      {t}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -361,7 +406,8 @@ const Footer = () => {
                 <h5 className="f-col-title">Download</h5>
                 <div className="f-coming-soon-badge">Coming Soon</div>
                 <p className="f-app-desc">
-                  HealthNexus mobile app is on its way — launching on both platforms upon project completion.
+                  HealthNexus mobile app is on its way launching on both
+                  platforms upon project completion.
                 </p>
                 <div className="f-app-btn-wrap">
                   <div className="f-app-btn">
@@ -369,20 +415,15 @@ const Footer = () => {
                       src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
                       alt="Get it on Google Play"
                     />
-                    <div className="f-app-overlay">
-                    </div>
                   </div>
                   <div className="f-app-btn">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
                       alt="Download on the App Store"
                     />
-                    <div className="f-app-overlay">
-                    </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -398,12 +439,28 @@ const Footer = () => {
                 <span className="f-dot" />
                 <span className="f-proj-tag">🌐 Web + Mobile</span>
               </div>
+              <div className="f-socials">
+                {socials.map((s, i) => (
+                  <a
+                    key={i}
+                    href={s.href}
+                    className="f-social-btn"
+                    aria-label={s.label}
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
               <div className="f-bottom-right">
                 <span>© {currentYear} HealthNexus · All rights reserved</span>
                 <span className="f-dot" />
-                <a href="#" className="f-bottom-link">Privacy Policy</a>
+                <a href="#" className="f-bottom-link">
+                  Privacy Policy
+                </a>
                 <span className="f-dot" />
-                <a href="#" className="f-bottom-link">Terms of Use</a>
+                <a href="#" className="f-bottom-link">
+                  Terms of Use
+                </a>
               </div>
             </div>
           </div>
