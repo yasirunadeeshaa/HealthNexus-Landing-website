@@ -314,28 +314,6 @@ const PageHeader = () => (
       Two production-ready explainable AI systems for clinical risk prediction,
       disease forecasting, and personalised health recommendations.
     </p>
-
-    {/* Stats strip */}
-    <div style={{
-      display: 'flex', justifyContent: 'center', gap: '12px',
-      flexWrap: 'wrap', marginTop: '40px',
-    }}>
-      {[
-        { v: '2',    l: 'AI Models' },
-        { v: '6',    l: 'Diseases' },
-        { v: 'XAI',  l: 'Explainable' },
-        { v: '94%',  l: 'Peak Accuracy' },
-      ].map(s => (
-        <div key={s.l} style={{
-          background: '#fff', border: '1px solid rgba(102,126,234,0.14)',
-          borderRadius: '14px', padding: '14px 26px', minWidth: '100px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-        }}>
-          <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1a202c', lineHeight: 1 }}>{s.v}</div>
-          <div style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#a0aec0', marginTop: '4px' }}>{s.l}</div>
-        </div>
-      ))}
-    </div>
   </div>
 );
 
@@ -389,6 +367,7 @@ export default function AIModelsPage({ onViewDetails }: { onViewDetails?: (id: s
   };
 
   return (
+    <section id="AiModelSection">
     <div style={{
       fontFamily: "'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       background: '#fafbfc',
@@ -419,5 +398,6 @@ export default function AIModelsPage({ onViewDetails }: { onViewDetails?: (id: s
         HealthNexus · Explainable AI for Clinical Decision Support
       </div>
     </div>
+    </section>
   );
 }
