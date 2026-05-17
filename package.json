@@ -11,6 +11,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,css}\""
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.2.4",
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
