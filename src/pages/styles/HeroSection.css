@@ -877,3 +877,157 @@
     animation: none;
   }
 }
+
+/* ============================================================
+   MOBILE ADDITIONS — append to end of HeroSection.css
+   Target: screens ≤ 480px (phones)
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  /* ── Hero Section height ── */
+  .hero-section {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  /* ── Badge ── */
+  .badge-gradient {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+  }
+
+  /* ── Hero Title ── */
+  .hero-titlee {
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+  }
+
+  .gradient-textt {
+    font-size: 2rem;
+    padding-bottom: 12px;
+  }
+
+  /* Disable typing animation on mobile — causes layout jump */
+  .typing-text {
+    animation: none;
+    width: auto !important;
+    white-space: normal;
+    border-right: none;
+    overflow: visible;
+  }
+
+  /* ── Description ── */
+  .hero-description {
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  /* ── Highlights Grid — stack to 1 column ── */
+  .hero-highlights {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .hl-card {
+    padding: 12px 14px;
+  }
+
+  .hl-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .hl-title {
+    font-size: 12px;
+  }
+
+  .hl-desc {
+    font-size: 11px;
+  }
+
+  /* ── Stats Row — 2 columns instead of 4 ── */
+  .hero-stats-row {
+    flex-wrap: wrap;
+    margin-right: 0;
+    border-radius: 14px;
+  }
+
+  .hero-stat-item {
+    flex: 0 0 50%;
+    padding: 14px 10px;
+    box-sizing: border-box;
+  }
+
+  /* fix divider lines for 2-column layout */
+  .hero-stat-item:nth-child(2n+1)::before {
+    display: none;
+  }
+  .hero-stat-item:nth-child(n+3) {
+    border-top: 1px solid rgba(102, 126, 234, 0.12);
+  }
+
+  .hero-stat-num {
+    font-size: 1.35rem;
+  }
+
+  .hero-stat-label {
+    font-size: 10px;
+  }
+
+  /* ── Project Footer Badges ── */
+  .hero-proj-footer {
+    gap: 6px;
+  }
+
+  .proj-badge {
+    font-size: 10.5px;
+    padding: 5px 10px;
+  }
+
+  /* ── Right Column / Device Mockup ── */
+  .hero-image-section {
+    display: none; /* hidden on very small phones — too cramped */
+  }
+
+  /* If you want to show a simplified image instead, 
+     remove the above and use these: */
+  /*
+  .device-screen {
+    width: 220px;
+    height: 320px;
+  }
+
+  .floating-card {
+    display: none;
+  }
+
+  .hero-ring {
+    display: none;
+  }
+  */
+
+  /* ── Scroll Indicator ── */
+  .scroll-indicator {
+    bottom: 16px;
+  }
+
+  .scroll-text {
+    font-size: 0.75rem;
+  }
+
+  /* ── Container padding ── */
+  .container-fluid.px-4 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* ── Column padding ── */
+  .hero-content {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+}
