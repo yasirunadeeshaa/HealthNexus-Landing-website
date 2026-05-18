@@ -888,7 +888,7 @@
   /* ── Hero Section height ── */
   .hero-section {
     height: auto;
-    min-height: 100svh;
+     background: #ffffff;
   }
 
   /* ── Badge ── */
