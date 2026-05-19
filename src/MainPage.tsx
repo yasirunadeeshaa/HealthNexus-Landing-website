@@ -15,6 +15,7 @@ import HealthTools from './pages/sections/HealthTools';
 import Footer from './pages/sections/Footer';
 import AiModelSection from './pages/sections/AiModelSection';
 import FeedbackSection from './pages/sections/FeedbackSection';
+import Comparison from './pages/sections/Comparison'; 
 
 // import DiabetesPredictionSection from './pages/DiabetesPredictionSection';
 // import DiseaseRiskPredictionSection from './pages/DiseaseRiskPredictionSection';
@@ -78,6 +79,7 @@ const LandingPage = () => {
       <VendorBenefits />
       <HomeVisit />
       <UserJourney/>
+      <Comparison />
       <PricingCalculator/>
       {/* <Roadmap /> */}
       <HealthTools />
