@@ -177,9 +177,14 @@ const BenefitRow = ({
 
 const BENEFITS_MOBILE_CSS = `
   #benefits {
-    overflow-x: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     width: 100%;
     box-sizing: border-box;
+  }
+
+  #benefits > div {
+    min-width: 900px;
   }
 
   #benefits * {
