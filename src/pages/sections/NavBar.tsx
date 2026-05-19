@@ -15,8 +15,7 @@ const navItems: NavItem[] = [
   { href: '/#ai-models',         label: 'AI Models', hasDropdown: true },
   { href: '/#home-visit',        label: 'Home Visit', hasDropdown: true },
   { href: '/features',           label: 'Features', hasDropdown: true },
-  { href: '/comparison',         label: 'Comparison' },
-  { href: '/patient-demo',       label: 'Health History' },
+  { href: '#comparison',         label: 'Comparison' },
   { href: '/#health-tools',      label: 'Tools' },
 ];
 
