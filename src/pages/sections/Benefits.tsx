@@ -175,6 +175,58 @@ const BenefitRow = ({
   );
 };
 
+const BENEFITS_MOBILE_CSS = `
+  #benefits {
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #benefits * {
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 700px) {
+    #benefits [style*="gridTemplateColumns"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    #benefits [style*="72px 24px 48px"] {
+      padding: 48px 16px 32px !important;
+    }
+
+    #benefits [style*="0 auto 40px"] {
+      margin: 0 16px 28px !important;
+      padding: 14px 16px !important;
+    }
+
+    #benefits [style*="0 24px 80px"] {
+      padding: 0 16px 48px !important;
+    }
+
+    #benefits [style*="24px 22px 20px"] {
+      padding: 20px 16px 16px !important;
+    }
+
+    #benefits [style*="16px 18px 0"] {
+      padding: 12px 14px 0 !important;
+      gap: 6px !important;
+    }
+
+    #benefits [style*="0 18px 20px"] {
+      margin: 0 14px 14px !important;
+    }
+
+    #benefits [style*="0 18px 20px"] {
+      padding: 0 14px 16px !important;
+    }
+
+    #benefits [style*="0 18px 8px"] {
+      margin: 0 14px 6px !important;
+    }
+  }
+`;
+
 /* ─── Benefit Card ─── */
 const BenefitCardComponent = ({ card }: { card: BenefitCard }) => {
   const [hovered, setHovered] = useState(false);
@@ -407,6 +459,7 @@ const BENEFIT_CARDS: BenefitCard[] = [
 /* ─── Main component ─── */
 const Benefits = () => (
   <section id="benefits">
+  <style>{BENEFITS_MOBILE_CSS}</style>
   <div style={{
     fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
     background: '#fafbfc',
