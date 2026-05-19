@@ -24,6 +24,7 @@ const T = {
   gradTeal:     'linear-gradient(135deg, #0d7a5f 0%, #1a5fa8 100%)',
   gradAmber:    'linear-gradient(135deg, #b85e0c 0%, #d94f4f 100%)',
   gradGreen:    'linear-gradient(135deg, #11998e 0%, #1a5fa8 100%)',
+  gradPurple:   'linear-gradient(135deg, #6b3fa0 0%, #993556 100%)',
 };
 
 /* ─── Types ─── */
@@ -132,9 +133,10 @@ const MetricBadge = ({ value, label, color, bg, border }: {
 );
 
 /* ─── Card shell matching VendorBenefits PartnerCard structure ─── */
-const CardShell = ({ children, hovered, onEnter, onLeave }: {
+const CardShell = ({ children, hovered, onEnter, onLeave, style: extraStyle }: {
   children: React.ReactNode; hovered: boolean;
   onEnter: () => void; onLeave: () => void;
+  style?: React.CSSProperties;
 }) => (
   <div
     onMouseEnter={onEnter}
@@ -146,7 +148,7 @@ const CardShell = ({ children, hovered, onEnter, onLeave }: {
       transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
       transition: 'box-shadow .3s ease, transform .3s ease',
       display: 'flex', flexDirection: 'column',
-      marginBottom: 20,
+      ...extraStyle,
     }}
   >
     {children}
@@ -274,7 +276,7 @@ const PricingCalculator = () => {
       </div>
 
       {/* ── Infrastructure banner (same as VendorBenefits) ── */}
-      <div style={{ maxWidth: 1100, margin: '0 auto 40px', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto 40px', padding: '0 24px' }}>
         <div style={{
           background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
           border: '1px solid rgba(102,126,234,.12)', borderRadius: 16,
@@ -302,7 +304,7 @@ const PricingCalculator = () => {
       </div>
 
       {/* ── Scenario tabs ── */}
-      <div style={{ maxWidth: 1100, margin: '0 auto 36px', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto 36px', padding: '0 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
           <span style={{ fontSize: 12, color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', marginRight: 4 }}>Quick scenario:</span>
           <div style={{ display: 'inline-flex', background: '#f3f4f6', borderRadius: 50, padding: 4, gap: 4, flexWrap: 'wrap' }}>
@@ -327,276 +329,279 @@ const PricingCalculator = () => {
         </div>
       </div>
 
-      {/* ── Two-column grid ── */}
+      {/* ── TOP ROW: 3 columns — Calculator | Options | Savings ── */}
       <div style={{
-        maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px',
-        display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'start',
+        maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px',
+        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24, alignItems: 'stretch',
       }}>
 
-        {/* ── LEFT COLUMN ── */}
-        <div>
-
-          {/* Inputs card */}
-          <CardShell
-            hovered={hoveredCard === 'inputs'}
-            onEnter={() => setHoveredCard('inputs')}
-            onLeave={() => setHoveredCard(null)}
-          >
-            <CardHero
-              eyebrow="HealthNexus · Calculator"
-              title="Your usage"
-              subtitle="Adjust the sliders to match your healthcare habits."
-              grad={T.gradBlue}
-            />
-            <div style={{ padding: '16px 18px', flex: 1 }}>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
-                {[
-                  { value: `${doctorVisits}`,      label: 'Visits/yr',  color: T.teal,   bg: T.tealL,   border: T.tealBorder },
-                  { value: `LKR ${(visitCost/1000).toFixed(0)}K`, label: 'Per visit', color: T.blue,   bg: T.blueL,   border: T.blueBorder },
-                  { value: `${emergencyVisits}`,   label: 'Emergency',  color: T.amber,  bg: T.amberL,  border: T.amberBorder },
-                  { value: `${hoursSaved}h`,        label: 'Time/yr',    color: T.purple, bg: T.purpleL, border: T.purpleBorder },
-                ].map(m => <MetricBadge key={m.label} {...m} />)}
-              </div>
-              <Divider />
-              <SectionLabel text="Adjust your inputs" />
-              <SliderRow
-                label="Doctor visits per year"
-                value={doctorVisits} min={1} max={24}
-                displayValue={`${doctorVisits} visit${doctorVisits !== 1 ? 's' : ''}`}
-                onChange={v => set({ doctorVisits: v })}
-              />
-              <SliderRow
-                label="Avg. physical visit cost"
-                value={visitCost} min={2000} max={15000} step={500}
-                displayValue={`LKR ${visitCost.toLocaleString()}`}
-                onChange={v => set({ visitCost: v })}
-              />
-              <SliderRow
-                label="Emergency visits per year"
-                value={emergencyVisits} min={0} max={10}
-                displayValue={`${emergencyVisits} visit${emergencyVisits !== 1 ? 's' : ''}`}
-                onChange={v => set({ emergencyVisits: v })}
-              />
-            </div>
-          </CardShell>
-
-          {/* Assumptions card */}
-          <CardShell
-            hovered={hoveredCard === 'assumptions'}
-            onEnter={() => setHoveredCard('assumptions')}
-            onLeave={() => setHoveredCard(null)}
-          >
-            <CardHero
-              eyebrow="HealthNexus · Options"
-              title="Assumptions"
-              subtitle="Toggle hidden costs to see your true savings."
-              grad={T.gradTeal}
-            />
-            <div style={{ padding: '16px 18px', flex: 1 }}>
-              <ToggleRow label="Include travel costs (LKR 2,500/visit)" checked={includeTravel} onChange={v => set({ includeTravel: v })} />
-              <ToggleRow label="Include time value (3 hrs × LKR 1,000)" checked={includeTime}   onChange={v => set({ includeTime: v })} />
-              <ToggleRow label="Include family members"                  checked={familyMode}    onChange={v => set({ familyMode: v })} />
-              {familyMode && (
-                <div style={{ marginTop: 14 }}>
-                  <SliderRow
-                    label="Family members"
-                    value={familyCount} min={2} max={8}
-                    displayValue={`${familyCount} members`}
-                    onChange={v => set({ familyCount: v })}
-                  />
-                </div>
-              )}
-            </div>
-          </CardShell>
-
-          {/* Benefits card */}
-          <CardShell
-            hovered={hoveredCard === 'benefits'}
-            onEnter={() => setHoveredCard('benefits')}
-            onLeave={() => setHoveredCard(null)}
-          >
-            <CardHero
-              eyebrow="HealthNexus · Advantages"
-              title="Why patients save more"
-              grad={T.gradAmber}
-            />
-            <div style={{ padding: '16px 18px', flex: 1 }}>
-              <SectionLabel text="Key benefits" />
+        {/* Calculator card */}
+        <CardShell
+          hovered={hoveredCard === 'inputs'}
+          onEnter={() => setHoveredCard('inputs')}
+          onLeave={() => setHoveredCard(null)}
+          style={{ marginBottom: 0 }}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Calculator"
+            title="Your usage"
+            subtitle="Adjust the sliders to match your healthcare habits."
+            grad={T.gradBlue}
+          />
+          <div style={{ padding: '16px 18px', flex: 1 }}>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
               {[
-                { icon: '🚫', title: 'No hospital queues',            desc: 'Consult from anywhere — home, office, or on the go.' },
-                { icon: '⏱️', title: `Save ${hoursSaved} hours every year`, desc: 'Eliminate travel and waiting room time completely.' },
-                { icon: '🚗', title: 'Zero transport costs',          desc: 'No fuel or taxi fare per visit.' },
-                { icon: '💸', title: 'Lower consultation fees',       desc: 'Online visits cost less than physical appointments.' },
-                { icon: '🔄', title: 'Faster follow-ups',            desc: 'No rebooking delays for quick check-ins.' },
-              ].map(b => <CapRow key={b.title} icon={b.icon} title={b.title} desc={b.desc} accentColor={T.amber} />)}
+                { value: `${doctorVisits}`,      label: 'Visits/yr',  color: T.teal,   bg: T.tealL,   border: T.tealBorder },
+                { value: `LKR ${(visitCost/1000).toFixed(0)}K`, label: 'Per visit', color: T.blue,   bg: T.blueL,   border: T.blueBorder },
+                { value: `${emergencyVisits}`,   label: 'Emergency',  color: T.amber,  bg: T.amberL,  border: T.amberBorder },
+                { value: `${hoursSaved}h`,        label: 'Time/yr',    color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+              ].map(m => <MetricBadge key={m.label} {...m} />)}
             </div>
-          </CardShell>
-        </div>
-
-        {/* ── RIGHT COLUMN ── */}
-        <div>
-
-          {/* Results card */}
-          <CardShell
-            hovered={hoveredCard === 'results'}
-            onEnter={() => setHoveredCard('results')}
-            onLeave={() => setHoveredCard(null)}
-          >
-            <CardHero
-              eyebrow="HealthNexus · Savings"
-              title="Your estimated savings"
-              subtitle={familyMode ? `Calculated for ${familyCount} family members` : 'Money + time combined, annually'}
-              grad={T.gradGreen}
+            <Divider />
+            <SectionLabel text="Adjust your inputs" />
+            <SliderRow
+              label="Doctor visits per year"
+              value={doctorVisits} min={1} max={24}
+              displayValue={`${doctorVisits} visit${doctorVisits !== 1 ? 's' : ''}`}
+              onChange={v => set({ doctorVisits: v })}
             />
-            <div style={{ padding: '16px 18px', flex: 1 }}>
+            <SliderRow
+              label="Avg. physical visit cost"
+              value={visitCost} min={2000} max={15000} step={500}
+              displayValue={`LKR ${visitCost.toLocaleString()}`}
+              onChange={v => set({ visitCost: v })}
+            />
+            <SliderRow
+              label="Emergency visits per year"
+              value={emergencyVisits} min={0} max={10}
+              displayValue={`${emergencyVisits} visit${emergencyVisits !== 1 ? 's' : ''}`}
+              onChange={v => set({ emergencyVisits: v })}
+            />
+          </div>
+        </CardShell>
 
-              {/* Savings hero number */}
-              <div style={{
-                textAlign: 'center',
-                background: 'linear-gradient(135deg, #f5f7fa, #e9ecef)',
-                borderRadius: 12, padding: '20px 16px 16px', marginBottom: 20,
-              }}>
-                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: '#718096', marginBottom: 6 }}>
-                  ESTIMATED ANNUAL SAVINGS
-                </p>
-                <h2 style={{ fontSize: 30, fontWeight: 800, color: T.teal, lineHeight: 1.1, marginBottom: 6 }}>
-                  {fmt(savings)}
-                </h2>
-                <p style={{ fontSize: 12, color: '#718096' }}>
-                  {familyMode ? `For ${familyCount} family members` : 'Money + time combined'}
-                </p>
-              </div>
+        {/* Savings / Results card */}
+        <CardShell
+          hovered={hoveredCard === 'results'}
+          onEnter={() => setHoveredCard('results')}
+          onLeave={() => setHoveredCard(null)}
+          style={{ marginBottom: 0 }}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Savings"
+            title="Your estimated savings"
+            subtitle={familyMode ? `Calculated for ${familyCount} family members` : 'Money + time combined, annually'}
+            grad={T.gradGreen}
+          />
+          <div style={{ padding: '16px 18px', flex: 1 }}>
 
-              {/* Metric badges (same pattern as partner cards) */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
-                {[
-                  { value: fmt(traditional), label: 'Traditional',    color: T.red,    bg: T.redL,    border: T.redBorder },
-                  { value: fmt(healthNexus), label: 'HealthNexus',    color: T.teal,   bg: T.tealL,   border: T.tealBorder },
-                  { value: `${hoursSaved}h`, label: 'Time saved',     color: T.blue,   bg: T.blueL,   border: T.blueBorder },
-                  { value: pct(roiPct),      label: 'Cost reduction', color: T.purple, bg: T.purpleL, border: T.purpleBorder },
-                ].map(m => <MetricBadge key={m.label} {...m} />)}
-              </div>
+            {/* Savings hero number */}
+            <div style={{
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #f5f7fa, #e9ecef)',
+              borderRadius: 12, padding: '20px 16px 16px', marginBottom: 20,
+            }}>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: '#718096', marginBottom: 6 }}>
+                ESTIMATED ANNUAL SAVINGS
+              </p>
+              <h2 style={{ fontSize: 30, fontWeight: 800, color: T.teal, lineHeight: 1.1, marginBottom: 6 }}>
+                {fmt(savings)}
+              </h2>
+              <p style={{ fontSize: 12, color: '#718096' }}>
+                {familyMode ? `For ${familyCount} family members` : 'Money + time combined'}
+              </p>
+            </div>
 
-              <Divider />
-              <SectionLabel text="Cost comparison" />
-
-              {/* Comparison bars */}
+            {/* Metric badges */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
               {[
-                { label: 'Traditional healthcare', value: fmt(traditional), width: '100%',       color: '#fc8181' },
-                { label: 'HealthNexus',            value: fmt(healthNexus), width: `${barMedi}%`, color: '#68d391' },
-              ].map(bar => (
-                <div key={bar.label} style={{ marginBottom: 12 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#718096', marginBottom: 5, fontWeight: 600 }}>
-                    <span>{bar.label}</span><span>{bar.value}</span>
-                  </div>
-                  <div style={{ background: '#edf2f7', borderRadius: 6, height: 10, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', borderRadius: 6, background: bar.color, width: bar.width, transition: 'width 0.4s ease' }} />
-                  </div>
-                </div>
-              ))}
+                { value: fmt(traditional), label: 'Traditional',    color: T.red,    bg: T.redL,    border: T.redBorder },
+                { value: fmt(healthNexus), label: 'HealthNexus',    color: T.teal,   bg: T.tealL,   border: T.tealBorder },
+                { value: `${hoursSaved}h`, label: 'Time saved',     color: T.blue,   bg: T.blueL,   border: T.blueBorder },
+                { value: pct(roiPct),      label: 'Cost reduction', color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+              ].map(m => <MetricBadge key={m.label} {...m} />)}
+            </div>
 
-              {/* ROI bar */}
-              <div style={{ border: '1px solid #e8ecf0', borderRadius: 10, padding: '14px 16px', marginTop: 16 }}>
-                <p style={{ fontSize: 11, color: '#a0aec0', fontWeight: 500, marginBottom: 8 }}>
-                  Savings rate vs. traditional healthcare
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ flex: 1, background: '#edf2f7', borderRadius: 6, height: 12, overflow: 'hidden' }}>
-                    <div style={{
-                      height: '100%',
-                      background: T.gradTeal,
-                      borderRadius: 6, transition: 'width 0.4s ease',
-                      width: `${Math.min(100, roiPct)}%`,
-                    }} />
-                  </div>
-                  <span style={{ fontSize: 13, fontWeight: 800, minWidth: 44, textAlign: 'right', color: T.teal }}>
-                    {pct(roiPct)}
-                  </span>
+            <Divider />
+            <SectionLabel text="Cost comparison" />
+
+            {/* Comparison bars */}
+            {[
+              { label: 'Traditional healthcare', value: fmt(traditional), width: '100%',       color: '#fc8181' },
+              { label: 'HealthNexus',            value: fmt(healthNexus), width: `${barMedi}%`, color: '#68d391' },
+            ].map(bar => (
+              <div key={bar.label} style={{ marginBottom: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#718096', marginBottom: 5, fontWeight: 600 }}>
+                  <span>{bar.label}</span><span>{bar.value}</span>
+                </div>
+                <div style={{ background: '#edf2f7', borderRadius: 6, height: 10, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', borderRadius: 6, background: bar.color, width: bar.width, transition: 'width 0.4s ease' }} />
                 </div>
               </div>
-            </div>
-          </CardShell>
+            ))}
 
-          {/* Breakdown card */}
-          <CardShell
-            hovered={hoveredCard === 'breakdown'}
-            onEnter={() => setHoveredCard('breakdown')}
-            onLeave={() => setHoveredCard(null)}
-          >
-            <CardHero
-              eyebrow="HealthNexus · Detail"
-              title="Cost breakdown"
-              subtitle="Expand to see exactly where the savings come from."
-              grad={T.gradBlue}
-            />
-            <div style={{ padding: '16px 18px', flex: 1 }}>
-                <>
-                  <SectionLabel text="Traditional costs" />
-                  {[
-                    { dot: '#fc8181', label: 'Hospital consultations', val: fmt(consult) },
-                    { dot: '#fc8181', label: 'Emergency visits',       val: fmt(emgCost) },
-                    { dot: '#fc8181', label: 'Travel costs',           val: fmt(travelCost) },
-                    { dot: '#fc8181', label: 'Time value lost',        val: fmt(timeCost) },
-                  ].map(row => (
-                    <div key={row.label} style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '10px 0', borderBottom: '1px solid #f0f4f8',
-                      fontSize: 13, color: '#4a5568',
-                    }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: row.dot, flexShrink: 0 }} />
-                        {row.label}
-                      </span>
-                      <span style={{ color: T.red, fontWeight: 700 }}>{row.val}</span>
-                    </div>
-                  ))}
-
-                  <div style={{ marginTop: 16, marginBottom: 8 }}>
-                    <SectionLabel text="HealthNexus costs" />
-                  </div>
-                  {[
-                    { dot: '#68d391', label: 'Online consultations',    val: fmt(doctorVisits * (visitCost - 1000) * mult) },
-                    { dot: '#68d391', label: 'HealthNexus platform fee', val: fmt(platformFee) },
-                  ].map(row => (
-                    <div key={row.label} style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '10px 0', borderBottom: '1px solid #f0f4f8',
-                      fontSize: 13, color: '#4a5568',
-                    }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: row.dot, flexShrink: 0 }} />
-                        {row.label}
-                      </span>
-                      <span style={{ color: T.teal, fontWeight: 700 }}>{row.val}</span>
-                    </div>
-                  ))}
-
+            {/* ROI bar */}
+            <div style={{ border: '1px solid #e8ecf0', borderRadius: 10, padding: '14px 16px', marginTop: 16 }}>
+              <p style={{ fontSize: 11, color: '#a0aec0', fontWeight: 500, marginBottom: 8 }}>
+                Savings rate vs. traditional healthcare
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, background: '#edf2f7', borderRadius: 6, height: 12, overflow: 'hidden' }}>
                   <div style={{
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    padding: '14px 0 4px', borderTop: '2px solid #e2e8f0', marginTop: 4,
-                    fontSize: 14, fontWeight: 800, color: '#2d3748',
-                  }}>
-                    <span>Net annual benefit</span>
-                    <span style={{ color: T.teal }}>{fmt(savings)}</span>
-                  </div>
-                </>
-              {/* Info note */}
-              <div style={{
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-                fontSize: 12, color: '#a0aec0',
-                background: T.blueL, border: `1px solid ${T.blueBorder}`,
-                borderRadius: 10, padding: '12px 14px', marginTop: 16, lineHeight: 1.5,
-              }}>
-                <span style={{ flexShrink: 0, fontSize: '1rem' }}>ℹ️</span>
-                <span>
-                  {familyMode
-                    ? `Estimated for ${familyCount} family members. Platform fee adjusted for family plan. Emergency avg LKR 15,000.`
-                    : 'Estimates based on typical Sri Lankan healthcare costs. Emergency visits at LKR 15,000 avg.'}
+                    height: '100%',
+                    background: T.gradTeal,
+                    borderRadius: 6, transition: 'width 0.4s ease',
+                    width: `${Math.min(100, roiPct)}%`,
+                  }} />
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 800, minWidth: 44, textAlign: 'right', color: T.teal }}>
+                  {pct(roiPct)}
                 </span>
               </div>
             </div>
-          </CardShell>
-        </div>
+          </div>
+        </CardShell>
+
+        {/* Options / Assumptions card */}
+        <CardShell
+          hovered={hoveredCard === 'assumptions'}
+          onEnter={() => setHoveredCard('assumptions')}
+          onLeave={() => setHoveredCard(null)}
+          style={{ marginBottom: 0 }}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Options"
+            title="Assumptions"
+            subtitle="Toggle hidden costs to see your true savings."
+            grad={T.gradTeal}
+          />
+          <div style={{ padding: '16px 18px', flex: 1 }}>
+            <ToggleRow label="Include travel costs (LKR 2,500/visit)" checked={includeTravel} onChange={v => set({ includeTravel: v })} />
+            <ToggleRow label="Include time value (3 hrs × LKR 1,000)" checked={includeTime}   onChange={v => set({ includeTime: v })} />
+            <ToggleRow label="Include family members"                  checked={familyMode}    onChange={v => set({ familyMode: v })} />
+            {familyMode && (
+              <div style={{ marginTop: 14 }}>
+                <SliderRow
+                  label="Family members"
+                  value={familyCount} min={2} max={8}
+                  displayValue={`${familyCount} members`}
+                  onChange={v => set({ familyCount: v })}
+                />
+              </div>
+            )}
+          </div>
+        </CardShell>
+      </div>
+
+      {/* ── BOTTOM ROW: 2 columns — Benefits | Breakdown ── */}
+      <div style={{
+        maxWidth: 1000, margin: '0 auto', padding: '0 24px 80px',
+        display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch',
+      }}>
+
+        {/* Benefits card */}
+        <CardShell
+          hovered={hoveredCard === 'benefits'}
+          onEnter={() => setHoveredCard('benefits')}
+          onLeave={() => setHoveredCard(null)}
+          style={{ marginBottom: 0 }}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Advantages"
+            title="Why patients save more"
+            grad={T.gradPurple}
+          />
+          <div style={{ padding: '16px 18px', flex: 1 }}>
+            <SectionLabel text="Key benefits" />
+            {[
+              { icon: '🚫', title: 'No hospital queues',            desc: 'Consult from anywhere — home, office, or on the go.' },
+              { icon: '⏱️', title: `Save ${hoursSaved} hours every year`, desc: 'Eliminate travel and waiting room time completely.' },
+              { icon: '🚗', title: 'Zero transport costs',          desc: 'No fuel or taxi fare per visit.' },
+              { icon: '💸', title: 'Lower consultation fees',       desc: 'Online visits cost less than physical appointments.' },
+              { icon: '🔄', title: 'Faster follow-ups',            desc: 'No rebooking delays for quick check-ins.' },
+            ].map(b => <CapRow key={b.title} icon={b.icon} title={b.title} desc={b.desc} accentColor={T.amber} />)}
+          </div>
+        </CardShell>
+
+        {/* Breakdown card */}
+        <CardShell
+          hovered={hoveredCard === 'breakdown'}
+          onEnter={() => setHoveredCard('breakdown')}
+          onLeave={() => setHoveredCard(null)}
+          style={{ marginBottom: 0 }}
+        >
+          <CardHero
+            eyebrow="HealthNexus · Detail"
+            title="Cost breakdown"
+            grad={T.gradBlue}
+          />
+          <div style={{ padding: '16px 18px', flex: 1 }}>
+              <>
+                <SectionLabel text="Traditional costs" />
+                {[
+                  { dot: '#fc8181', label: 'Hospital consultations', val: fmt(consult) },
+                  { dot: '#fc8181', label: 'Emergency visits',       val: fmt(emgCost) },
+                  { dot: '#fc8181', label: 'Travel costs',           val: fmt(travelCost) },
+                  { dot: '#fc8181', label: 'Time value lost',        val: fmt(timeCost) },
+                ].map(row => (
+                  <div key={row.label} style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '5px 0', borderBottom: '1px solid #f0f4f8',
+                    fontSize: 13, color: '#4a5568',
+                  }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: row.dot, flexShrink: 0 }} />
+                      {row.label}
+                    </span>
+                    <span style={{ color: T.red, fontWeight: 700 }}>{row.val}</span>
+                  </div>
+                ))}
+
+                <div style={{ marginTop: 16, marginBottom: 8 }}>
+                  <SectionLabel text="HealthNexus costs" />
+                </div>
+                {[
+                  { dot: '#68d391', label: 'Online consultations',    val: fmt(doctorVisits * (visitCost - 1000) * mult) },
+                  { dot: '#68d391', label: 'HealthNexus platform fee', val: fmt(platformFee) },
+                ].map(row => (
+                  <div key={row.label} style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '10px 0', borderBottom: '1px solid #f0f4f8',
+                    fontSize: 13, color: '#4a5568',
+                  }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: row.dot, flexShrink: 0 }} />
+                      {row.label}
+                    </span>
+                    <span style={{ color: T.teal, fontWeight: 700 }}>{row.val}</span>
+                  </div>
+                ))}
+
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  padding: '14px 0 4px', borderTop: '2px solid #e2e8f0', marginTop: 4,
+                  fontSize: 14, fontWeight: 800, color: '#2d3748',
+                }}>
+                  <span>Net annual benefit</span>
+                  <span style={{ color: T.teal }}>{fmt(savings)}</span>
+                </div>
+              </>
+            {/* Info note */}
+            <div style={{
+              display: 'flex', gap: 8, alignItems: 'flex-start',
+              fontSize: 12, color: '#a0aec0',
+              background: T.blueL, border: `1px solid ${T.blueBorder}`,
+              borderRadius: 10, padding: '12px 14px', marginTop: 16, lineHeight: 1.5,
+            }}>
+              <span style={{ flexShrink: 0, fontSize: '1rem' }}>ℹ️</span>
+              <span>
+                {familyMode
+                  ? `Estimated for ${familyCount} family members. Platform fee adjusted for family plan. Emergency avg LKR 15,000.`
+                  : 'Estimates based on typical Sri Lankan healthcare costs. Emergency visits at LKR 15,000 avg.'}
+              </span>
+            </div>
+          </div>
+        </CardShell>
       </div>
     </section>
   );
