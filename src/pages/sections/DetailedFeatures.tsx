@@ -1,115 +1,86 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, ReferenceLine,
-  Area,
+  Tooltip, ResponsiveContainer, ReferenceLine, Area,
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend,
 } from 'recharts';
 
 /* ─── Shared token palette ─── */
 const T = {
-  blue:    '#1a5fa8',
-  blueL:   'rgba(26,95,168,.12)',
-  blueBorder: 'rgba(26,95,168,.2)',
-  teal:    '#0d7a5f',
-  tealL:   'rgba(13,122,95,.12)',
-  tealBorder: 'rgba(13,122,95,.2)',
-  amber:   '#b85e0c',
-  amberL:  'rgba(184,94,12,.15)',
-  amberBorder: 'rgba(184,94,12,.2)',
-  red:     '#d94f4f',
-  redL:    'rgba(217,79,79,.12)',
-  redBorder: 'rgba(217,79,79,.2)',
-  purple:  '#6b3fa0',
-  purpleL: 'rgba(107,63,160,.12)',
+  blue:         '#1a5fa8',
+  blueL:        'rgba(26,95,168,.12)',
+  blueBorder:   'rgba(26,95,168,.2)',
+  teal:         '#0d7a5f',
+  tealL:        'rgba(13,122,95,.12)',
+  tealBorder:   'rgba(13,122,95,.2)',
+  amber:        '#b85e0c',
+  amberL:       'rgba(184,94,12,.15)',
+  amberBorder:  'rgba(184,94,12,.2)',
+  red:          '#d94f4f',
+  redL:         'rgba(217,79,79,.12)',
+  redBorder:    'rgba(217,79,79,.2)',
+  purple:       '#6b3fa0',
+  purpleL:      'rgba(107,63,160,.12)',
   purpleBorder: 'rgba(107,63,160,.2)',
-  gradBlue:  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  gradTeal:  'linear-gradient(135deg, #0d7a5f 0%, #1a5fa8 100%)',
-  gradAmber: 'linear-gradient(135deg, #b85e0c 0%, #d94f4f 100%)',
-  gradGreen: 'linear-gradient(135deg, #11998e 0%, #1a5fa8 100%)',
+  pink:         '#993556',
+  pinkL:        'rgba(153,53,86,.12)',
+  pinkBorder:   'rgba(153,53,86,.2)',
+  gradBlue:     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  gradTeal:     'linear-gradient(135deg, #0d7a5f 0%, #1a5fa8 100%)',
+  gradAmber:    'linear-gradient(135deg, #b85e0c 0%, #d94f4f 100%)',
+  gradGreen:    'linear-gradient(135deg, #11998e 0%, #1a5fa8 100%)',
+  gradPurple:   'linear-gradient(135deg, #6b3fa0 0%, #993556 100%)',
 };
 
-/* ─── Types ─── */
-interface TagGroup {
-  items: string[];
-  color: string;
-  bg: string;
-  border: string;
-}
-
-interface Capability {
-  icon: string;
-  title: string;
-}
-
-interface Metric {
-  value: string;
-  label: string;
-  color: string;
-  bg: string;
-  border: string;
-}
-
-interface Stat {
-  value: string;
-  label: string;
-  color: string;
-}
-
-interface Category {
-  key: string;
-  label: string;
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  grad: string;
-  shadowColor: string;
-  metrics: Metric[];
-  tagGroups: TagGroup[];
-  capabilities: Capability[];
-  stats: Stat[];
-  showChart?: boolean;
-}
-
-/* ─── Glucose chart data (from PatientHealthDemo) ─── */
+/* ─── Chart Data ─── */
 const ALL_GLUCOSE_DATA = [
-  { date: 'Jan', value: 108 },
-  { date: 'Feb', value: 115 },
-  { date: 'Mar', value: 122 },
-  { date: 'Apr', value: 118 },
-  { date: 'May', value: 126 },
-  { date: 'Jun', value: 112 },
-  { date: 'Jul', value: 105 },
-  { date: 'Aug', value: 98  },
-  { date: 'Sep', value: 135 },
-  { date: 'Oct', value: 96  },
-  { date: 'Nov', value: 100 },
-  { date: 'Dec', value: 94  },
+  { date: 'Jan', value: 108 }, { date: 'Feb', value: 115 }, { date: 'Mar', value: 122 },
+  { date: 'Apr', value: 118 }, { date: 'May', value: 126 }, { date: 'Jun', value: 112 },
+  { date: 'Jul', value: 105 }, { date: 'Aug', value: 98  }, { date: 'Sep', value: 135 },
+  { date: 'Oct', value: 96  }, { date: 'Nov', value: 100 }, { date: 'Dec', value: 94  },
 ];
-
 const ALL_WEIGHT_DATA = [
-  { date: 'Jan', value: 84.2, bmi: 27.4 },
-  { date: 'Feb', value: 83.5, bmi: 27.2 },
-  { date: 'Mar', value: 82.8, bmi: 27.0 },
-  { date: 'Apr', value: 82.1, bmi: 26.7 },
-  { date: 'May', value: 81.4, bmi: 26.5 },
-  { date: 'Jun', value: 80.9, bmi: 26.3 },
-  { date: 'Jul', value: 80.2, bmi: 26.1 },
-  { date: 'Aug', value: 79.5, bmi: 25.9 },
-  { date: 'Sep', value: 79.0, bmi: 25.7 },
-  { date: 'Oct', value: 78.3, bmi: 25.5 },
-  { date: 'Nov', value: 77.8, bmi: 25.3 },
-  { date: 'Dec', value: 77.1, bmi: 25.1 },
+  { date: 'Jan', value: 84.2, bmi: 27.4 }, { date: 'Feb', value: 83.5, bmi: 27.2 },
+  { date: 'Mar', value: 82.8, bmi: 27.0 }, { date: 'Apr', value: 82.1, bmi: 26.7 },
+  { date: 'May', value: 81.4, bmi: 26.5 }, { date: 'Jun', value: 80.9, bmi: 26.3 },
+  { date: 'Jul', value: 80.2, bmi: 26.1 }, { date: 'Aug', value: 79.5, bmi: 25.9 },
+  { date: 'Sep', value: 79.0, bmi: 25.7 }, { date: 'Oct', value: 78.3, bmi: 25.5 },
+  { date: 'Nov', value: 77.8, bmi: 25.3 }, { date: 'Dec', value: 77.1, bmi: 25.1 },
+];
+const BP_DATA = [
+  { date: 'Jan', systolic: 118, diastolic: 76 }, { date: 'Feb', systolic: 122, diastolic: 79 },
+  { date: 'Mar', systolic: 130, diastolic: 84 }, { date: 'Apr', systolic: 126, diastolic: 81 },
+  { date: 'May', systolic: 135, diastolic: 88 }, { date: 'Jun', systolic: 128, diastolic: 82 },
+  { date: 'Jul', systolic: 124, diastolic: 78 }, { date: 'Aug', systolic: 119, diastolic: 75 },
+  { date: 'Sep', systolic: 121, diastolic: 77 }, { date: 'Oct', systolic: 116, diastolic: 74 },
+  { date: 'Nov', systolic: 118, diastolic: 76 }, { date: 'Dec', systolic: 114, diastolic: 72 },
+];
+const HR_DATA = [
+  { date: 'Jan', value: 78 }, { date: 'Feb', value: 74 }, { date: 'Mar', value: 80 },
+  { date: 'Apr', value: 76 }, { date: 'May', value: 82 }, { date: 'Jun', value: 77 },
+  { date: 'Jul', value: 73 }, { date: 'Aug', value: 71 }, { date: 'Sep', value: 75 },
+  { date: 'Oct', value: 72 }, { date: 'Nov', value: 70 }, { date: 'Dec', value: 68 },
+];
+const RADAR_DATA = [
+  { metric: 'Blood Pressure', score: 82, fullMark: 100 },
+  { metric: 'Heart Rate',     score: 91, fullMark: 100 },
+  { metric: 'Weight / BMI',   score: 74, fullMark: 100 },
+  { metric: 'Blood Glucose',  score: 78, fullMark: 100 },
+  { metric: 'O₂ Saturation',  score: 96, fullMark: 100 },
+  { metric: 'Temperature',    score: 94, fullMark: 100 },
+];
+const RECENT_READINGS = [
+  { date: 'Dec 28, 2024', bp: '114/72', hr: '68 bpm', temp: '36.8°C', spo2: '98%', glucose: '94 mg/dL',  status: 'normal'   },
+  { date: 'Dec 14, 2024', bp: '116/74', hr: '70 bpm', temp: '37.0°C', spo2: '97%', glucose: '100 mg/dL', status: 'normal'   },
+  { date: 'Nov 30, 2024', bp: '118/76', hr: '72 bpm', temp: '36.9°C', spo2: '98%', glucose: '105 mg/dL', status: 'normal'   },
+  { date: 'Nov 15, 2024', bp: '121/77', hr: '74 bpm', temp: '37.2°C', spo2: '96%', glucose: '112 mg/dL', status: 'elevated' },
+  { date: 'Oct 31, 2024', bp: '126/81', hr: '77 bpm', temp: '37.4°C', spo2: '97%', glucose: '118 mg/dL', status: 'elevated' },
 ];
 
-const RANGES: { label: string; count: number }[] = [
-  { label: '3M', count: 3 },
-  { label: '6M', count: 6 },
-  { label: '1Y', count: 12 },
-];
+const RANGES = [{ label: '3M', count: 3 }, { label: '6M', count: 6 }, { label: '1Y', count: 12 }];
 
-/* ─── Custom Tooltip for glucose chart ─── */
-const GlucoseTooltip = ({ active, payload, label }: { active?: boolean; payload?: any[]; label?: string }) => {
+/* ─── Shared Tooltip ─── */
+const ChartTooltip = ({ active, payload, label, unit = '' }: { active?: any; payload?: any; label?: any; unit?: string }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
@@ -117,7 +88,530 @@ const GlucoseTooltip = ({ active, payload, label }: { active?: boolean; payload?
       borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0',
     }}>
       <div style={{ marginBottom: 6, color: '#a0aec0', fontWeight: 600 }}>{label}</div>
-      {payload.map((p: any, i: number) => (
+      {payload.map((p: { color?: string; name?: string; value?: string | number }, i: number) => (
+        <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, display: 'inline-block' }} />
+          <span style={{ color: '#cbd5e1' }}>{p.name}:</span>
+          <span style={{ fontWeight: 600, color: '#fff' }}>{p.value}{unit}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ─── Modal Chart Card ─── */
+const ModalChartCard = ({ grad, eyebrow, title, subtitle, children }: { grad: string; eyebrow: string; title: string; subtitle: string; children: React.ReactNode }) => (
+  <div style={{
+    background: '#fff', borderRadius: 20, overflow: 'hidden',
+    border: '1px solid rgba(102,126,234,.1)',
+    boxShadow: '0 4px 24px rgba(0,0,0,.08)',
+  }}>
+    <div style={{ background: grad, padding: '18px 20px 14px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: -30, right: -30, width: 110, height: 110, borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+      <div style={{ display: 'inline-block', background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)', color: '#fff', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '3px 12px', borderRadius: 50, marginBottom: 10 }}>{eyebrow}</div>
+      <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', margin: '0 0 5px', letterSpacing: '-0.3px' }}>{title}</h4>
+      <p style={{ color: 'rgba(255,255,255,.8)', fontSize: '0.72rem', margin: 0, lineHeight: 1.5 }}>{subtitle}</p>
+    </div>
+    <div style={{ padding: '16px 18px' }}>{children}</div>
+  </div>
+);
+
+/* ─── Vitals Grid Card ─── */
+type VitalCardProps = {
+  name: string;
+  val: string | number;
+  unit?: string;
+  range?: string;
+  status?: string;
+  color?: string;
+  bg?: string;
+  border?: string;
+  bar?: number;
+};
+
+const VitalCard: React.FC<VitalCardProps> = ({ name, val, unit = '', range = '', status = '', color = '#68d391', bg = 'rgba(104,211,145,.12)', border = 'rgba(0,0,0,0.06)', bar = 0 }) => (
+  <div style={{
+    background: '#fff', border: `1px solid ${border}`, borderRadius: 14,
+    padding: '14px 16px', position: 'relative', overflow: 'hidden',
+    boxShadow: '0 2px 10px rgba(0,0,0,.04)',
+  }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: color, borderRadius: '14px 14px 0 0' }} />
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+      <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#9a9790' }}>{name}</div>
+      <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: 50, background: bg, color }}>{status}</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 6 }}>
+      <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1a202c' }}>{val}</span>
+      <span style={{ fontSize: '0.72rem', color: '#718096' }}>{unit}</span>
+    </div>
+    <div style={{ fontSize: '0.63rem', color: '#a0aec0', marginBottom: 7 }}>Range: {range}</div>
+    <div style={{ background: '#edf2f7', borderRadius: 4, height: 4, overflow: 'hidden' }}>
+      <div style={{ width: `${Math.min(bar, 100)}%`, height: '100%', background: color, borderRadius: 4 }} />
+    </div>
+  </div>
+);
+
+/* ══════════════════════════════════════════════
+  HEALTH CHARTS MODAL
+══════════════════════════════════════════════ */
+interface HealthChartsModalProps { isOpen: boolean; onClose: () => void }
+const HealthChartsModal: React.FC<HealthChartsModalProps> = ({ isOpen, onClose }) => {
+  const [activeTab, setActiveTab] = useState<string>('analytics');
+  const [timeRange, setTimeRange] = useState<number>(12);
+  const [visible, setVisible] = useState<boolean>(false);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => setVisible(true), 20);
+      document.body.style.overflow = 'hidden';
+    } else {
+      setVisible(false);
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === overlayRef.current) onClose();
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    if (isOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const trim = <T,>(data: T[]) => data.slice(-timeRange);
+
+  const TABS = [
+    { id: 'analytics', label: '📊 Analytics' },
+    { id: 'vitals',    label: '❤️ Vitals'    },
+    { id: 'history',   label: '🗂 History'    },
+  ];
+
+  const VITALS = [
+    { name: 'Heart Rate',     val: '68',     unit: 'bpm',  range: '60–100',        status: 'Normal',     color: T.red,    bg: T.redL,    border: T.redBorder,    bar: 60 },
+    { name: 'Blood Pressure', val: '114/72', unit: 'mmHg', range: '<140/90',       status: 'Optimal',    color: T.blue,   bg: T.blueL,   border: T.blueBorder,   bar: 75 },
+    { name: 'Temperature',    val: '36.8',   unit: '°C',   range: '36.5–37.5',     status: 'Normal',     color: T.amber,  bg: T.amberL,  border: T.amberBorder,  bar: 80 },
+    { name: 'O₂ Saturation',  val: '98',     unit: '%',    range: '>95',           status: 'Normal',     color: T.teal,   bg: T.tealL,   border: T.tealBorder,   bar: 98 },
+    { name: 'Resp. Rate',     val: '15',     unit: '/min', range: '12–20',         status: 'Normal',     color: T.purple, bg: T.purpleL, border: T.purpleBorder, bar: 55 },
+    { name: 'Weight',         val: '77.1',   unit: 'kg',   range: 'BMI 18.5–24.9', status: 'Overweight', color: T.pink,   bg: T.pinkL,   border: T.pinkBorder,   bar: 70 },
+    { name: 'Blood Glucose',  val: '94',     unit: 'mg/dL',range: '70–130',        status: 'Normal',     color: T.amber,  bg: T.amberL,  border: T.amberBorder,  bar: 40 },
+  ];
+
+  return (
+    <div
+      ref={overlayRef}
+      onClick={handleOverlayClick}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(10,12,20,.65)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '16px',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity .25s ease',
+      }}
+    >
+      {/* Modal Panel */}
+      <div style={{
+        background: '#fafbfc',
+        borderRadius: 28,
+        width: '100%',
+        maxWidth: 1060,
+        maxHeight: 'calc(100vh - 32px)',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        boxShadow: '0 40px 120px rgba(0,0,0,.35)',
+        border: '1px solid rgba(255,255,255,.15)',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(28px) scale(.97)',
+        transition: 'transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease',
+      }}>
+
+        {/* ── Modal Header ── */}
+        <div style={{
+          background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)',
+          padding: '22px 28px 18px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          flexShrink: 0, position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: -50, right: -50, width: 180, height: 180, borderRadius: '50%', background: 'rgba(255,255,255,.06)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: -60, right: 80, width: 130, height: 130, borderRadius: '50%', background: 'rgba(255,255,255,.04)', pointerEvents: 'none' }} />
+
+          {/* Patient info */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{
+              width: 46, height: 46, borderRadius: '50%',
+              background: 'rgba(255,255,255,.2)', border: '2px solid rgba(255,255,255,.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '0.95rem', fontWeight: 800, color: '#fff', flexShrink: 0,
+            }}>AP</div>
+            <div>
+              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.3px' }}>Ashan Perera</div>
+              <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,.75)', marginTop: 2 }}>
+                Patient ID: PT-20241028 · 34 yrs · Male · Dr. Nilmini Fernando
+              </div>
+            </div>
+          </div>
+
+          {/* Right: badge + close */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{
+              display: 'inline-block', background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.3)',
+              color: '#fff', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase',
+              padding: '4px 14px', borderRadius: 50,
+            }}>Health Dashboard</div>
+            <button
+              onClick={onClose}
+              style={{
+                width: 36, height: 36, borderRadius: '50%', border: '1.5px solid rgba(255,255,255,.3)',
+                background: 'rgba(255,255,255,.12)', color: '#fff',
+                fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all .2s', flexShrink: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.25)'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.12)'; e.currentTarget.style.transform = 'scale(1)'; }}
+            >✕</button>
+          </div>
+        </div>
+
+        {/* ── Tab Bar ── */}
+        <div style={{
+          padding: '14px 28px 0',
+          background: '#fff',
+          borderBottom: '1px solid rgba(102,126,234,.1)',
+          display: 'flex', gap: 4, flexShrink: 0,
+        }}>
+          {TABS.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id)}
+              style={{
+                padding: '8px 20px', borderRadius: '10px 10px 0 0', border: 'none',
+                fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer',
+                background: activeTab === t.id ? 'linear-gradient(135deg,#667eea,#764ba2)' : 'transparent',
+                color:      activeTab === t.id ? '#fff' : '#718096',
+                borderBottom: activeTab === t.id ? 'none' : '2px solid transparent',
+                transition: 'all .2s', fontFamily: 'inherit',
+              }}
+            >{t.label}</button>
+          ))}
+        </div>
+
+        {/* ── Scrollable Body ── */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px 28px' }}>
+
+          {/* ── ANALYTICS TAB ── */}
+          {activeTab === 'analytics' && (
+            <div>
+              {/* Summary chips */}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
+                {[
+                  { value: '114/72', label: 'BP',          color: T.blue,   bg: T.blueL,   border: T.blueBorder   },
+                  { value: '68 bpm', label: 'Heart Rate',  color: T.red,    bg: T.redL,    border: T.redBorder    },
+                  { value: '77.1 kg',label: 'Weight',      color: T.teal,   bg: T.tealL,   border: T.tealBorder   },
+                  { value: '94',     label: 'Glucose',     color: T.amber,  bg: T.amberL,  border: T.amberBorder  },
+                  { value: '85/100', label: 'Health Score',color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+                ].map(m => (
+                  <div key={m.label} style={{ flex: '1 1 80px', background: m.bg, border: `1px solid ${m.border}`, borderRadius: 12, padding: '10px 12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: m.color, lineHeight: 1 }}>{m.value}</div>
+                    <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: m.color, opacity: 0.75, marginTop: 3 }}>{m.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Time range */}
+              <div style={{ display: 'flex', gap: 8, marginBottom: 22, alignItems: 'center' }}>
+                <span style={{ fontSize: '0.72rem', color: '#9a9790', fontWeight: 600, marginRight: 4 }}>Range:</span>
+                {([['3M', 3], ['6M', 6], ['1Y', 12]] as const).map(([l, v]) => (
+                  <button key={l} onClick={() => setTimeRange(v)} style={{
+                    padding: '5px 14px', borderRadius: 8,
+                    border: `1px solid ${timeRange === v ? T.blue : '#e2e8f0'}`,
+                    background: timeRange === v ? T.blueL : '#fff',
+                    color: timeRange === v ? T.blue : '#718096',
+                    fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', transition: 'all .2s', fontFamily: 'inherit',
+                  }}>{l}</button>
+                ))}
+              </div>
+
+              {/* Blood Pressure Chart */}
+              <ModalChartCard grad={T.gradBlue} eyebrow="HealthNexus · Vitals" title="Blood Pressure Trend" subtitle="Avg 121/77 mmHg · 10 Normal / 2 Elevated readings · Improving ↓">
+                <ResponsiveContainer width="100%" height={250}>
+                  <ComposedChart data={trim(BP_DATA)} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="mSysGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor={T.red} stopOpacity={0.15} />
+                        <stop offset="95%" stopColor={T.red} stopOpacity={0.02} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,.05)" />
+                    <XAxis dataKey="date" tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} />
+                    <YAxis tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} domain={[60, 160]} />
+                    <Tooltip content={<ChartTooltip unit=" mmHg" />} />
+                    <Legend wrapperStyle={{ paddingTop: 12, fontSize: 11, color: '#718096' }} />
+                    <ReferenceLine y={120} stroke={T.amber} strokeDasharray="4 4" strokeOpacity={0.7} label={{ value: 'Pre-hyp', fill: T.amber, fontSize: 10, position: 'insideTopRight' }} />
+                    <ReferenceLine y={140} stroke={T.red}   strokeDasharray="4 4" strokeOpacity={0.7} label={{ value: 'HTN',     fill: T.red,   fontSize: 10, position: 'insideTopRight' }} />
+                    <Area    type="monotone" dataKey="systolic"  fill="url(#mSysGrad)" stroke="none" />
+                    <Line    type="monotone" dataKey="systolic"  stroke={T.red}  strokeWidth={2.5} dot={{ fill: T.red,  r: 3.5, strokeWidth: 0 }} name="Systolic"  />
+                    <Line    type="monotone" dataKey="diastolic" stroke={T.blue} strokeWidth={2.5} dot={{ fill: T.blue, r: 3.5, strokeWidth: 0 }} name="Diastolic" />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </ModalChartCard>
+
+              {/* Weight & Glucose side by side */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, margin: '18px 0' }}>
+                <ModalChartCard grad={T.gradTeal} eyebrow="HealthNexus · Vitals" title="Weight & BMI" subtitle="77.1 kg · BMI 25.1 · Down 7.1 kg · Trending ↓">
+                  <ResponsiveContainer width="100%" height={220}>
+                    <ComposedChart data={trim(ALL_WEIGHT_DATA)} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="mWGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%"  stopColor={T.teal} stopOpacity={0.18} />
+                          <stop offset="95%" stopColor={T.teal} stopOpacity={0.02} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,.05)" />
+                      <XAxis dataKey="date" tick={{ fill: '#a0aec0', fontSize: 10 }} stroke="#e2e8f0" tickLine={false} />
+                      <YAxis yAxisId="left"  tick={{ fill: '#a0aec0', fontSize: 10 }} stroke="#e2e8f0" tickLine={false} domain={[70, 90]} />
+                      <YAxis yAxisId="right" orientation="right" tick={{ fill: '#a0aec0', fontSize: 10 }} stroke="#e2e8f0" tickLine={false} domain={[22, 30]} />
+                      <Tooltip content={({ active, payload, label }) => <ChartTooltip active={active} payload={payload} label={label} />} />
+                      <Legend wrapperStyle={{ paddingTop: 10, fontSize: 10, color: '#718096' }} />
+                      <ReferenceLine yAxisId="right" y={24.9} stroke={T.teal} strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: 'BMI max', fill: T.teal, fontSize: 9, position: 'insideTopRight' }} />
+                      <Area yAxisId="left" type="monotone" dataKey="value" fill="url(#mWGrad)" stroke="none" />
+                      <Line yAxisId="left"  type="monotone" dataKey="value" stroke={T.teal}  strokeWidth={2.5} dot={{ fill: T.teal,  r: 3, strokeWidth: 0 }} name="Weight (kg)" />
+                      <Line yAxisId="right" type="monotone" dataKey="bmi"   stroke={T.amber} strokeWidth={2}   dot={{ fill: T.amber, r: 3, strokeWidth: 0 }} strokeDasharray="5 5" name="BMI" />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </ModalChartCard>
+
+                <ModalChartCard grad={T.gradAmber} eyebrow="HealthNexus · Vitals" title="Blood Glucose" subtitle="Avg 104 mg/dL · Target 70–130 mg/dL · Improving ↓">
+                  <ResponsiveContainer width="100%" height={220}>
+                    <ComposedChart data={trim(ALL_GLUCOSE_DATA)} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="mGGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%"  stopColor={T.purple} stopOpacity={0.22} />
+                          <stop offset="95%" stopColor={T.purple} stopOpacity={0.04} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,.05)" />
+                      <XAxis dataKey="date" tick={{ fill: '#a0aec0', fontSize: 10 }} stroke="#e2e8f0" tickLine={false} />
+                      <YAxis tick={{ fill: '#a0aec0', fontSize: 10 }} stroke="#e2e8f0" tickLine={false} domain={[60, 160]} />
+                      <Tooltip content={({ active, payload, label }) => <ChartTooltip active={active} payload={payload} label={label} unit=" mg/dL" />} />
+                      <Legend wrapperStyle={{ paddingTop: 10, fontSize: 10, color: '#718096' }} />
+                      <ReferenceLine y={130} stroke={T.teal} strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: 'Target max', fill: T.teal, fontSize: 9, position: 'insideTopRight' }} />
+                      <ReferenceLine y={180} stroke={T.red}  strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: 'High',       fill: T.red,  fontSize: 9, position: 'insideTopRight' }} />
+                      <Bar  dataKey="value" fill="url(#mGGrad)" radius={[5,5,0,0]} barSize={20} stroke="rgba(107,63,160,.4)" strokeWidth={1} name="Glucose (mg/dL)" />
+                      <Line type="monotone" dataKey="value" stroke={T.purple} strokeWidth={2} dot={false} name="Trend" />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </ModalChartCard>
+              </div>
+
+              {/* Heart Rate */}
+              <ModalChartCard grad={T.gradPurple} eyebrow="HealthNexus · Vitals" title="Heart Rate Monitoring" subtitle="Avg 74 bpm · Range 68–82 bpm · Resting heart rate improving">
+                <ResponsiveContainer width="100%" height={220}>
+                  <ComposedChart data={trim(HR_DATA)} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="mHRGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor={T.pink} stopOpacity={0.2}  />
+                        <stop offset="95%" stopColor={T.pink} stopOpacity={0.02} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,.05)" />
+                    <XAxis dataKey="date" tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} />
+                    <YAxis tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} domain={[50, 100]} />
+                    <Tooltip content={({ active, payload, label }) => <ChartTooltip active={active} payload={payload} label={label} unit=" bpm" />} />
+                    <ReferenceLine y={60}  stroke={T.teal}  strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: 'Min', fill: T.teal,  fontSize: 10, position: 'insideTopRight' }} />
+                    <ReferenceLine y={100} stroke={T.amber} strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: 'Max', fill: T.amber, fontSize: 10, position: 'insideTopRight' }} />
+                    <Area type="monotone" dataKey="value" fill="url(#mHRGrad)" stroke="none" />
+                    <Line type="monotone" dataKey="value" stroke={T.pink} strokeWidth={2.5} dot={{ fill: T.pink, r: 3.5, strokeWidth: 0 }} name="Heart Rate (bpm)" />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </ModalChartCard>
+
+              {/* Health Radar */}
+              <div style={{ marginTop: 18 }}>
+                <ModalChartCard grad={T.gradBlue} eyebrow="HealthNexus · Score" title="Overall Health Radar" subtitle="Composite score across 6 vital metrics — Dec 2024">
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div style={{ flex: '0 0 280px' }}>
+                      <ResponsiveContainer width="100%" height={260}>
+                        <RadarChart data={RADAR_DATA}>
+                          <PolarGrid stroke="rgba(0,0,0,.08)" />
+                          <PolarAngleAxis  dataKey="metric" tick={{ fill: '#718096', fontSize: 11 }} />
+                          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#a0aec0', fontSize: 10 }} />
+                          <Radar name="Score" dataKey="score" stroke={T.blue} fill={T.blue} fillOpacity={0.2} dot={{ fill: T.blue, r: 4 }} />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 180 }}>
+                      <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 12px' }}>Metric Breakdown</p>
+                      {RADAR_DATA.map(d => (
+                        <div key={d.metric} style={{ marginBottom: 13 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: '0.76rem' }}>
+                            <span style={{ color: '#718096' }}>{d.metric}</span>
+                            <span style={{ fontWeight: 700, color: '#1a202c' }}>{d.score}</span>
+                          </div>
+                          <div style={{ background: '#edf2f7', borderRadius: 4, height: 5, overflow: 'hidden' }}>
+                            <div style={{ height: '100%', borderRadius: 4, width: `${d.score}%`, background: d.score >= 90 ? T.teal : d.score >= 75 ? T.blue : T.amber, transition: 'width .8s ease' }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </ModalChartCard>
+              </div>
+            </div>
+          )}
+
+          {/* ── VITALS TAB ── */}
+          {activeTab === 'vitals' && (
+            <div>
+              <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 14px' }}>Latest Vital Readings</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(170px,1fr))', gap: 12, marginBottom: 26 }}>
+                {VITALS.map(v => <VitalCard key={v.name} {...v} />)}
+              </div>
+
+              <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 12px' }}>Health Insights</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 26 }}>
+                {[
+                  { type: 'teal',  icon: '✅', title: 'All key vitals within normal range',   body: 'Blood pressure, heart rate, temperature and oxygen saturation are all within healthy limits.' },
+                  { type: 'amber', icon: '⚠️', title: 'BMI slightly elevated at 25.1',         body: "Just above the optimal 18.5–24.9 range. Continue your weight management plan — you're trending in the right direction." },
+                  { type: 'teal',  icon: '📉', title: 'Excellent progress this year',          body: 'Reduced weight by 7.1 kg, lowered resting heart rate by 10 bpm, and improved blood glucose by 14 mg/dL.' },
+                ].map((ins, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 12,
+                    padding: '12px 15px', borderRadius: 12,
+                    background:   ins.type === 'teal' ? T.tealL  : T.amberL,
+                    border:      `1px solid ${ins.type === 'teal' ? T.tealBorder : T.amberBorder}`,
+                    borderLeft:  `3px solid ${ins.type === 'teal' ? T.teal       : T.amber}`,
+                  }}>
+                    <span style={{ fontSize: '1rem', flexShrink: 0 }}>{ins.icon}</span>
+                    <div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1a202c', marginBottom: 3 }}>{ins.title}</div>
+                      <div style={{ fontSize: '0.73rem', color: '#718096', lineHeight: 1.5 }}>{ins.body}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <ModalChartCard grad={T.gradBlue} eyebrow="HealthNexus · Score" title="Overall Health Radar" subtitle="Composite score across 6 vital metrics — Dec 2024">
+                {RADAR_DATA.map(d => (
+                  <div key={d.metric} style={{ marginBottom: 13 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: '0.76rem' }}>
+                      <span style={{ color: '#718096' }}>{d.metric}</span>
+                      <span style={{ fontWeight: 700, color: '#1a202c' }}>{d.score}</span>
+                    </div>
+                    <div style={{ background: '#edf2f7', borderRadius: 4, height: 5, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', borderRadius: 4, width: `${d.score}%`, background: d.score >= 90 ? T.teal : d.score >= 75 ? T.blue : T.amber, transition: 'width .8s ease' }} />
+                    </div>
+                  </div>
+                ))}
+              </ModalChartCard>
+            </div>
+          )}
+
+          {/* ── HISTORY TAB ── */}
+          {activeTab === 'history' && (
+            <div>
+              <div style={{
+                background: '#fff', borderRadius: 20, overflow: 'hidden',
+                border: '1px solid rgba(102,126,234,.12)', boxShadow: '0 4px 20px rgba(0,0,0,.07)',
+              }}>
+                <div style={{ background: T.gradBlue, padding: '18px 22px 14px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: -30, right: -30, width: 110, height: 110, borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+                  <div style={{ display: 'inline-block', background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)', color: '#fff', fontSize: '0.63rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '3px 12px', borderRadius: 50, marginBottom: 10 }}>HealthNexus · History</div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', margin: '0 0 5px' }}>Vital Signs History</h4>
+                  <p style={{ color: 'rgba(255,255,255,.8)', fontSize: '0.72rem', margin: 0 }}>All recorded readings · Recent visits</p>
+                </div>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid #edf2f7' }}>
+                        {['Date','Blood Pressure','Heart Rate','Temperature','SpO₂','Blood Glucose','Status'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '9px 12px', color: '#9a9790', fontWeight: 700, fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '1px', whiteSpace: 'nowrap' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {RECENT_READINGS.map((r, i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid #f0f4f8', background: i % 2 === 0 ? '#fafbfc' : '#fff' }}>
+                          <td style={{ padding: '11px 12px', fontWeight: 600, color: '#4a5568', fontSize: '0.76rem', whiteSpace: 'nowrap' }}>{r.date}</td>
+                          <td style={{ padding: '11px 12px', color: '#2d3748', fontSize: '0.76rem' }}>{r.bp}</td>
+                          <td style={{ padding: '11px 12px', color: '#2d3748', fontSize: '0.76rem' }}>{r.hr}</td>
+                          <td style={{ padding: '11px 12px', color: '#2d3748', fontSize: '0.76rem' }}>{r.temp}</td>
+                          <td style={{ padding: '11px 12px', color: '#2d3748', fontSize: '0.76rem' }}>{r.spo2}</td>
+                          <td style={{ padding: '11px 12px', color: '#2d3748', fontSize: '0.76rem' }}>{r.glucose}</td>
+                          <td style={{ padding: '11px 12px' }}>
+                            <span style={{
+                              fontSize: '0.62rem', fontWeight: 700, padding: '3px 9px', borderRadius: 50,
+                              background: r.status === 'normal' ? T.tealL  : T.amberL,
+                              color:      r.status === 'normal' ? T.teal   : T.amber,
+                            }}>
+                              {r.status === 'normal' ? '✓ Normal' : '⚠ Elevated'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div style={{ padding: '16px 22px', borderTop: '1px solid #edf2f7', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14, background: '#fafbfc' }}>
+                  {[{ label: 'Total Readings', val: '5' }, { label: 'Normal', val: '3 (60%)' }, { label: 'Elevated', val: '2 (40%)' }, { label: 'Critical', val: '0 (0%)' }].map(s => (
+                    <div key={s.label} style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#9a9790', marginBottom: 4 }}>{s.label}</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1a202c' }}>{s.val}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ── Modal Footer ── */}
+        <div style={{
+          padding: '14px 28px', background: '#fff',
+          borderTop: '1px solid rgba(102,126,234,.1)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexShrink: 0, flexWrap: 'wrap', gap: 12,
+        }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {['HIPAA', 'AI-Powered', 'Real-Time', 'Secure'].map(t => (
+              <span key={t} style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', padding: '3px 10px', borderRadius: 50, background: '#f0f4f8', color: '#4a5568', border: '1px solid #e2e8f0' }}>{t}</span>
+            ))}
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '9px 24px', borderRadius: 10, border: 'none',
+              background: 'linear-gradient(135deg,#667eea,#764ba2)',
+              color: '#fff', fontSize: '0.78rem', fontWeight: 700,
+              cursor: 'pointer', transition: 'all .2s', fontFamily: 'inherit',
+              boxShadow: '0 4px 14px rgba(102,126,234,.35)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(102,126,234,.45)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)';    e.currentTarget.style.boxShadow = '0 4px 14px rgba(102,126,234,.35)'; }}
+          >Close Dashboard</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════
+   ORIGINAL DETAIL FEATURES COMPONENTS (unchanged)
+══════════════════════════════════════════════ */
+
+const GlucoseTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ color?: string; name?: string; value?: number | string }>; label?: string | number }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{ background: 'rgba(26,32,44,.95)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0' }}>
+      <div style={{ marginBottom: 6, color: '#a0aec0', fontWeight: 600 }}>{label}</div>
+      {payload.map((p, i) => (
         <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, display: 'inline-block' }} />
           <span style={{ color: '#cbd5e1' }}>{p.name}:</span>
@@ -131,51 +625,28 @@ const GlucoseTooltip = ({ active, payload, label }: { active?: boolean; payload?
 const WeightBMIPreviewChart = () => {
   const [activeRange, setActiveRange] = useState(12);
   const data = ALL_WEIGHT_DATA.slice(-activeRange);
-
   return (
     <div style={{ marginTop: 20 }}>
       <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 18px' }} />
-
       <div style={{ marginBottom: 14 }}>
-        <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 4px' }}>
-          Sample Chart — Weight & BMI
-        </p>
-        <p style={{ fontSize: '0.75rem', color: '#718096', margin: 0 }}>
-          77.1 kg · BMI 25.1 · Down 7.1 kg · Trending ↓
-        </p>
+        <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 4px' }}>Sample Chart — Weight & BMI</p>
+        <p style={{ fontSize: '0.75rem', color: '#718096', margin: 0 }}>77.1 kg · BMI 25.1 · Down 7.1 kg · Trending ↓</p>
       </div>
-
-      {/* Range pills */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
         {RANGES.map(r => (
-          <button
-            key={r.label}
-            onClick={() => setActiveRange(r.count)}
-            style={{
-              padding: '4px 13px', borderRadius: 8, border: `1px solid ${activeRange === r.count ? '#667eea' : '#e2e8f0'}`,
-              background: activeRange === r.count ? 'rgba(102,126,234,.1)' : '#fff',
-              color: activeRange === r.count ? '#667eea' : '#718096',
-              fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer',
-              transition: 'all .15s', fontFamily: 'inherit',
-            }}
-          >
-            {r.label}
-          </button>
+          <button key={r.label} onClick={() => setActiveRange(r.count)} style={{ padding: '4px 13px', borderRadius: 8, border: `1px solid ${activeRange === r.count ? '#667eea' : '#e2e8f0'}`, background: activeRange === r.count ? 'rgba(102,126,234,.1)' : '#fff', color: activeRange === r.count ? '#667eea' : '#718096', fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer', transition: 'all .15s', fontFamily: 'inherit' }}>{r.label}</button>
         ))}
       </div>
-
-      {/* Legend */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ width: 10, height: 10, borderRadius: 2, background: T.teal, display: 'inline-block' }} />
           <span style={{ fontSize: '0.7rem', color: '#718096', fontWeight: 600 }}>Weight (kg)</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ width: 18, height: 2, background: T.amber, display: 'inline-block', borderRadius: 1, borderTop: '2px dashed' }} />
+          <span style={{ width: 18, height: 2, background: T.amber, display: 'inline-block', borderRadius: 1 }} />
           <span style={{ fontSize: '0.7rem', color: '#718096', fontWeight: 600 }}>BMI</span>
         </div>
       </div>
-
       <ResponsiveContainer width="100%" height={230}>
         <ComposedChart data={data} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
           <defs>
@@ -189,27 +660,21 @@ const WeightBMIPreviewChart = () => {
           <YAxis yAxisId="left"  tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} domain={[70, 90]} />
           <YAxis yAxisId="right" orientation="right" tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} domain={[22, 30]} />
           <Tooltip content={({ active, payload, label }) => {
-              if (!active || !payload?.length) return null;
-              return (
-                <div style={{
-                  background: 'rgba(26,32,44,.95)', border: '1px solid rgba(255,255,255,.08)',
-                  borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0',
-                }}>
-                  <div style={{ marginBottom: 6, color: '#a0aec0', fontWeight: 600 }}>{label}</div>
-                  {payload.map((p: any, i: number) => (
-                    <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, display: 'inline-block' }} />
-                      <span style={{ color: '#cbd5e1' }}>{p.name}:</span>
-                      <span style={{ fontWeight: 600, color: '#fff' }}>
-                        {p.value} {p.name === 'BMI' ? '' : 'kg'}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              );
-            }} />
-          <ReferenceLine yAxisId="right" y={24.9} stroke={T.teal} strokeDasharray="5 4" strokeOpacity={0.7}
-            label={{ value: 'BMI max', fill: T.teal, fontSize: 10, position: 'insideTopRight' }} />
+            if (!active || !payload?.length) return null;
+            return (
+              <div style={{ background: 'rgba(26,32,44,.95)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0' }}>
+                <div style={{ marginBottom: 6, color: '#a0aec0', fontWeight: 600 }}>{label}</div>
+                {payload.map((p, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, display: 'inline-block' }} />
+                    <span style={{ color: '#cbd5e1' }}>{p.name}:</span>
+                    <span style={{ fontWeight: 600, color: '#fff' }}>{p.value} {p.name === 'BMI' ? '' : 'kg'}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          }} />
+          <ReferenceLine yAxisId="right" y={24.9} stroke={T.teal} strokeDasharray="5 4" strokeOpacity={0.7} label={{ value: 'BMI max', fill: T.teal, fontSize: 10, position: 'insideTopRight' }} />
           <Area yAxisId="left" type="monotone" dataKey="value" fill="url(#weightGrad)" stroke="none" />
           <Line yAxisId="left"  type="monotone" dataKey="value" stroke={T.teal}  strokeWidth={2} dot={{ fill: T.teal,  r: 3, strokeWidth: 0 }} name="Weight (kg)" />
           <Line yAxisId="right" type="monotone" dataKey="bmi"   stroke={T.amber} strokeWidth={2} dot={{ fill: T.amber, r: 3, strokeWidth: 0 }} strokeDasharray="5 5" name="BMI" />
@@ -219,79 +684,36 @@ const WeightBMIPreviewChart = () => {
   );
 };
 
-/* ─── Glucose Preview Chart ─── */
-const GlucosePreviewChart = ({ onViewAll }: { onViewAll: () => void }) => {
+const GlucosePreviewChart = ({ onViewAll }: { onViewAll?: () => void }) => {
   const [activeRange, setActiveRange] = useState(12);
-
   const data = ALL_GLUCOSE_DATA.slice(-activeRange);
-
   return (
     <div style={{ marginTop: 20 }}>
-      {/* Divider */}
       <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 18px' }} />
-
-      {/* Chart header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
         <div>
-          <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 4px' }}>
-            Sample Chart — Blood Glucose
-          </p>
-          <p style={{ fontSize: '0.75rem', color: '#718096', margin: 0 }}>
-            Avg 104 mg/dL · Target 70–130 mg/dL · Improving ↓
-          </p>
+          <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 4px' }}>Sample Chart — Blood Glucose</p>
+          <p style={{ fontSize: '0.75rem', color: '#718096', margin: 0 }}>Avg 104 mg/dL · Target 70–130 mg/dL · Improving ↓</p>
         </div>
-
-        {/* View all charts button */}
         <button
           onClick={onViewAll}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 7,
-            padding: '9px 18px', borderRadius: 10,
-            border: '1.5px solid #667eea',
-            background: 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))',
-            color: '#667eea', fontSize: '0.75rem', fontWeight: 700,
-            cursor: 'pointer', transition: 'all .2s', fontFamily: 'inherit',
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.background = 'linear-gradient(135deg,rgba(102,126,234,.16),rgba(118,75,162,.16))';
-            (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 14px rgba(102,126,234,.25)';
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLButtonElement).style.background = 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))';
-            (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-          }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 10, border: '1.5px solid #667eea', background: 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))', color: '#667eea', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', transition: 'all .2s', fontFamily: 'inherit' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'linear-gradient(135deg,rgba(102,126,234,.16),rgba(118,75,162,.16))'; e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(102,126,234,.25)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            <polyline points="15 3 21 3 21 9" />
-            <line x1="10" y1="14" x2="21" y2="3" />
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="21" x2="9" y2="9" />
           </svg>
           View all charts
         </button>
       </div>
-
-      {/* Range pills */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
         {RANGES.map(r => (
-          <button
-            key={r.label}
-            onClick={() => setActiveRange(r.count)}
-            style={{
-              padding: '4px 13px', borderRadius: 8, border: `1px solid ${activeRange === r.count ? '#667eea' : '#e2e8f0'}`,
-              background: activeRange === r.count ? 'rgba(102,126,234,.1)' : '#fff',
-              color: activeRange === r.count ? '#667eea' : '#718096',
-              fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer',
-              transition: 'all .15s', fontFamily: 'inherit',
-            }}
-          >
-            {r.label}
-          </button>
+          <button key={r.label} onClick={() => setActiveRange(r.count)} style={{ padding: '4px 13px', borderRadius: 8, border: `1px solid ${activeRange === r.count ? '#667eea' : '#e2e8f0'}`, background: activeRange === r.count ? 'rgba(102,126,234,.1)' : '#fff', color: activeRange === r.count ? '#667eea' : '#718096', fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer', transition: 'all .15s', fontFamily: 'inherit' }}>{r.label}</button>
         ))}
       </div>
-
-      {/* Legend */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ width: 10, height: 10, borderRadius: 2, background: T.purple, display: 'inline-block' }} />
@@ -302,8 +724,6 @@ const GlucosePreviewChart = ({ onViewAll }: { onViewAll: () => void }) => {
           <span style={{ fontSize: '0.7rem', color: '#718096', fontWeight: 600 }}>Target max (130)</span>
         </div>
       </div>
-
-      {/* Chart */}
       <ResponsiveContainer width="100%" height={230}>
         <ComposedChart data={data} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
           <defs>
@@ -313,97 +733,40 @@ const GlucosePreviewChart = ({ onViewAll }: { onViewAll: () => void }) => {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,.05)" />
-          <XAxis
-            dataKey="date"
-            tick={{ fill: '#a0aec0', fontSize: 11 }}
-            stroke="#e2e8f0"
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fill: '#a0aec0', fontSize: 11 }}
-            stroke="#e2e8f0"
-            tickLine={false}
-            domain={[60, 160]}
-          />
+          <XAxis dataKey="date" tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} />
+          <YAxis tick={{ fill: '#a0aec0', fontSize: 11 }} stroke="#e2e8f0" tickLine={false} domain={[60, 160]} />
           <Tooltip content={<GlucoseTooltip />} />
-          <ReferenceLine
-            y={130}
-            stroke={T.teal}
-            strokeDasharray="5 4"
-            strokeOpacity={0.7}
-            label={{ value: 'Target max', fill: T.teal, fontSize: 10, position: 'insideTopRight' }}
-          />
-          <ReferenceLine
-            y={180}
-            stroke={T.red}
-            strokeDasharray="5 4"
-            strokeOpacity={0.6}
-            label={{ value: 'High', fill: T.red, fontSize: 10, position: 'insideTopRight' }}
-          />
-          <Bar
-            dataKey="value"
-            fill="url(#glucoseGrad)"
-            stroke="rgba(107,63,160,.4)"
-            strokeWidth={1}
-            radius={[6, 6, 0, 0]}
-            barSize={20}
-            name="Glucose (mg/dL)"
-          />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={T.purple}
-            strokeWidth={2}
-            dot={false}
-            name="Trend"
-          />
+          <ReferenceLine y={130} stroke={T.teal}   strokeDasharray="5 4" strokeOpacity={0.7} label={{ value: 'Target max', fill: T.teal,   fontSize: 10, position: 'insideTopRight' }} />
+          <ReferenceLine y={180} stroke={T.red}    strokeDasharray="5 4" strokeOpacity={0.6} label={{ value: 'High',       fill: T.red,    fontSize: 10, position: 'insideTopRight' }} />
+          <Bar  dataKey="value" fill="url(#glucoseGrad)" stroke="rgba(107,63,160,.4)" strokeWidth={1} radius={[6,6,0,0]} barSize={20} name="Glucose (mg/dL)" />
+          <Line type="monotone" dataKey="value" stroke={T.purple} strokeWidth={2} dot={false} name="Trend" />
         </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-/* ─── Shared sub-components ─── */
-const MetricRow = ({ metrics }: { metrics: Metric[] }) => (
+const MetricRow = ({ metrics }: { metrics: Array<{ value: string; label: string; color: string; bg: string; border: string }> }) => (
   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
-    {metrics.map(m => (
-      <div
-        key={m.label}
-        style={{
-          flex: '1 1 80px',
-          background: m.bg,
-          border: `1px solid ${m.border}`,
-          borderRadius: '12px',
-          padding: '12px 14px',
-          textAlign: 'center',
-        }}
-      >
+    {metrics.map((m) => (
+      <div key={m.label} style={{ flex: '1 1 80px', background: m.bg, border: `1px solid ${m.border}`, borderRadius: '12px', padding: '12px 14px', textAlign: 'center' }}>
         <div style={{ fontSize: '1.3rem', fontWeight: 800, color: m.color, lineHeight: 1 }}>{m.value}</div>
-        <div style={{
-          fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase',
-          letterSpacing: '0.5px', color: m.color, opacity: 0.75, marginTop: '3px',
-        }}>{m.label}</div>
+        <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: m.color, opacity: 0.75, marginTop: '3px' }}>{m.label}</div>
       </div>
     ))}
   </div>
 );
 
-const CapRow = ({ icon, title }: { icon: string; title: string }) => (
-  <div style={{
-    display: 'flex', alignItems: 'center', gap: '10px',
-    padding: '9px 12px', borderRadius: '10px', marginBottom: '6px',
-    background: '#f7fafc', border: '1px solid #e2e8f0',
-  }}>
+const CapRow = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '10px', marginBottom: '6px', background: '#f7fafc', border: '1px solid #e2e8f0' }}>
     <span style={{ fontSize: '1rem', flexShrink: 0 }}>{icon}</span>
     <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#1a202c' }}>{title}</span>
   </div>
 );
 
-/* ─── Data ─── */
-const CATEGORIES: Category[] = [
+const CATEGORIES = [
   {
-    key: 'appointment',
-    label: 'Appointments',
+    key: 'appointment', label: 'Appointments',
     eyebrow: 'HealthNexus · Feature 01',
     title: 'Smart Appointment Management',
     subtitle: 'Book, reschedule, and track appointments in real time with AI-powered slot suggestions and intelligent multi-channel reminders.',
@@ -437,8 +800,7 @@ const CATEGORIES: Category[] = [
     showChart: false,
   },
   {
-    key: 'consultation',
-    label: 'Telemedicine',
+    key: 'consultation', label: 'Telemedicine',
     eyebrow: 'HealthNexus · Feature 02',
     title: 'Next-Gen Telemedicine',
     subtitle: 'Crystal-clear, encrypted virtual consultations with AI transcription, digital whiteboard, and real-time in-call chat capabilities.',
@@ -472,24 +834,20 @@ const CATEGORIES: Category[] = [
     showChart: false,
   },
   {
-    key: 'health',
-    label: 'Health Records',
+    key: 'health', label: 'Health Records',
     eyebrow: 'HealthNexus · Feature 03',
     title: 'Comprehensive Health Management',
     subtitle: 'Your complete health picture always in sync — vitals, medications, lab results, and AI-driven predictive health alerts in one place.',
     grad: T.gradGreen,
     shadowColor: 'rgba(17,153,142,.35)',
     metrics: [
-      { value: 'Live', label: 'Vital Sync',   color: T.teal,   bg: T.tealL,   border: T.tealBorder   },
-      { value: 'OCR',  label: 'Doc Scan',     color: T.blue,   bg: T.blueL,   border: T.blueBorder   },
-      { value: 'AI',   label: 'Insights',     color: T.amber,  bg: T.amberL,  border: T.amberBorder  },
-      { value: 'Lab',  label: 'Integration',  color: T.purple, bg: T.purpleL, border: T.purpleBorder },
+      { value: 'Live', label: 'Vital Sync',  color: T.teal,   bg: T.tealL,   border: T.tealBorder   },
+      { value: 'OCR',  label: 'Doc Scan',    color: T.blue,   bg: T.blueL,   border: T.blueBorder   },
+      { value: 'AI',   label: 'Insights',    color: T.amber,  bg: T.amberL,  border: T.amberBorder  },
+      { value: 'Lab',  label: 'Integration', color: T.purple, bg: T.purpleL, border: T.purpleBorder },
     ],
     tagGroups: [
-      {
-        items: ['Blood Pressure', 'Glucose', 'Weight', 'Medication', 'Immunizations', 'Allergies', 'Medical Reports', 'Trend Charts'],
-        color: T.teal, bg: T.tealL, border: T.tealBorder,
-      },
+      { items: ['Blood Pressure', 'Glucose', 'Weight', 'Medication', 'Immunizations', 'Allergies', 'Medical Reports', 'Trend Charts'], color: T.teal, bg: T.tealL, border: T.tealBorder },
       { items: ['Refill Reminders', 'Interaction Checks', 'Adherence'], color: T.amber, bg: T.amberL, border: T.amberBorder },
       { items: ['OCR Scanning', 'AI Categorization', 'Lab Results'],    color: T.blue,  bg: T.blueL,  border: T.blueBorder  },
     ],
@@ -510,8 +868,7 @@ const CATEGORIES: Category[] = [
     showChart: true,
   },
   {
-    key: 'payment',
-    label: 'Payments',
+    key: 'payment', label: 'Payments',
     eyebrow: 'HealthNexus · Feature 04',
     title: 'Seamless Payment & Insurance',
     subtitle: 'Transparent billing with zero friction — real-time insurance verification, paperless auto claim filing, and full expense analytics.',
@@ -524,9 +881,9 @@ const CATEGORIES: Category[] = [
       { value: '0',       label: 'Hidden Fees',   color: T.purple, bg: T.purpleL, border: T.purpleBorder },
     ],
     tagGroups: [
-      { items: ['Cards', 'Digital Wallets', 'EMI', 'Insurance'],        color: T.teal,  bg: T.tealL,  border: T.tealBorder  },
-      { items: ['Eligibility Check', 'Claim Estimation'],                color: T.amber, bg: T.amberL, border: T.amberBorder },
-      { items: ['Expense Analytics', 'Tax Reports', 'Refunds'],         color: T.blue,  bg: T.blueL,  border: T.blueBorder  },
+      { items: ['Cards', 'Digital Wallets', 'EMI', 'Insurance'],       color: T.teal,  bg: T.tealL,  border: T.tealBorder  },
+      { items: ['Eligibility Check', 'Claim Estimation'],               color: T.amber, bg: T.amberL, border: T.amberBorder },
+      { items: ['Expense Analytics', 'Tax Reports', 'Refunds'],        color: T.blue,  bg: T.blueL,  border: T.blueBorder  },
     ],
     capabilities: [
       { icon: '💳', title: 'Cards, digital wallets, EMI options, and insurance coverage' },
@@ -546,18 +903,14 @@ const CATEGORIES: Category[] = [
   },
 ];
 
-/* ─── Tab button ─── */
-const TabButton = ({
-  cat,
-  isActive,
-  onClick,
-}: {
-  cat: Category;
+type TabButtonProps = {
+  cat: (typeof CATEGORIES)[number];
   isActive: boolean;
   onClick: () => void;
-}) => {
-  const [hovered, setHovered] = useState(false);
+};
 
+const TabButton = ({ cat, isActive, onClick }: TabButtonProps) => {
+  const [hovered, setHovered] = useState(false);
   return (
     <button
       onClick={onClick}
@@ -566,237 +919,117 @@ const TabButton = ({
       style={{
         display: 'inline-flex', alignItems: 'center', gap: '7px',
         padding: '9px 20px', borderRadius: '50px', border: 'none',
-        cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700,
-        fontFamily: 'inherit',
+        cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700, fontFamily: 'inherit',
         transition: 'all .2s',
-        background: isActive
-          ? cat.grad
-          : hovered
-          ? 'rgba(102,126,234,.08)'
-          : 'transparent',
+        background: isActive ? cat.grad : hovered ? 'rgba(102,126,234,.08)' : 'transparent',
         color: isActive ? '#fff' : hovered ? '#4a5568' : '#718096',
         boxShadow: isActive ? `0 4px 14px ${cat.shadowColor}` : 'none',
       }}
-    >
-      {cat.label}
-    </button>
+    >{cat.label}</button>
   );
 };
 
-/* ─── Main component ─── */
+/* ══════════════════════════════════════════════
+   MAIN COMPONENT
+══════════════════════════════════════════════ */
 const DetailedFeatures = () => {
-   const navigate = useNavigate();
-  const [activeKey, setActiveKey] = useState<string>(CATEGORIES[2].key);
+  const [activeKey, setActiveKey] = useState(CATEGORIES[2].key);
+  const [modalOpen, setModalOpen] = useState(false);
   const cat = CATEGORIES.find(c => c.key === activeKey) ?? CATEGORIES[0];
-
-  const handleViewAll = () => {
-    // Navigate to health analytics page — replace with your router call, e.g.:
-    // router.push('/health/analytics');
-    navigate('/patient-demo');
-    console.log('Navigate to full health analytics dashboard');
-  };
 
   return (
     <section id="capabilities">
-    <div style={{
-      fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-      background: '#fafbfc',
-      color: '#1a202c',
-    }}>
+      {/* Health Charts Modal */}
+      <HealthChartsModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
 
-      {/* ── Section header ── */}
-      <div style={{ textAlign: 'center', padding: '72px 24px 48px', background: '#fafbfc' }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
-          border: '1px solid rgba(102,126,234,.2)',
-          color: '#667eea', fontSize: '0.7rem', fontWeight: 700,
-          letterSpacing: '2.5px', textTransform: 'uppercase',
-          padding: '6px 20px', borderRadius: '50px', marginBottom: '24px',
-        }}>
-          Platform Capabilities
+      <div style={{
+        fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+        background: '#fafbfc', color: '#1a202c',
+      }}>
+        {/* Section header */}
+        <div style={{ textAlign: 'center', padding: '72px 24px 48px', background: '#fafbfc' }}>
+          <div style={{ display: 'inline-block', background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))', border: '1px solid rgba(102,126,234,.2)', color: '#667eea', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', padding: '6px 20px', borderRadius: '50px', marginBottom: '24px' }}>Platform Capabilities</div>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800, color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 16px' }}>
+            Comprehensive Healthcare{' '}
+            <span style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Feature Suite</span>
+          </h2>
+          <p style={{ fontSize: '0.95rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
+            Every tool your care journey needs — built for patients, doctors, and the ecosystem around them.
+          </p>
         </div>
 
-        <h2 style={{
-          fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
-          color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15,
-          margin: '0 0 16px',
-        }}>
-          Comprehensive Healthcare{' '}
-          <span style={{
-            background: 'linear-gradient(135deg,#667eea,#764ba2)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          }}>
-            Feature Suite
-          </span>
-        </h2>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 80px' }}>
+          {/* Tab bar */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+            <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid rgba(102,126,234,.14)', borderRadius: '50px', padding: '5px', gap: '4px', boxShadow: '0 4px 20px rgba(0,0,0,.06)', flexWrap: 'wrap' }}>
+              {CATEGORIES.map(c => (
+                <TabButton key={c.key} cat={c} isActive={c.key === activeKey} onClick={() => setActiveKey(c.key)} />
+              ))}
+            </div>
+          </div>
 
-        <p style={{ fontSize: '0.95rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
-          Every tool your care journey needs — built for patients, doctors, and the ecosystem around them.
-        </p>
-      </div>
+          {/* Feature card */}
+          <div style={{ background: '#fff', borderRadius: '24px', overflow: 'hidden', border: '1px solid rgba(102,126,234,.12)', boxShadow: '0 4px 20px rgba(0,0,0,.07)', display: 'flex', flexDirection: 'column' }}>
+            {/* Card hero */}
+            <div style={{ background: cat.grad, padding: '32px 28px 28px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-60px', right: '20px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
+              <div style={{ display: 'inline-block', background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)', color: '#fff', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '5px 16px', borderRadius: '50px', marginBottom: '16px' }}>{cat.eyebrow}</div>
+              <h3 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.5px', margin: '0 0 10px' }}>{cat.title}</h3>
+              <p style={{ color: 'rgba(255,255,255,.82)', fontSize: '0.82rem', lineHeight: 1.65, margin: 0, maxWidth: '500px' }}>{cat.subtitle}</p>
+            </div>
 
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 80px' }}>
+            {/* Card body */}
+            <div style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column' }}>
+              <MetricRow metrics={cat.metrics} />
+              <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 20px' }} />
 
-        {/* ── Tab bar ── */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
-          <div style={{
-            display: 'inline-flex',
-            background: '#fff',
-            border: '1px solid rgba(102,126,234,.14)',
-            borderRadius: '50px',
-            padding: '5px',
-            gap: '4px',
-            boxShadow: '0 4px 20px rgba(0,0,0,.06)',
-            flexWrap: 'wrap',
-          }}>
-            {CATEGORIES.map(c => (
-              <TabButton
-                key={c.key}
-                cat={c}
-                isActive={c.key === activeKey}
-                onClick={() => setActiveKey(c.key)}
-              />
+              {/* Tags */}
+              <div style={{ marginBottom: '18px' }}>
+                <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 8px' }}>Key Inputs</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                  {cat.tagGroups.flatMap((g, gi) =>
+                    g.items.map(item => (
+                      <span key={`${gi}-${item}`} style={{ display: 'inline-block', fontSize: '0.72rem', fontWeight: 600, color: g.color, background: g.bg, border: `1px solid ${g.border}`, borderRadius: '7px', padding: '4px 10px' }}>{item}</span>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 18px' }} />
+
+              {/* Capabilities */}
+              <div style={{ marginBottom: '8px' }}>
+                <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 8px' }}>Core Capabilities</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
+                  {cat.capabilities.map(c => <CapRow key={c.title} icon={c.icon} title={c.title} />)}
+                </div>
+              </div>
+
+              {/* Charts preview (Health Records tab) */}
+              {cat.showChart && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                  <div><WeightBMIPreviewChart /></div>
+                  <div>
+                    {/* ← onViewAll now opens modal instead of navigating */}
+                    <GlucosePreviewChart onViewAll={() => setModalOpen(true)} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Stats strip */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '28px' }}>
+            {cat.stats.map(s => (
+              <div key={s.label} style={{ background: '#fff', border: '1px solid rgba(102,126,234,.14)', borderRadius: '14px', padding: '14px 26px', minWidth: '110px', boxShadow: '0 2px 10px rgba(0,0,0,.05)', flex: '1 1 100px', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.3rem', fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#a0aec0', marginTop: '4px' }}>{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
-
-        {/* ── Feature card ── */}
-        <div style={{
-          background: '#fff',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          border: '1px solid rgba(102,126,234,.12)',
-          boxShadow: '0 4px 20px rgba(0,0,0,.07)',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-
-          {/* Card hero */}
-          <div style={{
-            background: cat.grad,
-            padding: '32px 28px 28px',
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              position: 'absolute', top: '-40px', right: '-40px',
-              width: '160px', height: '160px', borderRadius: '50%',
-              background: 'rgba(255,255,255,.07)', pointerEvents: 'none',
-            }} />
-            <div style={{
-              position: 'absolute', bottom: '-60px', right: '20px',
-              width: '120px', height: '120px', borderRadius: '50%',
-              background: 'rgba(255,255,255,.05)', pointerEvents: 'none',
-            }} />
-
-            <div style={{
-              display: 'inline-block',
-              background: 'rgba(255,255,255,.18)',
-              border: '1px solid rgba(255,255,255,.28)',
-              color: '#fff', fontSize: '0.7rem', fontWeight: 700,
-              letterSpacing: '2px', textTransform: 'uppercase',
-              padding: '5px 16px', borderRadius: '50px', marginBottom: '16px',
-            }}>
-              {cat.eyebrow}
-            </div>
-
-            <h3 style={{
-              fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 800,
-              color: '#fff', lineHeight: 1.2, letterSpacing: '-0.5px',
-              margin: '0 0 10px',
-            }}>
-              {cat.title}
-            </h3>
-
-            <p style={{
-              color: 'rgba(255,255,255,.82)', fontSize: '0.82rem',
-              lineHeight: 1.65, margin: 0, maxWidth: '500px',
-            }}>
-              {cat.subtitle}
-            </p>
-          </div>
-
-          {/* Card body */}
-          <div style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column' }}>
-
-            {/* Metrics */}
-            <MetricRow metrics={cat.metrics} />
-
-            {/* Divider */}
-            <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 20px' }} />
-
-            {/* Tags */}
-            <div style={{ marginBottom: '18px' }}>
-              <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 8px' }}>
-                Key Inputs
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                {cat.tagGroups.flatMap((g, gi) =>
-                  g.items.map(item => (
-                    <span
-                      key={`${gi}-${item}`}
-                      style={{
-                        display: 'inline-block', fontSize: '0.72rem', fontWeight: 600,
-                        color: g.color, background: g.bg, border: `1px solid ${g.border}`,
-                        borderRadius: '7px', padding: '4px 10px',
-                      }}
-                    >{item}</span>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '0 0 18px' }} />
-
-            {/* Capabilities */}
-            <div style={{ marginBottom: '8px' }}>
-              <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 0 8px' }}>
-                Core Capabilities
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
-                {cat.capabilities.map(c => (
-                  <CapRow key={c.title} icon={c.icon} title={c.title} />
-                ))}
-              </div>
-            </div>
-
-            {/* ── Blood Glucose chart (Health Records tab only) ── */}
-            {/* ── Blood Glucose chart (Health Records tab only) ── */}
-            {cat.showChart && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-                
-                <div>
-                  <WeightBMIPreviewChart />
-                </div>
-                <div>
-                  <GlucosePreviewChart onViewAll={handleViewAll} />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── Stats strip ── */}
-        <div style={{
-          display: 'flex', justifyContent: 'center', gap: '12px',
-          flexWrap: 'wrap', marginTop: '28px',
-        }}>
-          {cat.stats.map(s => (
-            <div key={s.label} style={{
-              background: '#fff', border: '1px solid rgba(102,126,234,.14)',
-              borderRadius: '14px', padding: '14px 26px', minWidth: '110px',
-              boxShadow: '0 2px 10px rgba(0,0,0,.05)', flex: '1 1 100px',
-              textAlign: 'center',
-            }}>
-              <div style={{ fontSize: '1.3rem', fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
-              <div style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#a0aec0', marginTop: '4px' }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
-    </div>
     </section>
   );
 };
