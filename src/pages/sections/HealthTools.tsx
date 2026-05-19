@@ -271,7 +271,7 @@ const HealthTools = () => {
 
       {/* ── Three-column grid ── */}
       <div style={{
-        maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px',
+        maxWidth: 1400, margin: '0 auto', padding: '0 24px 80px',
         display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24,
         alignItems: 'start',
       }}>
