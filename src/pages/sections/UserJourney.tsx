@@ -26,6 +26,17 @@ const T = {
   gradAmber:    'linear-gradient(135deg, #b85e0c 0%, #d94f4f 100%)',
 };
 
+/* ─── Hook: detect mobile ─── */
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useState(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  });
+  return isMobile;
+};
+
 /* ─── Types ─── */
 interface Pill {
   text: string;
@@ -262,7 +273,22 @@ const STATS = [
 
 const stepAccents = [T.purple, T.blue, T.amber, T.teal, T.pink, T.red, T.purple];
 
-/* ─── StepCard sub-component ─── */
+/* ─── Chevron Icon ─── */
+const ChevronIcon = ({ open }: { open: boolean }) => (
+  <svg
+    width="20" height="20" viewBox="0 0 20 20" fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{
+      transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+      transition: 'transform 0.3s ease',
+      flexShrink: 0,
+    }}
+  >
+    <path d="M5 7.5L10 12.5L15 7.5" stroke="rgba(255,255,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+/* ─── StepCard (Desktop) ─── */
 const StepCard = ({ step, accent }: { step: JourneyStep; accent: string }) => {
   const [hovered, setHovered] = useState(false);
   return (
@@ -275,7 +301,6 @@ const StepCard = ({ step, accent }: { step: JourneyStep; accent: string }) => {
         gap: '14px',
         background: '#fff',
         border: `1px solid ${hovered ? accent : '#e2e8f0'}`,
-        borderLeft: `3px solid ${hovered ? accent : 'transparent'}',`,
         borderRadius: '16px',
         padding: '14px 18px',
         boxShadow: hovered ? '0 12px 40px rgba(0,0,0,.10)' : '0 2px 10px rgba(0,0,0,.05)',
@@ -357,206 +382,370 @@ const StepCard = ({ step, accent }: { step: JourneyStep; accent: string }) => {
   );
 };
 
+/* ─── StepCard (Mobile accordion) ─── */
+const StepCardMobile = ({ step, accent }: { step: JourneyStep; accent: string }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: '16px',
+      overflow: 'hidden',
+      border: `1px solid ${open ? accent : '#e2e8f0'}`,
+      boxShadow: open ? '0 8px 32px rgba(0,0,0,.10)' : '0 2px 10px rgba(0,0,0,.05)',
+      transition: 'box-shadow .3s ease, border-color .3s ease',
+      marginBottom: '10px',
+      position: 'relative',
+    }}>
+      {/* Left accent bar — always visible */}
+      <div style={{
+        position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px',
+        background: accent,
+        borderRadius: '16px 0 0 16px',
+      }} />
+
+      {/* Accordion header */}
+      <button
+        onClick={() => setOpen(prev => !prev)}
+        style={{
+          width: '100%', border: 'none', cursor: 'pointer',
+          background: open
+            ? `linear-gradient(135deg, ${accent}22 0%, ${accent}10 100%)`
+            : '#fff',
+          padding: '0',
+          textAlign: 'left',
+          display: 'block',
+          transition: 'background .25s',
+        }}
+      >
+        <div style={{
+          padding: '13px 14px 13px 18px',
+          display: 'flex', alignItems: 'center', gap: '12px',
+        }}>
+          {/* Step badge */}
+          <div style={{
+            width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
+            background: open ? accent : `${accent}18`,
+            color: open ? '#fff' : accent,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '0.9rem', fontWeight: 800,
+            boxShadow: open ? `0 4px 14px ${accent}40` : 'none',
+            transition: 'all .25s',
+          }}>
+            {step.step}
+          </div>
+
+          {/* Title & pill */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '3px' }}>
+              <span style={{ fontSize: '0.9rem' }}>{step.icon}</span>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1a202c' }}>{step.title}</span>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center',
+                fontSize: '0.62rem', fontWeight: 700,
+                padding: '2px 8px', borderRadius: '50px',
+                background: step.pill.bg, color: step.pill.color,
+                border: `1px solid ${step.pill.border}`,
+              }}>{step.pill.text}</span>
+            </div>
+            <div style={{ fontSize: '0.71rem', color: '#718096', lineHeight: 1.4 }}>
+              {step.description}
+            </div>
+          </div>
+
+          {/* Chevron wrapped to match accent color */}
+          <div style={{
+            width: '30px', height: '30px', borderRadius: '20%', flexShrink: 0,
+            background: accent,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <ChevronIcon open={open} />
+          </div>
+        </div>
+      </button>
+
+      {/* Collapsible body */}
+      <div style={{
+        maxHeight: open ? '800px' : '0',
+        overflow: 'hidden',
+        transition: 'max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}>
+        <div style={{ padding: '0 14px 14px 18px' }}>
+          <div style={{ height: '1px', background: `${accent}20`, margin: '0 0 12px' }} />
+
+          {/* Time badge */}
+          <div style={{ marginBottom: '10px' }}>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: '4px',
+              fontSize: '0.65rem', fontWeight: 700, color: '#a0aec0',
+              background: '#f7fafc', border: '1px solid #e2e8f0',
+              padding: '2px 9px', borderRadius: '50px',
+            }}>⏱ {step.time}</span>
+          </div>
+
+          {/* Detail */}
+          <div style={{ fontSize: '0.73rem', color: '#4a5568', lineHeight: 1.65, marginBottom: '12px' }}>
+            {step.detail}
+          </div>
+
+          {/* Feature tags */}
+          <div style={{ display: 'flex', gap: '7px', flexWrap: 'wrap' }}>
+            {step.features.map((f, fi) => (
+              <span key={fi} style={{
+                display: 'inline-flex', alignItems: 'center', gap: '5px',
+                fontSize: '0.67rem', fontWeight: 600, color: '#718096',
+                background: '#f7fafc', border: '1px solid #e2e8f0',
+                padding: '3px 10px', borderRadius: '50px',
+              }}>
+                <span style={{ color: accent }}>{f.icon}</span> {f.text}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─── Main component ─── */
 const UserJourney = () => {
   const [activeTab, setActiveTab] = useState<'patient' | 'doctor'>('patient');
+  const isMobile = useIsMobile();
   const steps = activeTab === 'patient' ? patientJourney : doctorJourney;
   const isPatient = activeTab === 'patient';
 
   return (
     <section id="user-journey">
-    <div style={{
-      fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-      background: '#fafbfc',
-      color: '#1a202c',
-    }}>
+      <style>{`
+        @media (max-width: 767px) {
+          #uj-header {
+            padding: 48px 16px 32px !important;
+          }
+          #uj-stats-strip {
+            gap: 8px !important;
+            margin-top: 24px !important;
+          }
+          #uj-stats-strip > div {
+            padding: 10px 14px !important;
+          }
+          #uj-compare-bar {
+            margin: 0 16px 24px !important;
+          }
+          #uj-tab-switcher button {
+            padding: 9px 16px !important;
+            font-size: 0.78rem !important;
+          }
+          #uj-hero-card {
+            margin: 0 16px 16px !important;
+            padding: 18px 16px 16px !important;
+          }
+          #uj-hero-metrics {
+            gap: 8px !important;
+          }
+          #uj-hero-metrics > div {
+            padding: 6px 10px !important;
+          }
+          #uj-steps-list {
+            padding: 0 16px !important;
+            margin-bottom: 0px !important;
+          }
+        }
+      `}</style>
 
-      {/* ── Section header ── */}
-      <div style={{ textAlign: 'center', padding: '72px 24px 48px' }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
-          border: '1px solid rgba(102,126,234,.2)',
-          color: '#667eea', fontSize: '0.68rem', fontWeight: 700,
-          letterSpacing: '2.5px', textTransform: 'uppercase',
-          padding: '6px 20px', borderRadius: '50px', marginBottom: '22px',
-        }}>
-          ✦ User Journey
-        </div>
+      <div style={{
+        fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+        background: '#fafbfc',
+        color: '#1a202c',
+      }}>
 
-        <h2 style={{
-          fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
-          color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 14px',
-        }}>
-          Experience the seamless{' '}
-          <span style={{
-            background: 'linear-gradient(135deg,#667eea,#764ba2)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          }}>
-            healthcare journey
-          </span>
-        </h2>
-
-        <p style={{ fontSize: '0.93rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
-          From sign-up to continuous care — every step designed for speed, safety and simplicity.
-        </p>
-
-        {/* Stats strip */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '36px' }}>
-          {STATS.map(s => (
-            <div key={s.label} style={{
-              background: '#fff', border: '1px solid rgba(102,126,234,.14)',
-              borderRadius: '14px', padding: '14px 22px',
-              display: 'flex', alignItems: 'center', gap: '10px',
-              boxShadow: '0 2px 10px rgba(0,0,0,.05)',
-            }}>
-              <div style={{
-                width: '36px', height: '36px', borderRadius: '10px', flexShrink: 0,
-                background: s.bg, border: `1px solid ${s.border}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1rem',
-              }}>{s.icon}</div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1a202c', lineHeight: 1 }}>{s.label}</div>
-                <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', color: '#a0aec0', marginTop: '3px' }}>{s.sub}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Compare strip ── */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto 32px', padding: '0 24px' }}>
-        <div style={{
-          background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
-          border: '1px solid rgba(102,126,234,.12)',
-          borderRadius: '16px', padding: '18px 26px',
-          display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
-        }}>
-          <span style={{ fontSize: '1.2rem' }}>🗺️</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a202c', marginBottom: '2px' }}>
-              7 steps. Under 8 minutes to your first consultation.
-            </div>
-            <div style={{ fontSize: '0.77rem', color: '#718096', lineHeight: 1.6 }}>
-              HIPAA-compliant · AI-powered matching · Real-time booking · End-to-end encrypted
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {['7 Steps', 'AI Match', 'E-Prescription', '24/7'].map(t => (
-              <span key={t} style={{
-                fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase',
-                padding: '4px 12px', borderRadius: '50px',
-                background: '#fff', color: '#4a5568', border: '1px solid #e2e8f0',
-              }}>{t}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Tab switcher ── */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
-        <div style={{
-          display: 'inline-flex', background: '#fff',
-          border: '1px solid rgba(102,126,234,.15)',
-          borderRadius: '50px', padding: '4px', gap: '4px',
-          boxShadow: '0 2px 10px rgba(0,0,0,.06)',
-        }}>
-          {(['patient', 'doctor'] as const).map(tab => {
-            const active = activeTab === tab;
-            const grad = tab === 'patient' ? T.gradPink : T.gradTeal;
-            return (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  padding: '10px 24px', borderRadius: '50px',
-                  border: 'none', cursor: 'pointer',
-                  fontSize: '0.82rem', fontWeight: 700,
-                  transition: 'all .22s',
-                  background: active ? grad : 'transparent',
-                  color: active ? '#fff' : '#718096',
-                  boxShadow: active ? '0 4px 16px rgba(0,0,0,.15)' : 'none',
-                }}
-              >
-                <span>{tab === 'patient' ? '❤️' : '🩺'}</span>
-                {tab === 'patient' ? 'Patient Journey' : 'Doctor Journey'}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ── Journey Steps ── */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
-
-        {/* Hero card for active tab */}
-        <div style={{
-          background: isPatient ? T.gradPink : T.gradTeal,
-          borderRadius: '24px', overflow: 'hidden',
-          padding: '22px 24px 20px',
-          marginBottom: '20px',
-          position: 'relative',
-        }}>
-          <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '140px', height: '140px', borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', bottom: '-50px', right: '20px', width: '100px', height: '100px', borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
-
+        {/* ── Section header ── */}
+        <div id="uj-header" style={{ textAlign: 'center', padding: '72px 24px 48px' }}>
           <div style={{
             display: 'inline-block',
-            background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)',
-            color: '#fff', fontSize: '0.68rem', fontWeight: 700,
-            letterSpacing: '2px', textTransform: 'uppercase',
-            padding: '4px 14px', borderRadius: '50px', marginBottom: '12px',
+            background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
+            border: '1px solid rgba(102,126,234,.2)',
+            color: '#667eea', fontSize: '0.68rem', fontWeight: 700,
+            letterSpacing: '2.5px', textTransform: 'uppercase',
+            padding: '6px 20px', borderRadius: '50px', marginBottom: '22px',
           }}>
-            HealthNexus · {isPatient ? 'Patient' : 'Doctor'} Journey
+            ✦ User Journey
           </div>
 
-          <h3 style={{ fontSize: 'clamp(1.1rem,2vw,1.35rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2, margin: '0 0 8px', letterSpacing: '-0.4px' }}>
-            {isPatient ? '7 steps from sign-up to continuous care' : '7 steps from onboarding to practice growth'}
-          </h3>
-          <p style={{ color: 'rgba(255,255,255,.82)', fontSize: '0.8rem', lineHeight: 1.6, margin: 0, maxWidth: '500px' }}>
-            {isPatient
-              ? 'Everything designed to save you time, reduce cost, and keep your health on track.'
-              : 'Built to grow your revenue, cut admin work, and give you more time with patients.'}
+          <h2 style={{
+            fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
+            color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 14px',
+          }}>
+            Experience the seamless{' '}
+            <span style={{
+              background: 'linear-gradient(135deg,#667eea,#764ba2)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>
+              healthcare journey
+            </span>
+          </h2>
+
+          <p style={{ fontSize: '0.93rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
+            From sign-up to continuous care — every step designed for speed, safety and simplicity.
           </p>
 
-          {/* Mini metrics */}
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '16px' }}>
-            {(isPatient
-              ? [
-                  { v: '40 min', l: 'Saved/Visit' },
-                  { v: '60%', l: 'Cost Saving' },
-                  { v: '2M+', l: 'Patients' },
-                  { v: '24/7', l: 'Support' },
-                ]
-              : [
-                  { v: '+45%', l: 'Revenue Lift' },
-                  { v: '60%', l: 'Less Admin' },
-                  { v: 'AI', l: 'Diagnosis Aid' },
-                  { v: 'CME', l: 'Credits' },
-                ]
-            ).map(m => (
-              <div key={m.l} style={{
-                background: 'rgba(255,255,255,.15)',
-                border: '1px solid rgba(255,255,255,.25)',
-                borderRadius: '10px', padding: '8px 14px', textAlign: 'center',
+          {/* Stats strip */}
+          <div id="uj-stats-strip" style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '36px' }}>
+            {STATS.map(s => (
+              <div key={s.label} style={{
+                background: '#fff', border: '1px solid rgba(102,126,234,.14)',
+                borderRadius: '14px', padding: '14px 22px',
+                display: 'flex', alignItems: 'center', gap: '10px',
+                boxShadow: '0 2px 10px rgba(0,0,0,.05)',
               }}>
-                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', lineHeight: 1 }}>{m.v}</div>
-                <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'rgba(255,255,255,.75)', marginTop: '2px' }}>{m.l}</div>
+                <div style={{
+                  width: '36px', height: '36px', borderRadius: '10px', flexShrink: 0,
+                  background: s.bg, border: `1px solid ${s.border}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '1rem',
+                }}>{s.icon}</div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1a202c', lineHeight: 1 }}>{s.label}</div>
+                  <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', color: '#a0aec0', marginTop: '3px' }}>{s.sub}</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Steps list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '0px' }}>
-          {steps.map((step, idx) => (
-            <StepCard key={`${activeTab}-${idx}`} step={step} accent={stepAccents[idx % stepAccents.length]} />
-          ))}
+        {/* ── Compare strip ── */}
+        <div id="uj-compare-bar" style={{ maxWidth: '1100px', margin: '0 auto 32px', padding: '0 24px' }}>
+          <div style={{
+            background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
+            border: '1px solid rgba(102,126,234,.12)',
+            borderRadius: '16px', padding: '18px 26px',
+            display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
+          }}>
+            <span style={{ fontSize: '1.2rem' }}>🗺️</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a202c', marginBottom: '2px' }}>
+                7 steps. Under 8 minutes to your first consultation.
+              </div>
+              <div style={{ fontSize: '0.77rem', color: '#718096', lineHeight: 1.6 }}>
+                HIPAA-compliant · AI-powered matching · Real-time booking · End-to-end encrypted
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {['7 Steps', 'AI Match', 'E-Prescription', '24/7'].map(t => (
+                <span key={t} style={{
+                  fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase',
+                  padding: '4px 12px', borderRadius: '50px',
+                  background: '#fff', color: '#4a5568', border: '1px solid #e2e8f0',
+                }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Tab switcher ── */}
+        <div id="uj-tab-switcher" style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px', padding: '0 16px' }}>
+          <div style={{
+            display: 'inline-flex', background: '#fff',
+            border: '1px solid rgba(102,126,234,.15)',
+            borderRadius: '50px', padding: '4px', gap: '4px',
+            boxShadow: '0 2px 10px rgba(0,0,0,.06)',
+          }}>
+            {(['patient', 'doctor'] as const).map(tab => {
+              const active = activeTab === tab;
+              const grad = tab === 'patient' ? T.gradPink : T.gradTeal;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    padding: '10px 24px', borderRadius: '50px',
+                    border: 'none', cursor: 'pointer',
+                    fontSize: '0.82rem', fontWeight: 700,
+                    transition: 'all .22s',
+                    background: active ? grad : 'transparent',
+                    color: active ? '#fff' : '#718096',
+                    boxShadow: active ? '0 4px 16px rgba(0,0,0,.15)' : 'none',
+                  }}
+                >
+                  <span>{tab === 'patient' ? '❤️' : '🩺'}</span>
+                  {tab === 'patient' ? 'Patient Journey' : 'Doctor Journey'}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Journey Steps ── */}
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
+
+          {/* Hero card for active tab */}
+          <div id="uj-hero-card" style={{
+            background: isPatient ? T.gradPink : T.gradTeal,
+            borderRadius: '24px', overflow: 'hidden',
+            padding: '22px 24px 20px',
+            marginBottom: '20px',
+            position: 'relative',
+          }}>
+            <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '140px', height: '140px', borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: '-50px', right: '20px', width: '100px', height: '100px', borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
+
+            <div style={{
+              display: 'inline-block',
+              background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)',
+              color: '#fff', fontSize: '0.68rem', fontWeight: 700,
+              letterSpacing: '2px', textTransform: 'uppercase',
+              padding: '4px 14px', borderRadius: '50px', marginBottom: '12px',
+            }}>
+              HealthNexus · {isPatient ? 'Patient' : 'Doctor'} Journey
+            </div>
+
+            <h3 style={{ fontSize: 'clamp(1.1rem,2vw,1.35rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2, margin: '0 0 8px', letterSpacing: '-0.4px' }}>
+              {isPatient ? '7 steps from sign-up to continuous care' : '7 steps from onboarding to practice growth'}
+            </h3>
+            <p style={{ color: 'rgba(255,255,255,.82)', fontSize: '0.8rem', lineHeight: 1.6, margin: 0, maxWidth: '500px' }}>
+              {isPatient
+                ? 'Everything designed to save you time, reduce cost, and keep your health on track.'
+                : 'Built to grow your revenue, cut admin work, and give you more time with patients.'}
+            </p>
+
+            {/* Mini metrics */}
+            <div id="uj-hero-metrics" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '16px' }}>
+              {(isPatient
+                ? [
+                    { v: '40 min', l: 'Saved/Visit' },
+                    { v: '60%', l: 'Cost Saving' },
+                    { v: '2M+', l: 'Patients' },
+                    { v: '24/7', l: 'Support' },
+                  ]
+                : [
+                    { v: '+45%', l: 'Revenue Lift' },
+                    { v: '60%', l: 'Less Admin' },
+                    { v: 'AI', l: 'Diagnosis Aid' },
+                    { v: 'CME', l: 'Credits' },
+                  ]
+              ).map(m => (
+                <div key={m.l} style={{
+                  background: 'rgba(255,255,255,.15)',
+                  border: '1px solid rgba(255,255,255,.25)',
+                  borderRadius: '10px', padding: '8px 14px', textAlign: 'center',
+                }}>
+                  <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', lineHeight: 1 }}>{m.v}</div>
+                  <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'rgba(255,255,255,.75)', marginTop: '2px' }}>{m.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Steps list — desktop vs mobile */}
+          <div id="uj-steps-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {steps.map((step, idx) =>
+              isMobile
+                ? <StepCardMobile key={`${activeTab}-${idx}`} step={step} accent={stepAccents[idx % stepAccents.length]} />
+                : <StepCard       key={`${activeTab}-${idx}`} step={step} accent={stepAccents[idx % stepAccents.length]} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </section>
   );
 };
