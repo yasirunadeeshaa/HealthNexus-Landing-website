@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { Building, Calendar, Camera, CheckCircle, ChevronLeft, ChevronRight, FileText, Filter, MapPin, MessageSquare, Mic, Phone, Pill, Search, Send, Share2, Shield, Star, Stethoscope, Video, Wifi } from 'lucide-react';
+import { useState, useEffect, useRef, type JSX } from 'react';
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, Area,
@@ -78,6 +79,45 @@ const RECENT_READINGS = [
 ];
 
 const RANGES = [{ label: '3M', count: 3 }, { label: '6M', count: 6 }, { label: '1Y', count: 12 }];
+type DemoTab = { key: keyof typeof infoCards; icon: JSX.Element; label: string };
+const tabs: DemoTab[] = [
+  { key: 'video',        icon: <Video size={16} />,       label: 'Video consultation' },
+  { key: 'booking',      icon: <Calendar size={16} />,    label: 'Book appointment' },
+  { key: 'doctors',      icon: <Stethoscope size={16} />, label: 'Find doctors' },
+  { key: 'prescription', icon: <FileText size={16} />,    label: 'E-prescription' },
+];
+
+const infoCards = {
+  video:        { label: 'Feature highlight', title: 'HD video calls',            desc: 'Crystal-clear, encrypted video with noise cancellation, screen sharing and in-call annotation tools.' },
+  booking:      { label: 'Smart scheduling',  title: 'Book in seconds',           desc: 'See real-time slot availability, choose visit type and get instant confirmation — no phone calls.' },
+  doctors:      { label: 'Doctor search',     title: 'Find the right specialist', desc: 'Browse 10,000+ verified doctors filtered by specialty, rating, language and live availability.' },
+  prescription: { label: 'E-prescription',    title: 'Digital prescriptions',     desc: 'Legally valid e-prescriptions with drug-interaction checks sent directly to your chosen pharmacy.' },
+};
+
+const barTitles = {
+  video:        'HealthNexus — Video Consultation',
+  booking:      'HealthNexus — Appointment Booking',
+  doctors:      'HealthNexus — Find Doctors',
+  prescription: 'HealthNexus — E-Prescription',
+};
+
+const demoDoctors = [
+  { img: 'https://i.pravatar.cc/100?img=10', name: 'Dr. Michael Chen',  spec: 'Cardiologist',    rating: '4.8', exp: 15, lang: 'EN, ZH', slots: 3 },
+  { img: 'https://i.pravatar.cc/100?img=11', name: 'Dr. Emily Brown',   spec: 'Heart specialist', rating: '4.7', exp: 20, lang: 'EN',     slots: 1 },
+  { img: 'https://i.pravatar.cc/100?img=13', name: 'Dr. James Wilson',  spec: 'Cardiac surgeon',  rating: '4.6', exp: 25, lang: 'EN, ES', slots: 5 },
+];
+
+const calDays    = [20, 21, 22, 23, 24, 25, 26];
+const timeSlots  = ['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM'];
+const filterTags = ['Cardiologist', 'Near me', 'Available today', '4+ rating'];
+
+const pill = {
+  purple: { bg: '#EEEDFE', color: '#534AB7', border: '#AFA9EC' },
+  teal:   { bg: '#E1F5EE', color: '#0F6E56', border: '#5DCAA5' },
+  amber:  { bg: '#FAEEDA', color: '#854F0B', border: '#EF9F27' },
+  pink:   { bg: '#FBEAF0', color: '#993556', border: '#ED93B1' },
+  blue:   { bg: '#E6F1FB', color: '#185FA5', border: '#85B7EB' },
+};
 
 /* ─── Shared Tooltip ─── */
 const ChartTooltip = ({ active, payload, label, unit = '' }: { active?: any; payload?: any; label?: any; unit?: string }) => {
@@ -602,6 +642,94 @@ const HealthChartsModal: React.FC<HealthChartsModalProps> = ({ isOpen, onClose }
   );
 };
 
+const InteractiveDemoModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const [visible, setVisible] = useState(false);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => setVisible(true), 20);
+      document.body.style.overflow = 'hidden';
+    } else {
+      setVisible(false);
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    if (isOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (overlayRef.current && e.target === overlayRef.current) onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      ref={overlayRef}
+      onClick={handleOverlayClick}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(10,12,20,.65)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '16px',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity .25s ease',
+      }}
+    >
+      <div style={{
+        background: '#fafbfc',
+        borderRadius: 28,
+        width: '100%',
+        maxWidth: 960,
+        maxHeight: 'calc(100vh - 32px)',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        boxShadow: '0 40px 120px rgba(0,0,0,.35)',
+        border: '1px solid rgba(255,255,255,.15)',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(28px) scale(.97)',
+        transition: 'transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease',
+      }}>
+
+        {/* Header */}
+        <div style={{
+          background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)',
+          padding: '20px 28px 16px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          flexShrink: 0,
+        }}>
+          <div>
+            <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.75)', marginBottom: 4 }}>Interactive Preview</div>
+            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff' }}>Try Every Feature — Live</div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              width: 36, height: 36, borderRadius: '50%',
+              border: '1.5px solid rgba(255,255,255,.3)',
+              background: 'rgba(255,255,255,.12)', color: '#fff',
+              fontSize: '1rem', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >✕</button>
+        </div>
+
+        {/* Body — LiveDemoInteractive */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px 28px' }}>
+          <LiveDemoInteractive />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ══════════════════════════════════════════════
    ORIGINAL DETAIL FEATURES COMPONENTS (unchanged)
 ══════════════════════════════════════════════ */
@@ -764,6 +892,247 @@ const CapRow = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   </div>
 );
 
+const VideoPanel = () => (
+  <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, flex: 1, minHeight: 0 }}>
+      {[
+        { img: 'https://i.pravatar.cc/300?img=12', name: 'Dr. Sarah Johnson', sub: 'Cardiologist', badge: true  },
+        { img: 'https://i.pravatar.cc/300?img=5',  name: 'You',              sub: 'Connected',    badge: false },
+      ].map((p, i) => (
+        <div key={i} style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', background: '#1a202c' }}>
+          <img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 55%)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 10 }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#fff' }}>{p.name}</span>
+            <span style={{ fontSize: 11, color: 'rgba(255,255,255,.7)' }}>{p.sub}</span>
+          </div>
+          {p.badge && (
+            <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,.65)', borderRadius: 20, padding: '3px 8px', fontSize: 11, color: '#48bb78', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Wifi size={11} /> Excellent
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+      {[
+        { icon: <MessageSquare size={14} />, label: 'Chat'         },
+        { icon: <FileText size={14} />,      label: 'Notes'        },
+        { icon: <Camera size={14} />,        label: 'Capture'      },
+        { icon: <Share2 size={14} />,        label: 'Share screen' },
+      ].map((t, i) => (
+        <button key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: '7px 12px', fontSize: 12, color: '#6b7280', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+          {t.icon} {t.label}
+        </button>
+      ))}
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
+      {[
+        { icon: <Mic size={18} />,   label: 'Mute',     end: false },
+        { icon: <Video size={18} />, label: 'Camera',   end: false },
+        { icon: <Share2 size={18} />,label: 'Share',    end: false },
+        { icon: <Phone size={18} />, label: 'End call', end: true  },
+      ].map((c, i) => (
+        <button key={i} aria-label={c.label} style={{ width: 44, height: 44, borderRadius: '50%', background: c.end ? '#ff4444' : '#fff', border: c.end ? 'none' : '1px solid #e5e7eb', color: c.end ? '#fff' : '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,.08)' }}>
+          {c.icon}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
+const BookingPanel = () => {
+  const [selDay,   setSelDay]   = useState(22);
+  const [selSlot,  setSelSlot]  = useState('11:00 AM');
+  const [visitType,setVisitType]= useState('video');
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+        {['video', 'in-person'].map(t => (
+          <button key={t} onClick={() => setVisitType(t)} style={{ flex: 1, padding: '8px 0', borderRadius: 10, border: `1px solid ${visitType === t ? pill.purple.border : '#e5e7eb'}`, background: visitType === t ? pill.purple.bg : '#fff', color: visitType === t ? pill.purple.color : '#6b7280', fontSize: 12, fontWeight: visitType === t ? 700 : 400, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            {t === 'video' ? <Video size={13} /> : <MapPin size={13} />}
+            {t === 'video' ? 'Video visit' : 'In-person'}
+          </button>
+        ))}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#1a202c' }}>December 2024</span>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {[<ChevronLeft size={16} />, <ChevronRight size={16} />].map((ic, i) => (
+            <button key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#6b7280' }}>{ic}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 16 }}>
+        {calDays.map(d => (
+          <button key={d} onClick={() => setSelDay(d)} style={{ background: selDay === d ? pill.purple.bg : '#fff', border: `1px solid ${selDay === d ? pill.purple.border : '#e5e7eb'}`, borderRadius: 10, padding: '8px 4px', textAlign: 'center', cursor: 'pointer' }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: selDay === d ? pill.purple.color : '#1a202c', display: 'block' }}>{d}</span>
+            <small style={{ fontSize: 10, color: '#9ca3af' }}>4 slots</small>
+          </button>
+        ))}
+      </div>
+      <div style={{ fontSize: 12, fontWeight: 500, color: '#6b7280', marginBottom: 8 }}>Available times</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginBottom: 16 }}>
+        {timeSlots.map(t => (
+          <button key={t} onClick={() => setSelSlot(t)} style={{ background: selSlot === t ? pill.purple.bg : '#fff', border: `1px solid ${selSlot === t ? pill.purple.border : '#e5e7eb'}`, borderRadius: 10, padding: 9, fontSize: 12, cursor: 'pointer', color: selSlot === t ? pill.purple.color : '#374151', fontWeight: selSlot === t ? 600 : 400 }}>
+            {t}
+          </button>
+        ))}
+      </div>
+      <div style={{ background: '#f9fafb', borderRadius: 12, padding: '10px 14px', marginBottom: 12, fontSize: 12, color: '#6b7280', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <CheckCircle size={14} style={{ color: '#0F6E56' }} />
+        <span>Dec {selDay} · {selSlot} · {visitType === 'video' ? 'Video consultation' : 'In-person visit'} with Dr. Sarah Johnson</span>
+      </div>
+      <button style={{ width: '100%', padding: '11px 0', background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', color: '#fff', border: 'none', borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: '0 4px 14px rgba(99,102,241,.3)' }}>
+        <CheckCircle size={16} /> Confirm appointment
+      </button>
+    </div>
+  );
+};
+
+const DoctorsPanel = () => {
+  const [activeTags, setActiveTags] = useState<string[]>(['Cardiologist']);
+  const toggleTag = (tag: string) => setActiveTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '9px 14px', marginBottom: 10 }}>
+        <Search size={16} style={{ color: '#9ca3af', flexShrink: 0 }} />
+        <input type="text" placeholder="Search by specialty, condition or doctor name" style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#374151', width: '100%' }} />
+        <Filter size={14} style={{ color: '#9ca3af', flexShrink: 0 }} />
+      </div>
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+        {filterTags.map(tag => {
+          const on = activeTags.includes(tag);
+          return (
+            <button key={tag} onClick={() => toggleTag(tag)} style={{ fontSize: 11, padding: '4px 10px', borderRadius: 20, border: `1px solid ${on ? pill.purple.border : '#e5e7eb'}`, background: on ? pill.purple.bg : '#fff', color: on ? pill.purple.color : '#6b7280', cursor: 'pointer', fontWeight: on ? 600 : 400 }}>
+              {tag}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {demoDoctors.map((doc, i) => (   // ← demoDoctors (renamed)
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 14, padding: '10px 14px', boxShadow: '0 2px 8px rgba(0,0,0,.04)' }}>
+            <img src={doc.img} alt={doc.name} style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#1a202c', marginBottom: 2 }}>{doc.name}</div>
+              <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 5 }}>{doc.spec}</div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 11, color: '#9ca3af', alignItems: 'center' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}><Star size={11} style={{ color: '#854F0B' }} fill="#854F0B" /> {doc.rating}/5</span>
+                <span><MapPin size={11} style={{ verticalAlign: -1 }} /> {doc.exp} yrs</span>
+                <span style={{ color: '#0F6E56', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', display: 'inline-block' }} /> {doc.slots} slots
+                </span>
+              </div>
+            </div>
+            <button style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', color: '#fff', border: 'none', borderRadius: 20, padding: '6px 16px', fontSize: 12, fontWeight: 600, cursor: 'pointer', flexShrink: 0, boxShadow: '0 2px 8px rgba(99,102,241,.3)' }}>
+              Book
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PrescriptionPanel = () => (
+  <div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14, paddingBottom: 14, borderBottom: '2px dashed #e5e7eb', marginBottom: 14 }}>
+      <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#6366F1', lineHeight: 1 }}>℞</div>
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#1a202c' }}>Digital prescription</div>
+        <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>Dr. Sarah Johnson · Dec 20, 2024</div>
+      </div>
+      <span style={{ marginLeft: 'auto', ...pill.teal, fontSize: 11, padding: '3px 10px', borderRadius: 20, fontWeight: 600 }}>Verified ✓</span>
+    </div>
+    {[
+      { name: 'Lisinopril', dose: '10 mg — once daily with food', supply: '30 days supply'  },
+      { name: 'Metformin',  dose: '500 mg — twice daily',         supply: '90 days supply'  },
+    ].map((med, i) => (
+      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: 12, marginBottom: 8 }}>
+        <div style={{ width: 38, height: 38, borderRadius: 10, background: pill.purple.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Pill size={18} style={{ color: pill.purple.color }} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#1a202c', marginBottom: 2 }}>{med.name}</div>
+          <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 4 }}>{med.dose}</div>
+          <span style={{ ...pill.teal, fontSize: 10, padding: '2px 8px', borderRadius: 20, fontWeight: 600 }}>{med.supply}</span>
+        </div>
+        <Shield size={14} style={{ color: '#9ca3af', flexShrink: 0 }} />
+      </div>
+    ))}
+    <div style={{ marginTop: 14 }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 8 }}>Send to pharmacy</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: '10px 12px', marginBottom: 10 }}>
+        <Building size={16} style={{ color: '#9ca3af', flexShrink: 0 }} />
+        <select style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#374151', flex: 1 }}>
+          <option>CVS Pharmacy — 2 miles</option>
+          <option>Walgreens — 3 miles</option>
+          <option>Rite Aid — 4 miles</option>
+        </select>
+      </div>
+      <button style={{ width: '100%', padding: '11px 0', background: 'linear-gradient(135deg, #0F6E56, #10B981)', color: '#fff', border: 'none', borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: '0 4px 14px rgba(15,110,86,.3)' }}>
+        <Send size={15} /> Send prescription
+      </button>
+    </div>
+  </div>
+);
+
+const LiveDemoInteractive = () => {
+  const [activeTab, setActiveTab] = useState<keyof typeof infoCards>('video');
+  const info = infoCards[activeTab];
+
+  const panels: Record<keyof typeof infoCards, JSX.Element> = {
+    video:        <VideoPanel />,
+    booking:      <BookingPanel />,
+    doctors:      <DoctorsPanel />,
+    prescription: <PrescriptionPanel />,
+  };
+
+  return (
+    <div style={{ background: '#fff', borderRadius: 24, border: '1px solid #e5e7eb', boxShadow: '0 20px 60px rgba(0,0,0,.08)', overflow: 'hidden', display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: 560 }}>
+      {/* Sidebar */}
+      <div style={{ background: '#fafbff', borderRight: '1px solid #e5e7eb', padding: '1.5rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase', color: '#9ca3af' }}>Try our features</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {tabs.map(tab => {
+            const active = activeTab === tab.key;
+            return (
+              <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{ width: '100%', textAlign: 'left', background: active ? pill.purple.bg : 'transparent', border: `1px solid ${active ? pill.purple.border : '#e5e7eb'}`, borderRadius: 12, padding: '10px 12px', fontSize: 13, color: active ? pill.purple.color : '#6b7280', fontWeight: active ? 800 : 400, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, transform: active ? 'translateX(3px)' : 'none', transition: 'all .18s' }}>
+                <span style={{ color: active ? pill.purple.color : '#9ca3af' }}>{tab.icon}</span>
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ marginTop: 'auto', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 14, padding: '1rem' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 4 }}>{info.label}</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#1a202c', marginBottom: 6 }}>{info.title}</div>
+          <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>{info.desc}</div>
+        </div>
+      </div>
+
+      {/* Main panel */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: '#1e2533', padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {['#ff5f57', '#ffbd2e', '#28ca42'].map((c, i) => <span key={i} style={{ width: 11, height: 11, borderRadius: '50%', background: c, display: 'block' }} />)}
+          </div>
+          <span style={{ fontSize: 12, color: '#9ca3af', flex: 1, textAlign: 'center' }}>{barTitles[activeTab]}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#28ca42', display: 'block' }} />
+            <span style={{ fontSize: 11, color: '#6b7280' }}>Secure</span>
+          </div>
+        </div>
+        <div style={{ flex: 1, padding: '1.25rem 1.5rem', background: '#f8f9fc', overflowY: 'auto' }} key={activeTab}>
+          {panels[activeTab]}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const CATEGORIES = [
   {
     key: 'appointment', label: 'Appointments',
@@ -785,11 +1154,13 @@ const CATEGORIES = [
     ],
     capabilities: [
       { icon: '🔍', title: 'Advanced doctor search with 15+ filters: specialization, language, insurance, ratings' },
-      { icon: '⚡', title: 'Real-time slot updates with instant booking confirmation' },
-      { icon: '🔄', title: 'AI suggests the best alternative slots automatically on reschedule' },
+      { icon: '⚡', title: 'Auto-refill reminders, one-tap reorder for chronic medications, and 90-day supply options for maintenance drugs.' },
+      { icon: '📅', title: 'Real-time calendar syncDoctor availability updates live. No double-bookings.' },
       { icon: '🔔', title: 'Multi-channel reminders via SMS, email, and push notifications' },
       { icon: '🚨', title: 'Emergency priority booking with nearest facility finder' },
       { icon: '👥', title: 'Group educational workshops and therapy session booking' },
+      { icon: '🔔', title: 'SMS, email, and push reminders at 24h, 2h, and 30 min before. One-tap reschedule if needed.' },
+      { icon: '🏥', title: 'Choose visit type at booking. The system routes to the nearest clinic or initiates video infrastructure accordingly.' },
     ],
     stats: [
       { value: '15+',  label: 'Search filters',  color: T.blue   },
@@ -935,12 +1306,14 @@ const TabButton = ({ cat, isActive, onClick }: TabButtonProps) => {
 const DetailedFeatures = () => {
   const [activeKey, setActiveKey] = useState(CATEGORIES[2].key);
   const [modalOpen, setModalOpen] = useState(false);
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
   const cat = CATEGORIES.find(c => c.key === activeKey) ?? CATEGORIES[0];
 
   return (
     <section id="capabilities">
       {/* Health Charts Modal */}
       <HealthChartsModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        <InteractiveDemoModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
 
       <div style={{
         fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
@@ -1014,6 +1387,39 @@ const DetailedFeatures = () => {
                     {/* ← onViewAll now opens modal instead of navigating */}
                     <GlucosePreviewChart onViewAll={() => setModalOpen(true)} />
                   </div>
+                </div>
+              )}
+
+              {cat.key === 'appointment' && (
+                <div style={{ marginTop: 14, display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => setDemoModalOpen(true)}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 8,
+                      padding: '10px 22px', borderRadius: 12,
+                      border: '1.5px solid #667eea',
+                      background: 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))',
+                      color: '#667eea', fontSize: '0.78rem', fontWeight: 700,
+                      cursor: 'pointer', transition: 'all .2s', fontFamily: 'inherit',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg,#667eea,#764ba2)';
+                      e.currentTarget.style.color = '#fff';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = '0 6px 20px rgba(102,126,234,.35)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08))';
+                      e.currentTarget.style.color = '#667eea';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    View Interactive Demo
+                  </button>
                 </div>
               )}
             </div>
