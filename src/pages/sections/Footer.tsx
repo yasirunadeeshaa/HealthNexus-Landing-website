@@ -274,9 +274,81 @@ const Footer = () => {
           .f-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
           .f-brand-col { grid-column: 1 / -1; }
         }
+
+        /* ── Mobile (≤ 640px) ── */
         @media (max-width: 640px) {
-          .f-grid { grid-template-columns: 1fr; gap: 28px; }
-          .f-bottom-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+          /* grid: single column, tighter gaps */
+          .f-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+
+          /* main section padding */
+          .f-main { padding: 28px 0 24px; }
+
+          /* logo slightly smaller */
+          .f-logo-text { font-size: 1.2rem; }
+          .f-logo-icon { width: 42px; height: 34px; }
+
+          /* student card: reduce padding */
+          .f-student-card { padding: 12px 14px; margin-bottom: 16px; }
+          .f-student-name { font-size: 0.88rem; }
+          .f-student-desc { font-size: 0.77rem; }
+
+          /* contact list: smaller text */
+          .f-contact-item { font-size: 0.77rem; }
+          .f-contact-list { margin-bottom: 0; gap: 8px; }
+
+          /* link columns: 2-col mini grid for Platform & Project */
+          .f-links-mobile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+          }
+
+          /* Team + Built With stacks normally below */
+          .f-col-last { grid-column: 1; }
+          .f-mt { margin-top: 22px; }
+
+          /* Download column: row layout for store buttons */
+          .f-app-btn-wrap {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+          }
+          .f-app-btn img { width: 130px; }
+
+          /* bottom bar: stack vertically */
+          .f-bottom { margin-top: 0; padding: 16px 0 20px; }
+          .f-bottom-inner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+          }
+
+          /* project tags: wrap naturally */
+          .f-bottom-left { gap: 8px; }
+          .f-proj-tag { font-size: 11px; }
+
+          /* copyright row: wrap */
+          .f-bottom-right {
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 11px;
+          }
+
+          /* socials: slightly larger tap targets */
+          .f-social-btn { width: 36px; height: 36px; border-radius: 11px; }
+        }
+
+        /* ── Extra small (≤ 380px) ── */
+        @media (max-width: 380px) {
+          .f-links-mobile-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          .f-app-btn img { width: 120px; }
+          .f-student-name { font-size: 0.82rem; }
         }
       `}</style>
 
@@ -348,34 +420,37 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Platform */}
-              <div>
-                <h5 className="f-col-title">Platform</h5>
-                <ul className="f-link-list">
-                  {links.platform.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href} className="f-link">
-                        <span className="f-link-arrow">→</span>
-                        {l.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Platform + Project — wrapped in a 2-col grid on mobile */}
+              <div className="f-links-mobile-grid" style={{ display: 'contents' }}>
+                {/* Platform */}
+                <div>
+                  <h5 className="f-col-title">Platform</h5>
+                  <ul className="f-link-list">
+                    {links.platform.map((l) => (
+                      <li key={l.label}>
+                        <a href={l.href} className="f-link">
+                          <span className="f-link-arrow">→</span>
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              {/* Project */}
-              <div>
-                <h5 className="f-col-title">Project</h5>
-                <ul className="f-link-list">
-                  {links.project.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href} className="f-link">
-                        <span className="f-link-arrow">→</span>
-                        {l.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                {/* Project */}
+                <div>
+                  <h5 className="f-col-title">Project</h5>
+                  <ul className="f-link-list">
+                    {links.project.map((l) => (
+                      <li key={l.label}>
+                        <a href={l.href} className="f-link">
+                          <span className="f-link-arrow">→</span>
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* Team + Tech */}
