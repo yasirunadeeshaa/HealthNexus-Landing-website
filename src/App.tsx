@@ -4,7 +4,6 @@ import Home from './MainPage';
 import ApiDocumentation from './pages/ApiDocumentation';
 import DiseaseRiskPredictionSection from './pages/DiseaseRiskPredictionSection';
 import DiabetesPredictionSection from './pages/DiabetesPredictionSection';
-import Features from './pages/Features';
 
 function App() {
   return (
@@ -24,7 +23,6 @@ function App() {
         <Route path="/api-docs" element={<ApiDocumentation />} />
         <Route path="/diabetes-prediction" element={<DiabetesPredictionSection />} />
         <Route path="/disease-risk-prediction" element={<DiseaseRiskPredictionSection />} />
-        <Route path="/features" element={<Features />} />
       </Routes>
     </Router>
   );
