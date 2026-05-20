@@ -10,11 +10,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: '/#detailed-features', label: 'Capabilities', hasDropdown: true },
+   { href: '/#ai-models',         label: 'AI Models', hasDropdown: true },
   { href: '/#benefits',          label: 'Benefits', hasDropdown: true },
-  { href: '/#user-journey',      label: 'How it Works', hasDropdown: true },
-  { href: '/#ai-models',         label: 'AI Models', hasDropdown: true },
   { href: '/#home-visit',        label: 'Home Visit', hasDropdown: true },
-  { href: '/features',           label: 'Features', hasDropdown: true },
+  { href: '/#user-journey',      label: 'How it Works', hasDropdown: true },
+  { href: '#capabilities',           label: 'Features', hasDropdown: true },
   { href: '#comparison',         label: 'Comparison' },
   { href: '/#health-tools',      label: 'Tools' },
 ];
@@ -57,8 +57,8 @@ const aiModels = [
 const featureItems = [
   {
     id: 'telemedicine',
-    href: '/features',
-    icon: Video, // import Video from lucide-react
+    href: '#capabilities',
+    icon: Video,
     name: 'Telemedicine',
     tag: 'Virtual Care',
     tagColor: '#7c3aed',
@@ -72,7 +72,7 @@ const featureItems = [
   },
   {
     id: 'appointment',
-    href: '/features',
+    href: '#capabilities',
     icon: CalendarCheck, // import CalendarCheck from lucide-react
     name: 'Appointment Booking',
     tag: 'Scheduling',
@@ -87,7 +87,7 @@ const featureItems = [
   },
   {
     id: 'find-doctors',
-    href: '/features',
+    href: '#capabilities',
     icon: Stethoscope, // import Stethoscope from lucide-react
     name: 'Find Doctors',
     tag: 'Discovery',
