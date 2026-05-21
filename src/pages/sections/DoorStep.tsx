@@ -448,7 +448,7 @@ const HomeVisit = () => {
           </div>
 
           <h2 style={{
-            fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800,
+            fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
             color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 16px',
           }}>
             Healthcare That Comes{' '}
