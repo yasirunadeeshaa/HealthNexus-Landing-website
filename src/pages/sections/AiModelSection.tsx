@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const T = {
   blue:    '#1a5fa8',
@@ -75,7 +75,7 @@ const CapRow = ({ icon, title }: { icon: string | React.ReactNode; title: string
 /* ══════════════════════════════════════════
    MODEL CARD
 ══════════════════════════════════════════ */
-const ModelCard = ({ model, onViewDetails }: { model: any; onViewDetails: (id: string) => void }) => {
+const ModelCard = ({ model, onViewDetails, isMobile }: { model: any; onViewDetails: (id: string) => void; isMobile: boolean }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -99,7 +99,7 @@ const ModelCard = ({ model, onViewDetails }: { model: any; onViewDetails: (id: s
       {/* Card hero */}
       <div style={{
         background: model.grad,
-        padding: '32px 28px 28px',
+        padding: isMobile ? '24px 20px 20px' : '32px 28px 28px',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -141,7 +141,7 @@ const ModelCard = ({ model, onViewDetails }: { model: any; onViewDetails: (id: s
       </div>
 
       {/* Card body */}
-      <div style={{ padding: '24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: isMobile ? '20px 20px' : '24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
 
         {/* Metrics */}
         <MetricRow metrics={model.metrics} />
@@ -280,10 +280,10 @@ const MODELS = [
 /* ══════════════════════════════════════════
    PAGE HEADER
 ══════════════════════════════════════════ */
-const PageHeader = () => (
+const PageHeader = ({ isMobile }: { isMobile: boolean }) => (
   <div style={{
     textAlign: 'center',
-    padding: '72px 24px 56px',
+    padding: isMobile ? '48px 16px 36px' : '72px 24px 56px',
     background: '#fafbfc',
   }}>
     <div style={{
@@ -297,18 +297,20 @@ const PageHeader = () => (
       HealthNexus Platform
     </div>
     <h1 style={{
-      fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800,
+      fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
       color: '#1a202c', letterSpacing: '-1.5px', lineHeight: 1.1,
       margin: '0 0 20px',
     }}>
-      AI Model{' '}
+      <span style={{ display: 'block' }}>
+        Predictive Health AI Intelligence
+      </span>
       <span style={{
         background: 'linear-gradient(135deg,#667eea,#764ba2)',
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-      }}>Portfolio</span>
+      }}>Disease Risk & Forecasting Platform</span>
     </h1>
     <p style={{
-      fontSize: '1rem', color: '#718096', maxWidth: '560px',
+      fontSize: '1rem', color: '#718096',maxWidth: isMobile ? '100%' : '560px',
       margin: '0 auto', lineHeight: 1.75,
     }}>
       Two production-ready explainable AI systems for clinical risk prediction,
@@ -352,10 +354,21 @@ const CompareStrip = () => (
   </div>
 );
 
+function useIsMobile() {
+  const [mobile, setMobile] = useState(window.innerWidth < 640);
+  useEffect(() => {
+    const fn = () => setMobile(window.innerWidth < 640);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+  return mobile;
+}
+
 /* ══════════════════════════════════════════
    MAIN PAGE
 ══════════════════════════════════════════ */
 export default function AIModelsPage({ onViewDetails }: { onViewDetails?: (id: string) => void }) {
+  const isMobile = useIsMobile();
   const handleViewDetails = (id: string) => {
     if (onViewDetails) {
       onViewDetails(id);
@@ -374,19 +387,19 @@ export default function AIModelsPage({ onViewDetails }: { onViewDetails?: (id: s
       color: '#1a202c',
       minHeight: '100vh',
     }}>
-      <PageHeader />
+      <PageHeader isMobile={isMobile} />
       <CompareStrip />
 
       {/* Two-column card grid */}
       <div style={{
-        maxWidth: '1100px', margin: '0 auto', padding: '0 24px 80px',
+        maxWidth: '1100px', margin: '0 auto',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
-        gap: '28px',
-        alignItems: 'start',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(420px, 1fr))',
+        gap: isMobile ? '16px' : '28px',
+        padding: isMobile ? '0 16px 60px' : '0 24px 80px',
       }}>
         {MODELS.map(model => (
-          <ModelCard key={model.id} model={model} onViewDetails={handleViewDetails} />
+          <ModelCard key={model.id} model={model} onViewDetails={handleViewDetails} isMobile={isMobile} />
         ))}
       </div>
 
