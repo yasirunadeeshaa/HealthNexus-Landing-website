@@ -40,7 +40,7 @@ const AudioSlideshow: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying]       = useState(false);
   const [progress, setProgress]     = useState(0);   // 0-100
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(8);
   const [duration, setDuration]     = useState(0);
   const [slideIdx, setSlideIdx]     = useState(0);
   const [fade, setFade]             = useState(true);
@@ -56,6 +56,10 @@ const AudioSlideshow: React.FC = () => {
     if (!audio) return;
 
     const onTimeUpdate = () => {
+      if (audio.currentTime < 7) {
+        audio.currentTime = 7;
+        return;
+      }
       const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
       setProgress(pct);
       setCurrentTime(audio.currentTime);
@@ -65,7 +69,10 @@ const AudioSlideshow: React.FC = () => {
         setTimeout(() => { setSlideIdx(target); setFade(true); }, 300);
       }
     };
-    const onLoaded = () => setDuration(audio.duration);
+    const onLoaded = () => {
+      audio.currentTime = 8; 
+      setDuration(audio.duration);
+    };
     const onEnded  = () => setPlaying(false);
 
     audio.addEventListener('timeupdate', onTimeUpdate);
@@ -90,7 +97,8 @@ const AudioSlideshow: React.FC = () => {
     if (!audio || !audio.duration) return;
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    audio.currentTime = pct * audio.duration;
+    const seekTime = pct * audio.duration;
+    audio.currentTime = Math.max(7, seekTime);  // ← clamp to minimum 7s
   };
 
   const goSlide = (i: number) => {
@@ -108,6 +116,9 @@ const AudioSlideshow: React.FC = () => {
     const sec = Math.floor(s % 60);
     return `${m}:${String(sec).padStart(2, '0')}`;
   };
+
+  const effectiveDuration = duration - 7;
+  const effectiveProgress = duration ? ((currentTime - 7) / effectiveDuration) * 100 : 0;
 
   const slide = SLIDES[slideIdx];
 
@@ -214,7 +225,7 @@ const AudioSlideshow: React.FC = () => {
       >
         <div style={{
           height: '100%',
-          width: `${progress}%`,
+          width: `${effectiveProgress}%`,
           background: 'linear-gradient(90deg, #667eea, #764ba2)',
           transition: 'width 0.2s linear',
           position: 'relative',
@@ -287,7 +298,7 @@ const AudioSlideshow: React.FC = () => {
             Is AI the Future of Diabetes Diagnosis?
           </div>
           <div style={{ fontSize: '0.7rem', color: '#9a9790', fontWeight: 600 }}>
-            {fmt(currentTime)} / {fmt(duration)}
+            {fmt(currentTime - 7)} / {fmt(duration - 7)}
           </div>
         </div>
 
@@ -648,7 +659,7 @@ const DiabetesDashboard: React.FC = () => (
 
         {/* ── NEW: Audio Slideshow Section ── */}
         <div className="section">
-          <SectionHeader eyebrow="Research Presentation" title="Voice Narrated" highlight="Visual Overview" />
+          {/*<SectionHeader eyebrow="Research Presentation" title="Voice Narrated" highlight="Visual Overview" />*/}
           <AudioSlideshow />
         </div>
 
