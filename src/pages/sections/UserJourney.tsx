@@ -585,7 +585,7 @@ const UserJourney = () => {
           </h2>
 
           <p style={{ fontSize: '0.93rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
-            From sign-up to continuous care — every step designed for speed, safety and simplicity.
+            From sign-up to continuous care every step designed for speed, safety and simplicity.
           </p>
 
           {/* Stats strip */}
