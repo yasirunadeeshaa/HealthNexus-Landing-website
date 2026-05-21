@@ -1,43 +1,4 @@
-# React + (TypeScript+SWC) + Vite
-===================================================================
-# Create React project with Vite
-npm create vite@latest healthcare-system -- --template react
-
-# Navigate to project directory
-cd healthcare-system
-
-# Install dependencies
-npm install
-
-# Install Tailwind CSS and its peer dependencies
-npm install -D tailwindcss postcss autoprefixer
-
-# Initialize Tailwind CSS
-npx tailwindcss init -p
-
--------------------------------------------------------------------
-
-# Core dependencies
-npm install react-router-dom axios js-cookie date-fns lucide-react react-hot-toast socket.io-client
-
-# Redux for state management
-npm install @reduxjs/toolkit react-redux
-
-# Form handling
-npm install react-hook-form yup @hookform/resolvers
-
-# UI components
-npm install @headlessui/react clsx
-
-# Additional useful packages
-npm install react-dropzone recharts
-
-npm install -D @types/js-cookie
-npm install bootstrap react-bootstrap
-npm install -D sass
-====================================================================
-
-# Healthcare System - Frontend
+# Healthcare System
 
 A modern healthcare appointment booking system built with React, TypeScript, and Bootstrap.
 
