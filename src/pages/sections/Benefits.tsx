@@ -27,6 +27,17 @@ const T = {
   gradTeal:     'linear-gradient(135deg, #0d7a5f 0%, #1a5fa8 100%)',
 };
 
+/* ─── Hook: detect mobile ─── */
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useState(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  });
+  return isMobile;
+};
+
 /* ─── Types ─── */
 interface Pill {
   text: string;
@@ -68,6 +79,21 @@ interface BenefitCard {
   insight: Insight;
   benefits: Benefit[];
 }
+
+/* ─── Chevron Icon ─── */
+const ChevronIcon = ({ open }: { open: boolean }) => (
+  <svg
+    width="20" height="20" viewBox="0 0 20 20" fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{
+      transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+      transition: 'transform 0.3s ease',
+      flexShrink: 0,
+    }}
+  >
+    <path d="M5 7.5L10 12.5L15 7.5" stroke="rgba(255,255,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
 
 /* ─── Sub-components ─── */
 
@@ -175,65 +201,25 @@ const BenefitRow = ({
   );
 };
 
-const BENEFITS_MOBILE_CSS = `
-  #benefits {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    box-sizing: border-box;
-  }
+/* ─── Shared card body (metrics + insight + benefits list) ─── */
+const BenefitCardBody = ({ card }: { card: BenefitCard }) => (
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <MetricRow metrics={card.metrics} />
+    <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '16px 18px' }} />
+    <InsightBar insight={card.insight} />
+    <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 18px 8px' }}>
+      Key Benefits
+    </p>
+    <div style={{ padding: '0 18px 20px' }}>
+      {card.benefits.map(b => (
+        <BenefitRow key={b.title} benefit={b} accentColor={card.accentColor} />
+      ))}
+    </div>
+  </div>
+);
 
-  #benefits > div {
-    min-width: 900px;
-  }
-
-  #benefits * {
-    box-sizing: border-box;
-  }
-
-  @media (max-width: 700px) {
-    #benefits [style*="gridTemplateColumns"] {
-      grid-template-columns: 1fr !important;
-    }
-
-    #benefits [style*="72px 24px 48px"] {
-      padding: 48px 16px 32px !important;
-    }
-
-    #benefits [style*="0 auto 40px"] {
-      margin: 0 16px 28px !important;
-      padding: 14px 16px !important;
-    }
-
-    #benefits [style*="0 24px 80px"] {
-      padding: 0 16px 48px !important;
-    }
-
-    #benefits [style*="24px 22px 20px"] {
-      padding: 20px 16px 16px !important;
-    }
-
-    #benefits [style*="16px 18px 0"] {
-      padding: 12px 14px 0 !important;
-      gap: 6px !important;
-    }
-
-    #benefits [style*="0 18px 20px"] {
-      margin: 0 14px 14px !important;
-    }
-
-    #benefits [style*="0 18px 20px"] {
-      padding: 0 14px 16px !important;
-    }
-
-    #benefits [style*="0 18px 8px"] {
-      margin: 0 14px 6px !important;
-    }
-  }
-`;
-
-/* ─── Benefit Card ─── */
-const BenefitCardComponent = ({ card }: { card: BenefitCard }) => {
+/* ─── Benefit Card — Desktop ─── */
+const BenefitCardDesktop = ({ card }: { card: BenefitCard }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -260,7 +246,6 @@ const BenefitCardComponent = ({ card }: { card: BenefitCard }) => {
       }}>
         <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '140px', height: '140px', borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '-50px', right: '20px', width: '100px', height: '100px', borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
-
         <div style={{
           display: 'inline-block',
           background: 'rgba(255,255,255,.18)',
@@ -276,7 +261,6 @@ const BenefitCardComponent = ({ card }: { card: BenefitCard }) => {
         }}>
           {card.eyebrow}
         </div>
-
         <h3 style={{ fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.4px', margin: '0 0 8px' }}>
           {card.title}
         </h3>
@@ -284,26 +268,81 @@ const BenefitCardComponent = ({ card }: { card: BenefitCard }) => {
           {card.subtitle}
         </p>
       </div>
+      <BenefitCardBody card={card} />
+    </div>
+  );
+};
 
-      {/* Metrics */}
-      <MetricRow metrics={card.metrics} />
+/* ─── Benefit Card — Mobile accordion (mirrors PartnerCardMobile) ─── */
+const BenefitCardMobile = ({ card }: { card: BenefitCard }) => {
+  const [open, setOpen] = useState(false);
 
-      {/* Divider */}
-      <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(102,126,234,.15),transparent)', margin: '16px 18px' }} />
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: '20px',
+      overflow: 'hidden',
+      border: '1px solid rgba(102,126,234,.12)',
+      boxShadow: open ? '0 8px 32px rgba(0,0,0,.10)' : '0 2px 10px rgba(0,0,0,.06)',
+      transition: 'box-shadow .3s ease',
+      marginBottom: '12px',
+    }}>
+      {/* Accordion header — always visible */}
+      <button
+        onClick={() => setOpen(prev => !prev)}
+        style={{
+          width: '100%',
+          background: card.grad,
+          border: 'none',
+          cursor: 'pointer',
+          padding: '0',
+          textAlign: 'left',
+          display: 'block',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Decorative blobs */}
+        <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '110px', height: '110px', borderRadius: '50%', background: 'rgba(255,255,255,.07)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-40px', right: '15px', width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
 
-      {/* Insight */}
-      <InsightBar insight={card.insight} />
+        <div style={{ padding: '18px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', position: 'relative', zIndex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{
+              display: 'inline-block',
+              background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)',
+              color: '#fff', fontSize: '0.62rem', fontWeight: 700,
+              letterSpacing: '1.5px', textTransform: 'uppercase',
+              padding: '3px 10px', borderRadius: '50px', marginBottom: '8px',
+            }}>
+              {card.eyebrow}
+            </div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.3px', margin: '0 0 4px' }}>
+              {card.title}
+            </h3>
+            <p style={{ color: 'rgba(255,255,255,.80)', fontSize: '0.75rem', lineHeight: 1.5, margin: 0 }}>
+              {card.subtitle}
+            </p>
+          </div>
+          {/* Chevron */}
+          <div style={{
+            width: '34px', height: '34px', borderRadius: '50%',
+            background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.28)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <ChevronIcon open={open} />
+          </div>
+        </div>
+      </button>
 
-      {/* Benefits label */}
-      <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#9a9790', margin: '0 18px 8px' }}>
-        Key Benefits
-      </p>
-
-      {/* Benefits list */}
-      <div style={{ padding: '0 18px 20px' }}>
-        {card.benefits.map(b => (
-          <BenefitRow key={b.title} benefit={b} accentColor={card.accentColor} />
-        ))}
+      {/* Collapsible body */}
+      <div style={{
+        maxHeight: open ? '2000px' : '0',
+        overflow: 'hidden',
+        transition: 'max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}>
+        <BenefitCardBody card={card} />
       </div>
     </div>
   );
@@ -462,117 +501,145 @@ const BENEFIT_CARDS: BenefitCard[] = [
 ];
 
 /* ─── Main component ─── */
-const Benefits = () => (
-  <section id="benefits">
-  <style>{BENEFITS_MOBILE_CSS}</style>
-  <div style={{
-    fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-    background: '#fafbfc',
-    color: '#1a202c',
-  }}>
+const Benefits = () => {
+  const isMobile = useIsMobile();
 
-    {/* ── Section header ── */}
-    <div style={{ textAlign: 'center', padding: '72px 24px 48px' }}>
+  return (
+    <section id="benefits">
+      <style>{`
+        @media (max-width: 767px) {
+          #benefits-cards-grid {
+            display: block !important;
+          }
+          #benefits-header {
+            padding: 48px 16px 32px !important;
+          }
+          #benefits-compare-strip {
+            margin: 0 16px 24px !important;
+            padding: 0 !important;
+          }
+        }
+      `}</style>
+
       <div style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
-        border: '1px solid rgba(102,126,234,.22)',
-        color: '#667eea',
-        fontSize: '0.68rem',
-        fontWeight: 700,
-        letterSpacing: '2.5px',
-        textTransform: 'uppercase',
-        padding: '6px 20px',
-        borderRadius: '50px',
-        marginBottom: '22px',
-      }}>
-        ✦ Platform Benefits
-      </div>
-
-      <h2 style={{
-        fontSize: 'clamp(1.8rem, 3vw, 2.6rem)',
-        fontWeight: 800,
+        fontFamily: "'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+        background: '#fafbfc',
         color: '#1a202c',
-        letterSpacing: '-1px',
-        lineHeight: 1.15,
-        margin: '0 0 14px',
       }}>
-        Built for everyone in{' '}
-        <span style={{
-          background: 'linear-gradient(135deg,#667eea,#764ba2)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}>
-          the care journey
-        </span>
-      </h2>
 
-      <p style={{ fontSize: '0.93rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
-        Whether you're seeking care or delivering it, HealthNexus gives patients and
-        doctors a smarter, faster, more connected experience.
-      </p>
-
-    </div>
-
-    {/* ── Compare strip ── */}
-    <div style={{ maxWidth: '1100px', margin: '0 auto 40px', padding: '0 24px' }}>
-      <div style={{
-        background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
-        border: '1px solid rgba(102,126,234,.12)',
-        borderRadius: '16px',
-        padding: '18px 26px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '14px',
-        flexWrap: 'wrap',
-      }}>
-        <span style={{ fontSize: '1.2rem' }}>🤝</span>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a202c', marginBottom: '2px' }}>
-            One platform. Two powerful perspectives.
+        {/* ── Section header ── */}
+        <div id="benefits-header" style={{ textAlign: 'center', padding: '72px 24px 48px' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'linear-gradient(135deg,rgba(102,126,234,.12),rgba(118,75,162,.12))',
+            border: '1px solid rgba(102,126,234,.22)',
+            color: '#667eea',
+            fontSize: '0.68rem',
+            fontWeight: 700,
+            letterSpacing: '2.5px',
+            textTransform: 'uppercase',
+            padding: '6px 20px',
+            borderRadius: '50px',
+            marginBottom: '22px',
+          }}>
+            ✦ Platform Benefits
           </div>
-          <div style={{ fontSize: '0.77rem', color: '#718096', lineHeight: 1.6 }}>
-            HIPAA-compliant · AI-powered · Real-time sync · End-to-end encrypted
+
+          <h2 style={{
+            fontSize: 'clamp(1.8rem, 3vw, 2.6rem)',
+            fontWeight: 800,
+            color: '#1a202c',
+            letterSpacing: '-1px',
+            lineHeight: 1.15,
+            margin: '0 0 14px',
+          }}>
+            Built for everyone in{' '}
+            <span style={{
+              background: 'linear-gradient(135deg,#667eea,#764ba2)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              the care journey
+            </span>
+          </h2>
+
+          <p style={{ fontSize: '0.93rem', color: '#718096', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
+            Whether you're seeking care or delivering it, HealthNexus gives patients and
+            doctors a smarter, faster, more connected experience.
+          </p>
+        </div>
+
+        {/* ── Compare strip ── */}
+        <div id="benefits-compare-strip" style={{ maxWidth: '1100px', margin: '0 auto 40px', padding: '0 24px' }}>
+          <div style={{
+            background: 'linear-gradient(135deg,rgba(102,126,234,.06),rgba(13,122,95,.06))',
+            border: '1px solid rgba(102,126,234,.12)',
+            borderRadius: '16px',
+            padding: '18px 26px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
+            flexWrap: 'wrap',
+          }}>
+            <span style={{ fontSize: '1.2rem' }}>🤝</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a202c', marginBottom: '2px' }}>
+                One platform. Two powerful perspectives.
+              </div>
+              <div style={{ fontSize: '0.77rem', color: '#718096', lineHeight: 1.6 }}>
+                HIPAA-compliant · AI-powered · Real-time sync · End-to-end encrypted
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {['HIPAA', 'AI', 'Real-Time', 'Encrypted'].map(t => (
+                <span key={t} style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase',
+                  padding: '4px 12px',
+                  borderRadius: '50px',
+                  background: '#fff',
+                  color: '#4a5568',
+                  border: '1px solid #e2e8f0',
+                }}>{t}</span>
+              ))}
+            </div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {['HIPAA', 'AI', 'Real-Time', 'Encrypted'].map(t => (
-            <span key={t} style={{
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase',
-              padding: '4px 12px',
-              borderRadius: '50px',
-              background: '#fff',
-              color: '#4a5568',
-              border: '1px solid #e2e8f0',
-            }}>{t}</span>
-          ))}
-        </div>
+
+        {/* ── Cards — mobile accordion OR desktop 2-col grid ── */}
+        {isMobile ? (
+          <div id="benefits-cards-grid" style={{ padding: '0 16px', paddingBottom: '48px' }}>
+            {BENEFIT_CARDS.map(card => (
+              <BenefitCardMobile key={card.title} card={card} />
+            ))}
+          </div>
+        ) : (
+          <div
+            id="benefits-cards-grid"
+            style={{
+              maxWidth: '1100px',
+              margin: '0 auto',
+              padding: '0 24px 80px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '22px',
+              alignItems: 'start',
+              boxSizing: 'border-box',
+            }}
+          >
+            {BENEFIT_CARDS.map(card => (
+              <BenefitCardDesktop key={card.title} card={card} />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
-
-    {/* ── Two-column card grid ── */}
-    <div style={{
-      maxWidth: '1100px',
-      margin: '0 auto',
-      padding: '0 24px 80px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '22px',
-      alignItems: 'start',
-      boxSizing: 'border-box',
-    }}>
-      {BENEFIT_CARDS.map(card => (
-        <BenefitCardComponent key={card.title} card={card} />
-      ))}
-    </div>
-  </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Benefits;
