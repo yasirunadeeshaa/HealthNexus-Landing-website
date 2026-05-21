@@ -355,7 +355,7 @@ const Comparison = ({ }: ComparisonProps) => {
         </div>
 
         <h2 style={{
-          fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800,
+          fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800,
           color: '#1a202c', letterSpacing: '-1px', lineHeight: 1.15, margin: '0 0 16px',
         }}>
           Traditional healthcare vs{' '}
@@ -368,7 +368,7 @@ const Comparison = ({ }: ComparisonProps) => {
         </h2>
 
         <p style={{ fontSize: '0.95rem', color: '#718096', maxWidth: 520, margin: '0 auto', lineHeight: 1.75 }}>
-          Every dimension of care — access, cost, time, and technology — reimagined
+          Every dimension of care access, cost, time, and technology reimagined
           for the modern patient and doctor.
         </p>
       </div>
@@ -412,7 +412,7 @@ const Comparison = ({ }: ComparisonProps) => {
           {/* Hero */}
           <CardHero
             eyebrow="HealthNexus · Comparison"
-            title="Feature-by-feature breakdown"
+            title="Feature by feature breakdown"
             subtitle="See exactly how HealthNexus outperforms traditional healthcare across every key area."
             grad={T.gradGreen}
           />
