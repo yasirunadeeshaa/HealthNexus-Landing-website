@@ -9,7 +9,7 @@ import { Bar, Line, Doughnut } from 'react-chartjs-2';
 
 import PremiumNav from './sections/NavBar';
 import Footer from './sections/Footer';
-
+import heroBg from '../assets/human.webp';
 import diabetesImg from '../assets/1769500368790.png';
 import diabetesImg1 from '../assets/1770284529903.png';
 import audio from '../assets/post-48422-Ln-is-ai-the-future-of-diabetes-diagnosis-and-management.mp3';
@@ -39,7 +39,7 @@ const AUDIO_SRC = audio;
 const AudioSlideshow: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying]       = useState(false);
-  const [progress, setProgress]     = useState(0);   // 0-100
+  const [, setProgress]     = useState(0);   // 0-100
   const [currentTime, setCurrentTime] = useState(8);
   const [duration, setDuration]     = useState(0);
   const [slideIdx, setSlideIdx]     = useState(0);
@@ -342,12 +342,15 @@ const STYLES = `
   width: 100%;
 }
 .dashboard-root .hero {
-  padding: 130px 48px 56px;
-  margin-top: -80px;
+  padding: 84px 48px 156px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: #fafbfc;  /* matches page background */
+  margin-top: 80px;
+  background-image: url(${heroBg});   /* ← needs template literal — see note below */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .dashboard-root .hero::before {
@@ -356,9 +359,10 @@ const STYLES = `
 
 .dashboard-root .hero-eye {
   display: inline-block;
-  background: rgba(102,126,234,0.10);
-  border: 1px solid rgba(102,126,234,0.25);
-  color: #667eea;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.30);
+  color: #fff;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -371,7 +375,7 @@ const STYLES = `
 .dashboard-root .hero h1 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 800;
-  color: #1a202c;  /* dark text instead of white */
+  color: #fff; /* dark text instead of white */
   line-height: 1.15;
   letter-spacing: -1px;
   margin-bottom: 18px;
@@ -386,7 +390,7 @@ const STYLES = `
 }
 
 .dashboard-root .hero-sub {
-  color: #718096;  /* muted dark instead of rgba white */
+  color: rgba(255,255,255,0.82);  /* muted dark instead of rgba white */
   font-size: 1rem;
   max-width: 620px;
   margin: 0 auto 36px;
@@ -401,8 +405,9 @@ const STYLES = `
 }
 
 .dashboard-root .stat-cell {
-  background: #fff;
-  border: 1px solid rgba(102,126,234,0.15);
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.22);
   border-radius: 16px;
   padding: 16px 28px;
   min-width: 120px;
@@ -418,13 +423,13 @@ const STYLES = `
 .dashboard-root .stat-v {
   font-size: 1.6rem;
   font-weight: 800;
-  color: #667eea;  /* accent color instead of white */
+  color: #fff;
   line-height: 1;
 }
 
 .dashboard-root .stat-l {
   font-size: 0.72rem;
-  color: #718096;
+  color: rgba(255,255,255,0.72);
   font-weight: 600;
   letter-spacing: 0.5px;
   margin-top: 4px;
@@ -645,26 +650,26 @@ const DiabetesDashboard: React.FC = () => (
 
       {/* Hero */}
       <div className="hero">
-        <div className="hero-eye">HealthNexus · FYP AI Model</div>
-        <h1>Explainable Diabetes<br /><em>Progression Forecasting</em></h1>
-        <p className="hero-sub">A multimodal AI system combining clinical, lifestyle, and behavioural data to predict diabetes risk and forecast disease progression — with full SHAP/LIME transparency.</p>
-        <div className="stat-strip">
-          {[{v:'94%',l:'Target Accuracy'},{v:'0.96',l:'ROC-AUC'},{v:'12 Mo',l:'Forecast Horizon'},{v:'XAI',l:'Explainable AI'}].map(s=>(
-            <div className="stat-cell" key={s.l}><div className="stat-v">{s.v}</div><div className="stat-l">{s.l}</div></div>
-          ))}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
+            zIndex: 0,
+          }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="hero-eye">HealthNexus · FYP AI Model</div>
+          <h1>Explainable Diabetes<br /><em>Progression Forecasting</em></h1>
+          <p className="hero-sub">A multimodal AI system combining clinical, lifestyle, and behavioural data to predict diabetes risk and forecast disease progression — with full SHAP/LIME transparency.</p>
+          <div className="stat-strip">
+            {[{v:'94%',l:'Target Accuracy'},{v:'0.96',l:'ROC-AUC'},{v:'12 Mo',l:'Forecast Horizon'},{v:'XAI',l:'Explainable AI'}].map(s=>(
+              <div className="stat-cell" key={s.l}><div className="stat-v">{s.v}</div><div className="stat-l">{s.l}</div></div>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="page">
-
-        {/* ── NEW: Audio Slideshow Section ── */}
-        <div className="section">
-          {/*<SectionHeader eyebrow="Research Presentation" title="Voice Narrated" highlight="Visual Overview" />*/}
-          <AudioSlideshow />
-        </div>
-
-        <Divider />
-
         {/* Metrics */}
         <div className="section">
           <SectionHeader eyebrow="Classification Performance" title="Model" highlight="Evaluation Metrics" />
@@ -681,6 +686,13 @@ const DiabetesDashboard: React.FC = () => (
           </div>
         </div>
 
+        <Divider />
+
+        {/* ── NEW: Audio Slideshow Section ── */}
+        <div className="section">
+          <SectionHeader eyebrow="Research Presentation" title="Voice Narrated" highlight="Visual Overview" />
+          <AudioSlideshow />
+        </div>
         <Divider />
 
         {/* Classifier benchmark */}
