@@ -19,6 +19,8 @@ const HeroSection = () => {
     };
   }, []);
 
+  const colors = ['#667eea','#764ba2','#f093fb','#4facfe','#a78bfa'];
+
   return (
     <div className="min-vh-100 position-relative overflow-hidden">
 
@@ -32,6 +34,20 @@ const HeroSection = () => {
       {/* ─── HERO SECTION ─── */}
       <section className="hero-section position-relative">
         <div className="hero-background">
+          {[...Array(120)].map((_, i) => {
+            const size = Math.random() * 3 + 1.5;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            return (
+              <div key={`star-${i}`} className="star-dot" style={{
+                width: `${size}px`, height: `${size}px`,
+                left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`,
+                background: color,
+                '--d': `${(Math.random() * 3 + 2).toFixed(1)}s`,
+                '--delay': `-${(Math.random() * 5).toFixed(1)}s`,
+                '--min-op': `${(Math.random() * 0.1 + 0.08).toFixed(2)}`,
+              } as React.CSSProperties} />
+            );
+          })}
           <div className="hero-shape shape-1"></div>
           <div className="hero-shape shape-2"></div>
           <div className="hero-shape shape-3"></div>
