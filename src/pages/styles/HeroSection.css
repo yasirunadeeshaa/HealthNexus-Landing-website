@@ -1031,3 +1031,23 @@
     padding-bottom: 1rem;
   }
 }
+
+.star-dot {
+  position: absolute;
+  border-radius: 50%;
+  animation: twinkle-light var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle-light {
+  0%, 100% { opacity: var(--min-op, 0.1); transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.5); }
+}
+
+/* 4-point sparkle (optional) */
+.sparkle { position: absolute; animation: sparkle-anim var(--d, 4s) ease-in-out infinite var(--delay, 0s); }
+.sparkle::before, .sparkle::after { content: ''; position: absolute; background: var(--sc, #667eea); border-radius: 2px; }
+.sparkle::before { width: 100%; height: 25%; top: 37.5%; left: 0; }
+.sparkle::after  { height: 100%; width: 25%; left: 37.5%; top: 0; }
+@keyframes sparkle-anim {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50%       { opacity: var(--so, 0.4); transform: scale(1) rotate(45deg); }
+}
