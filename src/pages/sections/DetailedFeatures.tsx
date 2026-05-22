@@ -1125,9 +1125,7 @@ const CATEGORIES = [
       { icon: '🏥', title: 'Choose visit type at booking — routes to clinic or initiates video call.' },
     ],
     stats: [
-      { value: '15+',  label: 'Search filters',  color: T.blue   },
       { value: '<30s', label: 'Avg booking time', color: T.teal   },
-      { value: 'AI',   label: 'Smart reschedule', color: T.amber  },
       { value: '24/7', label: 'Availability',     color: T.purple },
     ],
     showChart: false,
@@ -1159,9 +1157,7 @@ const CATEGORIES = [
       { icon: '💬', title: 'In-call messaging with file sharing capabilities' },
     ],
     stats: [
-      { value: '99.9%', label: 'Video uptime',       color: T.teal   },
       { value: 'HD',    label: 'Adaptive quality',   color: T.blue   },
-      { value: 'AI',    label: 'Auto transcription', color: T.amber  },
       { value: 'E2E',   label: 'Encrypted calls',    color: T.purple },
     ],
     showChart: false,
@@ -1170,7 +1166,7 @@ const CATEGORIES = [
     key: 'health', label: 'Health Records',
     eyebrow: 'HealthNexus · Feature 03',
     title: 'Comprehensive Health Management',
-    subtitle: 'Your complete health picture always in sync — vitals, medications, lab results, and AI-driven predictive health alerts in one place.',
+    subtitle: 'Your complete health picture always in sync vitals, medications, lab results, and AI-driven predictive health alerts in one place.',
     grad: T.gradGreen,
     shadowColor: 'rgba(17,153,142,.35)',
     metrics: [
@@ -1186,16 +1182,16 @@ const CATEGORIES = [
     ],
     capabilities: [
       { icon: '📊', title: 'Monitor BP, glucose, weight with trend analysis and alerts' },
+      { icon: '🕒', title: 'Patients can check their health history anytime' },
+      { icon: '👁️', title: 'By giving access to their health records, doctors can be see their health status at a glance' },
       { icon: '💊', title: 'Medication refill reminders, interaction checks, adherence tracking' },
       { icon: '📄', title: 'OCR-powered document scanning and smart categorization' },
       { icon: '🧠', title: 'AI-driven health insights and predictive health alerts' },
-      { icon: '🩺', title: 'AI-powered symptom checker with urgency indicators' },
+      { icon: '🩺', title: 'AI-powered disease diagnosis prediction system' },
       { icon: '🧪', title: 'Home sample collection and lab result tracking integration' },
     ],
     stats: [
       { value: 'Live', label: 'Vital monitoring',  color: T.teal   },
-      { value: '60%',  label: 'Less admin work',   color: T.blue   },
-      { value: 'AI',   label: 'Predictive alerts', color: T.amber  },
       { value: '24/7', label: 'Health tracking',   color: T.purple },
     ],
     showChart: true,
