@@ -8,6 +8,7 @@ import {
   Instagram,
   GraduationCap,
   ChevronDown,
+  MessageCircle,
 } from "lucide-react";
 
 import logo from "../../assets/logo.png";
@@ -119,9 +120,10 @@ const Footer = () => {
 
   const socials = [
     { icon: <Github size={18} />,    href: "#", label: "GitHub" },
-    { icon: <Linkedin size={18} />,  href: "#", label: "LinkedIn" },
+    { icon: <Linkedin size={18} />,  href: "https://www.linkedin.com/in/yasiru-nadeesha-aththanayaka/", label: "LinkedIn" },
     { icon: <Twitter size={18} />,   href: "#", label: "Twitter" },
     { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
+    { icon: <MessageCircle size={18} />, href: "https://wa.me/94762873746", label: "WhatsApp" },
   ];
 
   return (
@@ -416,7 +418,7 @@ const Footer = () => {
                   </p>
                   <p className="f-student-desc">
                     I am a Software Engineering student at the University of
-                    Westminster, and HealthNexus is my Final Year Project — an
+                    Westminster, and HealthNexus is my Final Year Project an
                     AI-powered healthcare application redefining digital
                     healthcare by connecting patients with verified doctors,
                     predicting risks with AI, and putting health data control
@@ -480,7 +482,7 @@ const Footer = () => {
                 <h5 className="f-col-title">Download</h5>
                 <div className="f-coming-soon-badge">Coming Soon</div>
                 <p className="f-app-desc">
-                  HealthNexus mobile app is on its way — launching on both
+                  HealthNexus mobile app is on its way launching on both
                   platforms upon project completion.
                 </p>
                 <div className="f-app-btn-wrap">
