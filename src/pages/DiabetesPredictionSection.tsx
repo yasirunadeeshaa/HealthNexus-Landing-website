@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale, LinearScale, BarElement, LineElement,
@@ -39,13 +39,12 @@ const AUDIO_SRC = audio;
 const AudioSlideshow: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying]       = useState(false);
-  const [, setProgress]     = useState(0);   // 0-100
+  const [, setProgress]     = useState(0);
   const [currentTime, setCurrentTime] = useState(8);
   const [duration, setDuration]     = useState(0);
   const [slideIdx, setSlideIdx]     = useState(0);
   const [fade, setFade]             = useState(true);
 
-  /* Derive which slide to show from audio progress */
   const getTargetSlide = useCallback((pct: number) => {
     const seg = 100 / SLIDES.length;
     return Math.min(Math.floor(pct / seg), SLIDES.length - 1);
@@ -70,7 +69,7 @@ const AudioSlideshow: React.FC = () => {
       }
     };
     const onLoaded = () => {
-      audio.currentTime = 8; 
+      audio.currentTime = 8;
       setDuration(audio.duration);
     };
     const onEnded  = () => setPlaying(false);
@@ -98,7 +97,7 @@ const AudioSlideshow: React.FC = () => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     const seekTime = pct * audio.duration;
-    audio.currentTime = Math.max(7, seekTime);  // ← clamp to minimum 7s
+    audio.currentTime = Math.max(7, seekTime);
   };
 
   const goSlide = (i: number) => {
@@ -126,7 +125,6 @@ const AudioSlideshow: React.FC = () => {
     <div style={{ marginBottom: 0 }}>
       <audio ref={audioRef} src={AUDIO_SRC} preload="metadata" />
 
-      {/* Stage */}
       <div style={{
         position: 'relative', width: '100%', aspectRatio: '16/9', border: '1px solid rgba(102,126,234,0.1)',
         background: '#0d0d1a', borderRadius: '18px 18px 0 0', overflow: 'hidden',
@@ -140,14 +138,11 @@ const AudioSlideshow: React.FC = () => {
             transition: 'opacity 0.3s ease',
           }}
         />
-        {/* Overlay gradient */}
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)',
           pointerEvents: 'none',
         }} />
-
-        {/* Slide counter */}
         <div style={{
           position: 'absolute', top: 14, right: 16,
           background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
@@ -157,8 +152,6 @@ const AudioSlideshow: React.FC = () => {
         }}>
           {slideIdx + 1} / {SLIDES.length}
         </div>
-
-        {/* Playing badge */}
         {playing && (
           <div style={{
             position: 'absolute', top: 14, left: 16,
@@ -175,8 +168,6 @@ const AudioSlideshow: React.FC = () => {
             LIVE
           </div>
         )}
-
-        {/* Caption */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
           padding: '40px 24px 20px',
@@ -189,16 +180,11 @@ const AudioSlideshow: React.FC = () => {
             {slide.sub}
           </div>
         </div>
-
-        {/* Big play button overlay when paused */}
         {!playing && (
-          <div
-            onClick={togglePlay}
-            style={{
-              position: 'absolute', inset: 0, display: 'flex',
-              alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-            }}
-          >
+          <div onClick={togglePlay} style={{
+            position: 'absolute', inset: 0, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+          }}>
             <div style={{
               width: 72, height: 72, borderRadius: '50%',
               background: 'rgba(102,126,234,0.90)', backdropFilter: 'blur(8px)',
@@ -215,20 +201,13 @@ const AudioSlideshow: React.FC = () => {
         )}
       </div>
 
-      {/* Progress bar (clickable) */}
-      <div
-        onClick={seek}
-        style={{
-          height: 5, background: 'rgba(102,126,234,0.15)', cursor: 'pointer',
-          position: 'relative',
-        }}
-      >
+      <div onClick={seek} style={{
+        height: 5, background: 'rgba(102,126,234,0.15)', cursor: 'pointer', position: 'relative',
+      }}>
         <div style={{
-          height: '100%',
-          width: `${effectiveProgress}%`,
+          height: '100%', width: `${effectiveProgress}%`,
           background: 'linear-gradient(90deg, #667eea, #764ba2)',
-          transition: 'width 0.2s linear',
-          position: 'relative',
+          transition: 'width 0.2s linear', position: 'relative',
         }}>
           <div style={{
             position: 'absolute', right: -5, top: '50%', transform: 'translateY(-50%)',
@@ -239,60 +218,42 @@ const AudioSlideshow: React.FC = () => {
         </div>
       </div>
 
-      {/* Controls bar */}
       <div style={{
         background: '#fff', borderRadius: '0 0 18px 18px',
-        border: '1px solid rgba(102,126,234,0.1)',
-        borderTop: 'none',
+        border: '1px solid rgba(102,126,234,0.1)', borderTop: 'none',
         padding: '14px 20px',
         display: 'flex', alignItems: 'center', gap: 14,
       }}>
-        {/* Prev */}
-        <button
-          onClick={() => goSlide(Math.max(0, slideIdx - 1))}
-          style={{
-            width: 36, height: 36, borderRadius: '50%',
-            border: '1px solid rgba(102,126,234,0.2)',
-            background: 'rgba(102,126,234,0.06)',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#667eea', flexShrink: 0,
-          }}
-        >
+        <button onClick={() => goSlide(Math.max(0, slideIdx - 1))} style={{
+          width: 36, height: 36, borderRadius: '50%',
+          border: '1px solid rgba(102,126,234,0.2)',
+          background: 'rgba(102,126,234,0.06)',
+          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#667eea', flexShrink: 0,
+        }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
         </button>
-
-        {/* Play/Pause */}
-        <button
-          onClick={togglePlay}
-          style={{
-            width: 46, height: 46, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            border: 'none', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, boxShadow: '0 4px 12px rgba(102,126,234,0.4)',
-          }}
-        >
+        <button onClick={togglePlay} style={{
+          width: 46, height: 46, borderRadius: '50%',
+          background: 'linear-gradient(135deg, #667eea, #764ba2)',
+          border: 'none', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0, boxShadow: '0 4px 12px rgba(102,126,234,0.4)',
+        }}>
           {playing
             ? <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             : <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
           }
         </button>
-
-        {/* Next */}
-        <button
-          onClick={() => goSlide(Math.min(SLIDES.length - 1, slideIdx + 1))}
-          style={{
-            width: 36, height: 36, borderRadius: '50%',
-            border: '1px solid rgba(102,126,234,0.2)',
-            background: 'rgba(102,126,234,0.06)',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#667eea', flexShrink: 0,
-          }}
-        >
+        <button onClick={() => goSlide(Math.min(SLIDES.length - 1, slideIdx + 1))} style={{
+          width: 36, height: 36, borderRadius: '50%',
+          border: '1px solid rgba(102,126,234,0.2)',
+          background: 'rgba(102,126,234,0.06)',
+          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#667eea', flexShrink: 0,
+        }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
-
-        {/* Time + track info */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1a202c', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             Is AI the Future of Diabetes Diagnosis?
@@ -301,23 +262,13 @@ const AudioSlideshow: React.FC = () => {
             {fmt(currentTime - 7)} / {fmt(duration - 7)}
           </div>
         </div>
-
-        {/* Dot nav */}
         <div style={{ display: 'flex', gap: 7, alignItems: 'center', flexShrink: 0 }}>
           {SLIDES.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => goSlide(i)}
-              style={{
-                width: i === slideIdx ? 22 : 8,
-                height: 8, borderRadius: 50,
-                background: i === slideIdx
-                  ? 'linear-gradient(90deg, #667eea, #764ba2)'
-                  : 'rgba(102,126,234,0.25)',
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
-              }}
-            />
+            <div key={i} onClick={() => goSlide(i)} style={{
+              width: i === slideIdx ? 22 : 8, height: 8, borderRadius: 50,
+              background: i === slideIdx ? 'linear-gradient(90deg, #667eea, #764ba2)' : 'rgba(102,126,234,0.25)',
+              cursor: 'pointer', transition: 'all 0.25s ease',
+            }} />
           ))}
         </div>
       </div>
@@ -332,8 +283,467 @@ const AudioSlideshow: React.FC = () => {
   );
 };
 
+/* ─── Interactive Demo ─── */
+const InteractiveDemo: React.FC = () => {
+  const [age, setAge]           = useState(45);
+  const [bmi, setBmi]           = useState(27);
+  const [hba1c, setHba1c]       = useState(5.8);
+  const [glucose, setGlucose]   = useState(105);
+  const [activity, setActivity] = useState(90);
+  const [sleep, setSleep]       = useState(6);
+  const [smoking, setSmoking]   = useState<'never'|'former'|'current'>('never');
+  const [family, setFamily]     = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading]   = useState(false);
 
-/* ─── Internal CSS (unchanged from original) ─── */
+  /* refs for the forecast Chart.js instance */
+  const forecastCanvasRef = useRef<HTMLCanvasElement>(null);
+  const forecastChartRef  = useRef<ChartJS | null>(null);
+
+  /* deterministic risk calculation */
+  const calcRisk = () => {
+    const ageFactor    = Math.max(0, (age - 30) / 60);
+    const bmiFactor    = Math.max(0, (bmi - 22) / 20);
+    const hba1cFactor  = Math.max(0, (hba1c - 5.4) / 3.0);
+    const glucFactor   = Math.max(0, (glucose - 90) / 120);
+    const actFactor    = Math.max(0, (180 - activity) / 180) * 0.5;
+    const sleepFactor  = Math.max(0, (7.5 - sleep) / 7.5) * 0.3;
+    const smokeFactor  = smoking === 'current' ? 0.15 : smoking === 'former' ? 0.07 : 0;
+    const familyFactor = family ? 0.12 : 0;
+
+    const raw = 0.05
+      + hba1cFactor  * 0.40
+      + glucFactor   * 0.25
+      + bmiFactor    * 0.18
+      + ageFactor    * 0.12
+      + actFactor
+      + sleepFactor
+      + smokeFactor
+      + familyFactor;
+
+    return Math.min(0.97, Math.max(0.03, raw));
+  };
+
+  const risk = calcRisk();
+  const pct  = Math.round(risk * 100);
+
+  const getRiskLevel = (v: number) => v <= 0.30 ? 'LOW' : v <= 0.60 ? 'MODERATE' : 'HIGH';
+  const getRiskColor = (v: number) => v <= 0.30 ? '#0d7a5f' : v <= 0.60 ? '#b85e0c' : '#d94f4f';
+  const getRiskBg    = (v: number) => v <= 0.30 ? 'rgba(13,122,95,.12)' : v <= 0.60 ? 'rgba(184,94,12,.15)' : 'rgba(217,79,79,.12)';
+
+  /* SHAP-style contributions */
+  const shapFactors = [
+    { label: 'HbA1c Level',       val: hba1c,    display: `${hba1c}%`, impact: hba1c > 5.7 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(hba1c-5.4)/3.0)*38) },
+    { label: 'Fasting Glucose',   val: glucose,  display: `${glucose} mg/dL`, impact: glucose > 100 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(glucose-90)/120)*23) },
+    { label: 'BMI',               val: bmi,      display: `${bmi}`, impact: bmi > 25 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(bmi-22)/20)*16) },
+    { label: 'Physical Activity', val: activity, display: `${activity} min/wk`, impact: activity < 150 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(180-activity)/180)*12) },
+    { label: 'Sleep Quality',     val: sleep,    display: `${sleep} hrs/night`, impact: sleep < 7 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(7.5-sleep)/7.5)*8) },
+    { label: 'Family History',    val: family,   display: family ? 'Yes' : 'No', impact: family ? 'risk' : 'safe', pct: family ? 11 : 0 },
+    { label: 'Smoking',           val: smoking,  display: smoking === 'current' ? 'Current' : smoking === 'former' ? 'Former' : 'Never', impact: smoking !== 'never' ? 'risk' : 'safe', pct: smoking === 'current' ? 14 : smoking === 'former' ? 6 : 0 },
+    { label: 'Age',               val: age,      display: `${age} yrs`, impact: age > 45 ? 'risk' : 'safe', pct: Math.round(Math.max(0,(age-30)/60)*10) },
+  ].filter(f => f.pct > 0).sort((a, b) => b.pct - a.pct).slice(0, 6);
+
+  /* forecast trajectory */
+  const forecastPoints = () => {
+    const base = risk;
+    if (base <= 0.30) return [base, base - 0.02, base - 0.04, base - 0.03];
+    if (base <= 0.55) return [base, base + 0.06, base + 0.13, base + 0.22];
+    return [base, base + 0.05, base + 0.08, base + 0.10];
+  };
+    const fpts = useMemo(
+      () => forecastPoints().map(v => Math.min(0.97, Math.max(0.03, v))),
+      [risk]
+    );
+
+  /* Build / rebuild the forecast chart whenever results are shown */
+// Create chart on first render only
+  useEffect(() => {
+    if (!forecastCanvasRef.current) return;
+    if (forecastChartRef.current) return; // already created
+
+    const ctx = forecastCanvasRef.current.getContext('2d');
+    if (!ctx) return;
+
+    const initData = fpts.map(v => Math.round(v * 100));
+    const initColors = fpts.map(v => getRiskColor(v));
+
+    forecastChartRef.current = new ChartJS(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Now', '3 months', '6 months', '12 months'],
+        datasets: [
+          {
+            label: 'Projected risk',
+            data: initData,
+            borderColor: '#1D9E75',
+            backgroundColor: 'rgba(29,158,117,0.10)',
+            fill: true,
+            tension: 0.45,
+            pointBackgroundColor: initColors,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 6,
+            borderWidth: 2.5,
+          } as ChartDataset<'line', number[]>,
+          {
+            label: 'High-risk threshold',
+            data: [80, 80, 80, 80],
+            borderColor: '#d94f4f',
+            borderDash: [6, 4],
+            borderWidth: 1.5,
+            fill: false,
+            pointRadius: 0,
+            tension: 0,
+          } as ChartDataset<'line', number[]>,
+        ],
+      },
+      options: {
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart',
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` },
+          },
+        },
+        scales: {
+          x: {
+            ticks: { font: { size: 11, family: "'DM Sans', sans-serif" }, color: '#9a9790' },
+            grid: { display: false },
+          },
+          y: {
+            min: 0,
+            max: 100,
+            ticks: {
+              font: { size: 11, family: "'DM Sans', sans-serif" },
+              color: '#9a9790',
+              callback: (v) => v + '%',
+            },
+            grid: { color: 'rgba(0,0,0,0.06)' },
+          },
+        },
+      },
+    });
+  }, [showResult]); // only runs when results panel becomes visible
+
+  // Update chart data smoothly whenever fpts changes
+  useEffect(() => {
+    if (!forecastChartRef.current) return;
+
+    const chart = forecastChartRef.current;
+    chart.data.datasets[0].data = fpts.map(v => Math.round(v * 100));
+    (chart.data.datasets[0] as any).pointBackgroundColor = fpts.map(v => getRiskColor(v));
+    chart.update('active');
+  }, [fpts]);
+
+  // Destroy only on component unmount
+  useEffect(() => {
+    return () => {
+      forecastChartRef.current?.destroy();
+      forecastChartRef.current = null;
+    };
+  }, []);
+
+  const sliderStyle: React.CSSProperties = {
+    width: '100%', height: '6px', appearance: 'none' as any,
+    background: 'linear-gradient(90deg, #667eea, #764ba2)',
+    borderRadius: '4px', outline: 'none', cursor: 'pointer',
+  };
+
+  const handleRun = () => {
+    setLoading(true);
+    setShowResult(false);
+    setTimeout(() => { setLoading(false); setShowResult(true); }, 1400);
+  };
+
+  return (
+    <div style={{
+      background: '#fff', borderRadius: '18px',
+      border: '1px solid rgba(102,126,234,0.12)',
+      boxShadow: '0 8px 30px rgba(0,0,0,0.08)', overflow: 'hidden',
+    }}>
+      {/* Header */}
+      <div style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '18px 28px', display: 'flex', alignItems: 'center', gap: '12px',
+      }}>
+        <span style={{ fontSize: '1.4rem' }}>🧬</span>
+        <div>
+          <div style={{ color: '#fff', fontWeight: 800, fontSize: '1rem' }}>Live AI Diabetes Risk Demo</div>
+          <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.75rem' }}>Adjust patient data — see the AI assess risk and forecast progression</div>
+        </div>
+        <div style={{
+          marginLeft: 'auto', background: 'rgba(255,255,255,0.15)', borderRadius: '8px',
+          padding: '4px 12px', color: '#fff', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '1px', flexShrink: 0,
+        }}>DEMO MODE</div>
+      </div>
+
+      {/* Body */}
+      <div className="demo-grid">
+        {/* Left: inputs */}
+        <div style={{ padding: '24px 28px', borderRight: '1px solid #f0f4f8' }} className="demo-left">
+          <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#667eea', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '18px' }}>Patient Profile</div>
+
+          {/* HbA1c */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>HbA1c Level</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: hba1c >= 6.5 ? '#d94f4f' : hba1c >= 5.7 ? '#b85e0c' : '#0d7a5f' }}>
+                {hba1c}% {hba1c >= 6.5 ? '· Diabetic range' : hba1c >= 5.7 ? '· Pre-diabetic' : '· Normal'}
+              </span>
+            </div>
+            <input type="range" min={4.5} max={10} step={0.1} value={hba1c} onChange={e => setHba1c(+parseFloat(e.target.value).toFixed(1))} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>4.5%</span><span>10%</span></div>
+          </div>
+
+          {/* Fasting Glucose */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>Fasting Blood Sugar</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: glucose >= 126 ? '#d94f4f' : glucose >= 100 ? '#b85e0c' : '#0d7a5f' }}>
+                {glucose} mg/dL {glucose >= 126 ? '· High' : glucose >= 100 ? '· Pre-diabetic range' : '· Normal'}
+              </span>
+            </div>
+            <input type="range" min={70} max={200} value={glucose} onChange={e => setGlucose(+e.target.value)} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>70</span><span>200</span></div>
+          </div>
+
+          {/* BMI */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>BMI</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: bmi >= 30 ? '#d94f4f' : bmi >= 25 ? '#b85e0c' : '#0d7a5f' }}>
+                {bmi} {bmi >= 30 ? '· Obese' : bmi >= 25 ? '· Overweight' : '· Healthy'}
+              </span>
+            </div>
+            <input type="range" min={16} max={45} value={bmi} onChange={e => setBmi(+e.target.value)} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>16</span><span>45</span></div>
+          </div>
+
+          {/* Age */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>Age</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#667eea' }}>{age} yrs</span>
+            </div>
+            <input type="range" min={18} max={80} value={age} onChange={e => setAge(+e.target.value)} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>18</span><span>80</span></div>
+          </div>
+
+          {/* Activity */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>Exercise (min/week)</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: activity >= 150 ? '#0d7a5f' : '#b85e0c' }}>
+                {activity} min {activity >= 150 ? '· WHO target ✓' : '· Below target'}
+              </span>
+            </div>
+            <input type="range" min={0} max={420} value={activity} onChange={e => setActivity(+e.target.value)} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>0</span><span>7 hrs</span></div>
+          </div>
+
+          {/* Sleep */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568' }}>Sleep (hrs/night)</label>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: sleep >= 7 ? '#0d7a5f' : '#b85e0c' }}>
+                {sleep} hrs {sleep >= 7 ? '· Good' : '· Below recommended'}
+              </span>
+            </div>
+            <input type="range" min={3} max={10} step={0.5} value={sleep} onChange={e => setSleep(+parseFloat(e.target.value).toFixed(1))} style={sliderStyle} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#9a9790', marginTop: '3px' }}><span>3 hrs</span><span>10 hrs</span></div>
+          </div>
+
+          {/* Smoking */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568', display: 'block', marginBottom: '8px' }}>Smoking Status</label>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              {(['never', 'former', 'current'] as const).map(s => (
+                <button key={s} onClick={() => setSmoking(s)} style={{
+                  flex: 1, padding: '8px 4px', borderRadius: '10px',
+                  border: `2px solid ${smoking === s ? '#667eea' : '#e2e8f0'}`,
+                  background: smoking === s ? 'rgba(102,126,234,0.1)' : '#f7fafc',
+                  color: smoking === s ? '#667eea' : '#718096',
+                  fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer',
+                }}>
+                  {s === 'never' ? '🚭 Never' : s === 'former' ? '⚠️ Former' : '🚬 Current'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Family History */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#4a5568', display: 'block', marginBottom: '8px' }}>Family History of Diabetes</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {[{v: true, l: '🧬 Yes'}, {v: false, l: '✅ No'}].map(opt => (
+                <button key={String(opt.v)} onClick={() => setFamily(opt.v)} style={{
+                  flex: 1, padding: '9px', borderRadius: '10px',
+                  border: `2px solid ${family === opt.v ? '#667eea' : '#e2e8f0'}`,
+                  background: family === opt.v ? 'rgba(102,126,234,0.1)' : '#f7fafc',
+                  color: family === opt.v ? '#667eea' : '#718096',
+                  fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer',
+                }}>{opt.l}</button>
+              ))}
+            </div>
+          </div>
+
+          <button onClick={handleRun} style={{
+            width: '100%', padding: '14px', borderRadius: '12px', border: 'none',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: '#fff', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer',
+            boxShadow: '0 4px 15px rgba(102,126,234,0.4)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+          }}>
+            {loading ? '⏳ Analysing patient data…' : '🔍 Run Diabetes Risk Assessment'}
+          </button>
+        </div>
+
+        {/* Right: results */}
+        <div style={{ padding: '24px 28px', background: '#fafbfc' }}>
+          {!showResult && !loading && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: '360px', color: '#9a9790', textAlign: 'center', gap: '14px' }}>
+              <span style={{ fontSize: '3rem' }}>🩺</span>
+              <div style={{ fontSize: '0.88rem', fontWeight: 600, lineHeight: 1.6 }}>Adjust the patient data on the left,<br />then click Run Assessment</div>
+              <div style={{ fontSize: '0.75rem', color: '#b0aaa4' }}>HbA1c, glucose, BMI, lifestyle factors<br />all feed into the AI model</div>
+            </div>
+          )}
+
+          {loading && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '360px', gap: '14px' }}>
+              <div style={{ fontSize: '2.5rem', animation: 'spin 1.2s linear infinite' }}>⚙️</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#667eea' }}>Running XGBoost classifier…</div>
+              <div style={{ fontSize: '0.75rem', color: '#9a9790' }}>Computing SHAP explanations…</div>
+              <div style={{ fontSize: '0.75rem', color: '#9a9790' }}>Generating 12-month forecast…</div>
+            </div>
+          )}
+
+          {showResult && !loading && (
+            <div>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#667eea', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '14px' }}>Assessment Results</div>
+
+              {/* Risk score */}
+              <div style={{
+                padding: '20px', borderRadius: '14px', marginBottom: '16px',
+                background: getRiskBg(risk), border: `1px solid ${getRiskColor(risk)}33`,
+                display: 'flex', alignItems: 'center', gap: '20px',
+              }}>
+                <div style={{ textAlign: 'center', flexShrink: 0 }}>
+                  <div style={{ fontSize: '2.8rem', fontWeight: 800, color: getRiskColor(risk), lineHeight: 1 }}>{pct}%</div>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: getRiskColor(risk), textTransform: 'uppercase', letterSpacing: '1.5px', marginTop: '4px' }}>
+                    {getRiskLevel(risk)} RISK
+                  </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1a202c', marginBottom: '6px' }}>Diabetes Risk Score</div>
+                  <div style={{ height: '10px', background: '#e2e8f0', borderRadius: '5px', overflow: 'hidden', marginBottom: '8px' }}>
+                    <div style={{ height: '100%', width: `${pct}%`, background: `linear-gradient(90deg, ${getRiskColor(risk)}88, ${getRiskColor(risk)})`, borderRadius: '5px', transition: 'width 0.8s ease' }} />
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: '#718096', lineHeight: 1.5 }}>
+                    {risk <= 0.30
+                      ? 'Patient profile shows healthy indicators. Continue current habits.'
+                      : risk <= 0.60
+                      ? 'Moderate risk detected. Lifestyle changes can significantly reduce this.'
+                      : 'High risk detected. Clinical evaluation strongly recommended.'}
+                  </div>
+                </div>
+              </div>
+
+              {/* SHAP breakdown */}
+              <div style={{ marginBottom: '14px' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#9a9790', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>🔍 What's driving this score (SHAP)</div>
+                {shapFactors.map(f => (
+                  <div key={f.label} style={{ marginBottom: '10px' }}>
+                    {/* Top row: label + value + display */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', gap: '8px' }}>
+                      <span style={{ fontSize: '0.72rem', color: '#4a5568', lineHeight: 1.3, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {f.impact === 'risk' ? '🔴' : '🟢'} {f.label}
+                      </span>
+                      <span style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 800, color: f.impact === 'risk' ? '#d94f4f' : '#0d7a5f' }}>
+                          {f.impact === 'risk' ? '+' : '−'}{f.pct}%
+                        </span>
+                        <span style={{ fontSize: '0.68rem', color: '#9a9790' }}>{f.display}</span>
+                      </span>
+                    </div>
+                    {/* Bar on its own full-width row */}
+                    <div style={{ height: '8px', background: '#f0f4f8', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${Math.min(100, f.pct * 2.5)}%`, background: f.impact === 'risk' ? '#d94f4f' : '#0d7a5f', borderRadius: '4px', transition: 'width 0.6s ease' }} />
+                    </div>
+                  </div>
+                ))}
+                <div style={{ fontSize: '0.68rem', color: '#9a9790', marginTop: '8px', lineHeight: 1.5 }}>
+                  🔴 Red = increases risk &nbsp;·&nbsp; 🟢 Green = protective factor
+                </div>
+              </div>
+
+              {/* ── 12-month forecast LINE CHART ── */}
+              <div style={{ padding: '14px', background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '12px' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#9a9790', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>📈 12-Month Risk Forecast</div>
+
+                {/* Custom legend */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '10px', fontSize: '0.7rem', color: '#718096' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: 12, height: 3, background: '#1D9E75', display: 'inline-block', borderRadius: 2 }} />
+                    Projected risk
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: 12, height: 0, borderTop: '2px dashed #d94f4f', display: 'inline-block' }} />
+                    High-risk threshold (80%)
+                  </span>
+                </div>
+
+                {/* Canvas wrapper — explicit height required by Chart.js */}
+                <div style={{ position: 'relative', width: '100%', height: 200 }}>
+                  <canvas
+                    ref={forecastCanvasRef}
+                    role="img"
+                    aria-label={`Line chart showing projected diabetes risk over 12 months. Starts at ${Math.round(fpts[0]*100)}% and reaches ${Math.round(fpts[3]*100)}% by month 12.`}
+                  />
+                </div>
+
+                <div style={{ fontSize: '0.7rem', color: '#718096', marginTop: '10px', lineHeight: 1.5 }}>
+                  {fpts[3] > fpts[0] + 0.1
+                    ? `⚠️ Risk is projected to increase to ${Math.round(fpts[3]*100)}% if current lifestyle continues.`
+                    : `✅ Risk remains stable. Maintaining current habits is working.`}
+                </div>
+              </div>
+
+              {/* Auto-recommendation */}
+              {risk > 0.25 && (
+                <div style={{ padding: '12px 14px', background: 'rgba(102,126,234,0.06)', borderRadius: '10px', border: '1px solid rgba(102,126,234,0.18)', fontSize: '0.78rem', color: '#4a5568', lineHeight: 1.6 }}>
+                  <div style={{ fontWeight: 700, color: '#667eea', marginBottom: '6px' }}>💡 AI Recommendations</div>
+                  {hba1c >= 5.7 && <div>• HbA1c of {hba1c}% is in the pre-diabetic range — schedule an A1C re-test within 3 months.</div>}
+                  {bmi >= 25    && <div>• A 5–10% weight reduction can lower diabetes risk by up to 58%.</div>}
+                  {activity < 150 && <div>• Increase activity to 150 min/week — this is the single highest-impact lifestyle change.</div>}
+                  {sleep < 7    && <div>• Poor sleep increases insulin resistance. Target 7–9 hrs nightly.</div>}
+                  {smoking === 'current' && <div>• Smoking cessation significantly reduces cardiovascular complications of diabetes.</div>}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .demo-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .demo-left { border-right: 1px solid #f0f4f8; }
+        @media (max-width: 760px) {
+          .demo-grid { grid-template-columns: 1fr; }
+          .demo-left { border-right: none; border-bottom: 1px solid #f0f4f8; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
+/* ─── Internal CSS ─── */
 const STYLES = `
 .dashboard-root {
   font-family: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -347,16 +757,12 @@ const STYLES = `
   position: relative;
   overflow: hidden;
   margin-top: 80px;
-  background-image: url(${heroBg});   /* ← needs template literal — see note below */
+  background-image: url(${heroBg});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-
-.dashboard-root .hero::before {
-  display: none;  /* remove the radial gradients */
-}
-
+.dashboard-root .hero::before { display: none; }
 .dashboard-root .hero-eye {
   display: inline-block;
   background: rgba(255,255,255,0.18);
@@ -371,16 +777,14 @@ const STYLES = `
   border-radius: 50px;
   margin-bottom: 24px;
 }
-
 .dashboard-root .hero h1 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 800;
-  color: #fff; /* dark text instead of white */
+  color: #fff;
   line-height: 1.15;
   letter-spacing: -1px;
   margin-bottom: 18px;
 }
-
 .dashboard-root .hero h1 em {
   font-style: normal;
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -388,22 +792,14 @@ const STYLES = `
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
 .dashboard-root .hero-sub {
-  color: rgba(255,255,255,0.82);  /* muted dark instead of rgba white */
+  color: rgba(255,255,255,0.82);
   font-size: 1rem;
   max-width: 620px;
   margin: 0 auto 36px;
   line-height: 1.7;
 }
-
-.dashboard-root .stat-strip {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
+.dashboard-root .stat-strip { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .dashboard-root .stat-cell {
   background: rgba(255,255,255,0.14);
   backdrop-filter: blur(10px);
@@ -414,27 +810,9 @@ const STYLES = `
   box-shadow: 0 4px 6px rgba(0,0,0,0.07);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
-.dashboard-root .stat-cell:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px rgba(0,0,0,0.10);
-}
-
-.dashboard-root .stat-v {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1;
-}
-
-.dashboard-root .stat-l {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.72);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-  text-transform: uppercase;
-}
+.dashboard-root .stat-cell:hover { transform: translateY(-4px); box-shadow: 0 10px 15px rgba(0,0,0,0.10); }
+.dashboard-root .stat-v { font-size: 1.6rem; font-weight: 800; color: #fff; line-height: 1; }
+.dashboard-root .stat-l { font-size: 0.72rem; color: rgba(255,255,255,0.72); font-weight: 600; letter-spacing: 0.5px; margin-top: 4px; text-transform: uppercase; }
 .dashboard-root .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 64px; }
 .dashboard-root .section { margin-bottom: 8px; }
 .dashboard-root .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(102,126,234,0.18), transparent); margin: 40px 0; }
@@ -535,7 +913,6 @@ const STYLES = `
 }
 `;
 
-
 /* ─── design tokens ─── */
 const T = {
   teal:'#0d7a5f', tealL:'rgba(13,122,95,.12)',
@@ -583,7 +960,7 @@ const SectionHeader = ({ eyebrow, title, highlight }: { eyebrow:string; title:st
 );
 const Divider = () => <div className="divider" />;
 
-/* ─── chart configs (unchanged) ─── */
+/* ─── chart configs ─── */
 const chartDefaults = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } };
 
 const classifierData = {
@@ -650,14 +1027,8 @@ const DiabetesDashboard: React.FC = () => (
 
       {/* Hero */}
       <div className="hero">
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backdropFilter: 'blur(6px)',
-            WebkitBackdropFilter: 'blur(6px)',
-            zIndex: 0,
-          }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ position:'absolute', inset:0, backdropFilter:'blur(6px)', WebkitBackdropFilter:'blur(6px)', zIndex:0 }} />
+        <div style={{ position:'relative', zIndex:1 }}>
           <div className="hero-eye">HealthNexus · FYP AI Model</div>
           <h1>Explainable Diabetes<br /><em>Progression Forecasting</em></h1>
           <p className="hero-sub">A multimodal AI system combining clinical, lifestyle, and behavioural data to predict diabetes risk and forecast disease progression — with full SHAP/LIME transparency.</p>
@@ -688,11 +1059,24 @@ const DiabetesDashboard: React.FC = () => (
 
         <Divider />
 
-        {/* ── NEW: Audio Slideshow Section ── */}
+        {/* Audio Slideshow */}
         <div className="section">
           <SectionHeader eyebrow="Research Presentation" title="Voice Narrated" highlight="Visual Overview" />
           <AudioSlideshow />
         </div>
+
+        <Divider />
+
+        {/* Interactive Demo */}
+        <div className="section">
+          <SectionHeader eyebrow="Live Example" title="Try It —" highlight="AI Risk Assessment Demo" />
+          <p className="chart-label" style={{ marginBottom: '20px' }}>
+            Adjust the patient data below and click Run Assessment to see how the AI calculates diabetes risk,
+            explains which factors are driving the score, and forecasts how risk may change over 12 months.
+          </p>
+          <InteractiveDemo />
+        </div>
+
         <Divider />
 
         {/* Classifier benchmark */}
