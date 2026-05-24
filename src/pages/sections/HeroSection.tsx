@@ -1,25 +1,41 @@
-import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, useMemo, useState } from 'react';
 import mainImage from '../../assets/doctor1.jpg';
+import logo from '../../assets/logo.png';
 import {
   Calendar, Video, Zap, Clock
 } from 'lucide-react';
 import '../styles/HeroSection.css';
 
 const HeroSection = () => {
-  const [, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
 
   const colors = ['#667eea','#764ba2','#f093fb','#4facfe','#a78bfa'];
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 5000); // 20 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const starDots = useMemo(() => (
+    [...Array(120)].map((_, i) => {
+      const size = Math.random() * 3 + 1.5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      return (
+        <div key={`star-${i}`} className="star-dot" style={{
+          width: `${size}px`, height: `${size}px`,
+          left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`,
+          background: color,
+          '--d': `${(Math.random() * 3 + 2).toFixed(1)}s`,
+          '--delay': `-${(Math.random() * 5).toFixed(1)}s`,
+          '--min-op': `${(Math.random() * 0.1 + 0.08).toFixed(2)}`,
+        } as React.CSSProperties} />
+      );
+    })
+  ), []);
 
   return (
     <div className="min-vh-100 position-relative overflow-hidden">
@@ -34,12 +50,9 @@ const HeroSection = () => {
       {/* ─── HERO SECTION ─── */}
       <section className="hero-section position-relative">
         <div className="hero-background">
-          {[...Array(120)].map((_, i) => {
-            const size = Math.random() * 3 + 1.5;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            return (
-              <div key={`star-${i}`} className="star-dot" style={{
-                width: `${size}px`, height: `${size}px`,
+          {starDots}
+          <div className="hero-shape shape-1"></div>
+          {/* <div className="hero-shape shape-2"></div>
                 left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`,
                 background: color,
                 '--d': `${(Math.random() * 3 + 2).toFixed(1)}s`,
@@ -47,7 +60,7 @@ const HeroSection = () => {
                 '--min-op': `${(Math.random() * 0.1 + 0.08).toFixed(2)}`,
               } as React.CSSProperties} />
             );
-          })}
+          })} */}
           <div className="hero-shape shape-1"></div>
           <div className="hero-shape shape-2"></div>
           <div className="hero-shape shape-3"></div>
@@ -250,6 +263,25 @@ const HeroSection = () => {
           <div className="scroll-text">Scroll to explore</div>
         </div>
       </section>
+      {showPopup && (
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="popup-box" onClick={e => e.stopPropagation()}>
+            <button className="popup-close" onClick={() => setShowPopup(false)}>✕</button>
+            <div className="popup-logo">
+              <img src={logo} alt="HealthNexus Logo" className="popup-logo-img" />
+            </div>
+            <h4>Welcome to HealthNexus!</h4>
+            <p>
+              This is a <strong>prototype</strong>, not a live platform. It's a concept exploring 
+              what a modern, AI-powered healthcare experience could look like. Feel free to explore, {" "}
+              <span style={{ color: "#667eea", fontWeight: 700 }}>then let us know what you think.</span>
+            </p>
+            <button className="popup-cta" onClick={() => setShowPopup(false)}>
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

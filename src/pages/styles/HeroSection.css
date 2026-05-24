@@ -524,8 +524,8 @@
 /* Health Metrics Card */
 .card-metrics {
   top: 80%;
-  right: -10px;
-  animation: float-rotate 22s ease-in-out infinite;
+  right: 30px;
+  animation: float-rotate 20s ease-in-out infinite;
   background: rgba(255, 255, 255, 0.01);
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
@@ -631,22 +631,23 @@
 /* ── Hero Rings ── */
 .hero-ring {
   position: absolute;
-  border: 2px solid rgba(79, 172, 254, 0.2);
+  border: 2px solid rgba(69, 142, 201, 0.2);
   border-radius: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  filter: blur(0.5px);
 }
 
 .ring-1 {
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
   animation: rotate-scale 20s linear infinite;
 }
 
 .ring-2 {
-  width: 800px;
-  height: 800px;
+  width: 750px;
+  height: 750px;
   animation: rotate-scale-reverse 30s linear infinite;
 }
 
@@ -659,7 +660,7 @@
 @keyframes rotate-scale-reverse {
   0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
   50%  { transform: translate(-50%, -50%) rotate(-180deg) scale(0.9); }
-  100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1); }
+  100% { transform: translate(-50%, -50%) rotate(-160deg) scale(1); }
 }
 
 /* ── Scroll Indicator ── */
@@ -1050,4 +1051,105 @@
 @keyframes sparkle-anim {
   0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
   50%       { opacity: var(--so, 0.4); transform: scale(1) rotate(45deg); }
+}
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup-box {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: popupSlideUp 0.4s ease;
+}
+
+.popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Logo section — replaces the old emoji icon */
+.popup-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-logo-img {
+  height: 136px;        /* adjust to match your logo's natural height */
+  width: 300px;
+  object-fit: contain;
+}
+
+.popup-box h4 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.popup-box p {
+  color: #4b88ac;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.popup-box p strong {
+  color: #334155;
+  font-weight: 600;
+}
+
+.popup-cta {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.popup-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popupSlideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
