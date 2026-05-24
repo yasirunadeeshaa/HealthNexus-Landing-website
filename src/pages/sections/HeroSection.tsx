@@ -274,7 +274,7 @@ const HeroSection = () => {
             <p>
               This is a <strong>prototype</strong>, not a live platform. It's a concept exploring 
               what a modern, AI-powered healthcare experience could look like. Feel free to explore, {" "}
-              <span style={{ color: "#667eea", fontWeight: 700 }}>then let us know what you think.</span>
+              <span style={{ color: "#667eea", fontWeight: 700 }}>then let me know what you think.</span>
             </p>
             <button className="popup-cta" onClick={() => setShowPopup(false)}>
               Get Started
